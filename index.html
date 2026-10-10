@@ -39,7 +39,7 @@
             flex-direction: column;
         }
 
-        /* Auth Screen Styling Fix */
+        /* Auth Screen Styling */
         #auth-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -68,7 +68,6 @@
         .auth-card .form-group { text-align: left; margin-bottom: 14px; position: relative; }
         .auth-card label { color: #fbcfe8; font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block; }
         
-        /* Fixed Input Field Visibility */
         .auth-card input[type="text"],
         .auth-card input[type="password"] {
             width: 100%;
@@ -88,7 +87,6 @@
             font-weight: normal;
         }
 
-        /* Password Show/Hide Toggle Button */
         .password-toggle-icon {
             position: absolute;
             right: 12px;
@@ -99,7 +97,6 @@
             color: #831843;
         }
 
-        /* Beautiful Profile Image Frame */
         .auth-img-frame {
             width: 90px;
             height: 90px;
@@ -269,7 +266,7 @@
 </head>
 <body>
 
-    <!-- Auth Screen with Password Toggle & Beautiful Photo Frame -->
+    <!-- Auth Screen -->
     <div id="auth-screen">
         <div class="auth-card" id="register-card">
             <h2>🌸 রেজিস্ট্রেশন করুন</h2>
@@ -471,7 +468,6 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // Password Visibility Toggle Function
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
             if (input.type === "password") {
@@ -488,15 +484,26 @@
         let allOrders = [], allExpenses = [], allRaw = [];
         let expenseCategories = ['Facebook Boosting', 'যাতায়াত', 'অন্যান্য'];
 
-        const dbName = "MyBusinessHisabDB_CloudReadyV12";
+        const dbName = "MyBusinessHisabDB_CloudReadyV13";
         const request = indexedDB.open(dbName, 1);
 
-        request.onerror = (e) => console.error("DB Error", e);
-        request.onsuccess = (e) => { db = e.target.result; loadAllData(); checkAuthSession(); };
+        request.onerror = (e) => {
+            console.error("DB Error", e);
+            alert("ডাটাবেস খুলতে সমস্যা হয়েছে!");
+        };
+
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            loadAllData();
+            checkAuthSession();
+        };
+
         request.onupgradeneeded = (e) => {
             let db = e.target.result;
             ['rawMaterials', 'production', 'products', 'orders', 'courier', 'expenses', 'cash', 'dues', 'users'].forEach(store => {
-                if (!db.objectStoreNames.contains(store)) db.createObjectStore(store, { keyPath: 'id', autoIncrement: true });
+                if (!db.objectStoreNames.contains(store)) {
+                    db.createObjectStore(store, { keyPath: 'id', autoIncrement: true });
+                }
             });
         };
 
@@ -544,22 +551,45 @@
 
         function handleRegister(e) {
             e.preventDefault();
+            if (!db) {
+                alert("ডাটাবেস প্রস্তুত নয়, অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন!");
+                return;
+            }
+
             let name = document.getElementById('reg-name').value;
             let phone = document.getElementById('reg-phone').value;
             let pass = document.getElementById('reg-pass').value;
 
-            if (!selectedAuthProfileImg) { alert("অনুগ্রহ করে একটি ছবি দিন!"); return; }
+            if (!selectedAuthProfileImg) {
+                alert("অনুগ্রহ করে আপনার ছবি আপলোড করুন!");
+                return;
+            }
 
             let user = { name, phone, pass, img: selectedAuthProfileImg };
-            addRecord('users', user, () => {
+            
+            let tx = db.transaction(['users'], "readwrite");
+            let store = tx.objectStore('users');
+            let req = store.add(user);
+
+            req.onsuccess = () => {
                 localStorage.setItem('current_logged_user', JSON.stringify(user));
-                alert("একাউন্ট তৈরি সফল হয়েছে!");
+                alert("একাউন্ট সফলভাবে তৈরি হয়েছে!");
                 document.getElementById('auth-screen').style.display = 'none';
-            });
+            };
+
+            req.onerror = (err) => {
+                console.error(err);
+                alert("একাউন্ট তৈরি করতে সমস্যা হয়েছে!");
+            };
         }
 
         function handleLogin(e) {
             e.preventDefault();
+            if (!db) {
+                alert("ডাটাবেস প্রস্তুত নয়!");
+                return;
+            }
+
             let phone = document.getElementById('login-phone').value;
             let pass = document.getElementById('login-pass').value;
 
@@ -636,21 +666,25 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
         function addRecord(storeName, data, cb) {
+            if(!db) return;
             let tx = db.transaction([storeName], "readwrite");
             tx.objectStore(storeName).add(data);
             tx.oncomplete = () => { if(cb) cb(); loadAllData(); };
         }
         function updateRecord(storeName, data, cb) {
+            if(!db) return;
             let tx = db.transaction([storeName], "readwrite");
             tx.objectStore(storeName).put(data);
             tx.oncomplete = () => { if(cb) cb(); loadAllData(); };
         }
         function getAllRecords(storeName, cb) {
+            if(!db) { cb([]); return; }
             let tx = db.transaction([storeName], "readonly");
             let req = tx.objectStore(storeName).getAll();
             req.onsuccess = () => cb(req.result);
         }
         function deleteRecord(storeName, id) {
+            if(!db) return;
             let tx = db.transaction([storeName], "readwrite");
             tx.objectStore(storeName).delete(id);
             tx.oncomplete = () => loadAllData();
@@ -768,7 +802,7 @@
             });
             getAllRecords('production', (data) => { let h = ''; data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ</td><td>৳ ${i.cost}</td><td><button class="btn-danger" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`); document.getElementById('production-table').innerHTML = h || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>'; });
             getAllRecords('courier', (couriers) => { let h = '', cDue = 0; couriers.forEach(i => { if(i.status !== 'Paid') cDue += (i.cod - i.charge); h += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`; }); document.getElementById('courier-table').innerHTML = h || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>'; document.getElementById('dash-courier-due').innerText = `৳ ${cDue}`; });
-            getAllRecords('expenses', (expenses) => { allExpenses = expenses; let h = ''; expenses.forEach(i => h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></div>`); document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>'; filterDashboardData(); });
+            getAllRecords('expenses', (expenses) => { allExpenses = expenses; let h = ''; expenses.forEach(i => h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`); document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>'; filterDashboardData(); });
             getAllRecords('cash', (cashList) => { let h = '', cashIn = 0; cashList.forEach(i => { if(i.type === 'মূলধন যোগ') cashIn += i.amount; else cashIn -= i.amount; h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`; }); document.getElementById('cash-table').innerHTML = h || '<tr><td colspan="5">কোনো লেনদেন নেই</td></tr>'; document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashIn}`; });
             getAllRecords('dues', (dues) => { let h = ''; dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>-</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`); document.getElementById('dues-table').innerHTML = h || '<tr><td colspan="5">কোনো পাওনা নেই</td></tr>'; });
         }
