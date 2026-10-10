@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
-    <!-- Firebase SDK -->
+    
+    <!-- PWA Manifest & App Icon Meta Tags -->
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22My%20Business%20Hisab%22%2C%22short_name%22%3A%22Hisab%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fff1f2%22%2C%22theme_color%22%3A%22%23be185d%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww5.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27256%27%20fill%3D%27%23ec4899%27%2F%3E%3Cpath%20d%3D%27M256%20110c-50%200-90%2040-90%2090%200%2040%2030%2075%2070%2085-40%2010-70%2045-70%2085%200%2050%2040%2090%2090%2090s90-40%2090-90c0-40-30-75-70-85%2040-10%2070-45%2070-85%200-50-40-90-90-90z%27%20fill%3D%27%23ffffff%27%2F%3E%3C%2Fsvg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2svg+xml%22%7D%5D%7D">
+    <meta name="theme-color" content="#be185d">
+
+    <!-- External Libraries for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Firebase SDK for Online Sync (Admin & Auth) -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-    
+
     <style>
         :root {
             --primary-rose: #be185d;
@@ -24,178 +32,74 @@
             --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.15), 0 8px 10px -6px rgba(236, 72, 153, 0.1);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
 
-        body {
-            background: var(--bg-gradient);
-            color: var(--text-main);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Auth Screen Styling */
+        /* Auth Screen */
         #auth-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, #831843, #500724);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            color: white;
-            overflow-y: auto;
-            padding: 20px;
+            display: flex; justify-content: center; align-items: center; z-index: 9999; color: white; overflow-y: auto; padding: 20px;
         }
         .auth-card {
-            background: rgba(255, 255, 255, 0.18);
-            backdrop-filter: blur(20px);
-            padding: 30px;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(20px); padding: 30px;
+            border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.3);
         }
         .auth-card h2 { margin-bottom: 8px; color: #f472b6; font-size: 22px; }
         .auth-card p { font-size: 13px; color: #fbcfe8; margin-bottom: 18px; }
         .auth-card .form-group { text-align: left; margin-bottom: 14px; position: relative; }
         .auth-card label { color: #fbcfe8; font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block; }
         
-        .auth-card input[type="text"],
-        .auth-card input[type="password"] {
-            width: 100%;
-            padding: 13px 40px 13px 14px;
-            border-radius: 12px;
-            border: 2px solid #f472b6;
-            background: #ffffff !important;
-            color: #111827 !important;
-            font-size: 15px;
-            font-weight: 600;
-            outline: none;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        .auth-card input[type="text"], .auth-card input[type="password"] {
+            width: 100%; padding: 13px 40px 13px 14px; border-radius: 12px; border: 2px solid #f472b6;
+            background: #ffffff !important; color: #111827 !important; font-size: 15px; font-weight: 600; outline: none;
         }
-
-        .auth-card input::placeholder {
-            color: #9ca3af !important;
-            font-weight: normal;
-        }
-
-        .password-toggle-icon {
-            position: absolute;
-            right: 12px;
-            top: 36px;
-            cursor: pointer;
-            font-size: 18px;
-            user-select: none;
-            color: #831843;
-        }
-
+        .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; }
+        
         .auth-img-frame {
-            width: 90px;
-            height: 90px;
-            margin: 10px auto 0;
-            border-radius: 50%;
-            border: 3.5px solid #ec4899;
-            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), inset 0 0 8px rgba(0,0,0,0.2);
-            overflow: hidden;
-            background: #fff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 90px; height: 90px; margin: 10px auto 0; border-radius: 50%;
+            border: 3.5px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.5); overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center;
         }
-        .auth-img-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
+        .auth-img-frame img { width: 100%; height: 100%; object-fit: cover; }
         .auth-card button.btn-submit {
-            width: 100%;
-            padding: 14px;
-            margin-top: 15px;
-            background: linear-gradient(135deg, #ec4899, #db2777);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(236,72,153,0.4);
+            width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #db2777);
+            color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
         }
-        .auth-toggle-btn {
-            background: none !important;
-            border: none !important;
-            box-shadow: none !important;
-            color: #f472b6 !important;
-            font-size: 13px !important;
-            text-decoration: underline;
-            margin-top: 14px !important;
-            cursor: pointer;
-        }
+        .auth-toggle-btn { background: none !important; border: none !important; color: #f472b6 !important; font-size: 13px !important; text-decoration: underline; margin-top: 14px !important; cursor: pointer; }
 
         /* Header */
         header {
-            background: linear-gradient(135deg, #831843, #9d174d);
-            color: white;
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3);
-            position: sticky; top: 0; z-index: 100;
+            background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 12px 20px;
+            display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3); position: sticky; top: 0; z-index: 100;
         }
         header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         .header-profile-group { display: flex; align-items: center; gap: 10px; }
         .admin-lock-btn {
-            background: rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fbcfe8; width: 34px; height: 34px;
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 15px;
+            background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fbcfe8;
+            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
         }
-        .developer-avatar {
-            width: 40px; height: 40px; border-radius: 50%;
-            border: 2px solid #f472b6; object-fit: cover; background-color: #fff;
-        }
+        .developer-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
-        /* Banner Section */
+        /* Banner */
         .flower-banner {
-            position: relative;
-            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), 
-                        url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover;
-            color: white; padding: 22px 18px; border-radius: 0 0 var(--radius) var(--radius);
-            margin-bottom: 15px; box-shadow: var(--shadow);
-            display: flex; justify-content: space-between; align-items: center;
+            position: relative; background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover;
+            color: white; padding: 22px 18px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
         }
         .banner-text h2 { font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .banner-text p { font-size: 12px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
-        .banner-settings-btn {
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255,255,255,0.4);
-            color: white; width: 38px; height: 38px; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px;
-        }
+        .banner-settings-btn { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.4); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
 
         .app-container { display: flex; flex: 1; overflow: hidden; }
-
-        /* Sidebar */
         sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; }
         .nav-links { list-style: none; padding: 15px 10px; }
         .nav-links li { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 14px; }
         .nav-links li:hover, .nav-links li.active { background: #fdf2f8; color: var(--primary-rose); font-weight: 700; }
 
-        /* Main Area */
         main { flex: 1; padding: 15px; overflow-y: auto; max-height: calc(100vh - 60px); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* Dashboard */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
@@ -208,12 +112,12 @@
         .card.green::before { background: linear-gradient(90deg, #34d399, #059669); }
         .card.red::before { background: linear-gradient(90deg, #f87171, #dc2626); }
         .card.orange::before { background: linear-gradient(90deg, #fbbf24, #d97706); }
-
         .card-header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
         .card-icon { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: #fdf2f8; }
         .card h3 { font-size: 13px; color: #4b5563; font-weight: 600; }
         .card .value { font-size: 20px; font-weight: 800; color: #111827; margin-top: 2px; }
 
+        /* Tables & Modals */
         .order-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
         @media (min-width: 768px) { .order-summary-grid { grid-template-columns: repeat(4, 1fr); } }
         .summary-mini-card { background: white; padding: 12px 15px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; }
@@ -226,7 +130,6 @@
 
         .btn { background: linear-gradient(135deg, #ec4899, #db2777); color: white; border: none; padding: 9px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .btn-outline { background: #fff0f5; color: #be185d; border: 1.5px solid #f472b6; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
-        .btn-edit { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; margin-right: 5px; }
         .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
 
         .table-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border-color); }
@@ -235,7 +138,6 @@
         th { background: #fff1f2; color: #831843; font-weight: 600; }
         .tbl-thumb { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 1.5px solid #f472b6; vertical-align: middle; }
 
-        /* Modals */
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
         .modal-content { background: white; padding: 25px; border-radius: 22px; width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
         .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
@@ -250,6 +152,14 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 12px; border-top: 1px solid #fce7f3; }
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
+
+        /* PWA Install Banner at Bottom */
+        #pwa-install-banner {
+            position: fixed; bottom: 65px; left: 15px; right: 15px; background: #831843; color: white; padding: 12px 16px;
+            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 999; display: none; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
+        }
+        #pwa-install-banner p { font-size: 13px; color: #fbcfe8; }
+        #pwa-install-banner button { background: #ec4899; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
 
         /* Mobile Nav */
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
@@ -266,32 +176,32 @@
 </head>
 <body>
 
+    <!-- PWA Install Banner Notice -->
+    <div id="pwa-install-banner">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 26px;">🌸</span>
+            <div>
+                <strong>হোম স্ক্রিনে অ্যাপ ইনস্টল করুন</strong>
+                <p>এক ক্লিকেই মোবাইলে অ্যাপের মতো ব্যবহার করুন</p>
+            </div>
+        </div>
+        <button id="pwa-install-btn">ইনস্টল</button>
+    </div>
+
     <!-- Auth Screen -->
     <div id="auth-screen">
         <div class="auth-card" id="register-card">
             <h2>🌸 রেজিস্ট্রেশন করুন</h2>
             <p>হিসাব অ্যাপে ঢুকতে আপনার তথ্য দিন</p>
             <form onsubmit="handleRegister(event)">
-                <div class="form-group">
-                    <label>আপনার নাম *</label>
-                    <input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম">
-                </div>
-                <div class="form-group">
-                    <label>মোবাইল নাম্বার *</label>
-                    <input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000">
-                </div>
+                <div class="form-group"><label>আপনার নাম *</label><input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম"></div>
+                <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000"></div>
                 <div class="form-group">
                     <label>আপনার ছবি আপলোড করুন</label>
                     <input type="file" id="reg-img-file" accept="image/*" onchange="previewAuthProfileImage(event)" style="background:#fff; padding:8px;">
-                    <div class="auth-img-frame" id="reg-img-preview">
-                        <span style="font-size:11px; color:#9ca3af;">ছবি দিন</span>
-                    </div>
+                    <div class="auth-img-frame" id="reg-img-preview"><span style="font-size:11px; color:#9ca3af;">ছবি দিন</span></div>
                 </div>
-                <div class="form-group">
-                    <label>সিক্রেট পাসওয়ার্ড *</label>
-                    <input type="password" id="reg-pass" required placeholder="••••••••">
-                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
-                </div>
+                <div class="form-group"><label>সিক্রেট পাসওয়ার্ড *</label><input type="password" id="reg-pass" required placeholder="••••••••"><span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span></div>
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('login')">ইতিমধ্যে একাউন্ট আছে? লগইন করুন</button>
@@ -301,15 +211,8 @@
             <h2>🌸 অ্যাপ লগইন</h2>
             <p>আপনার মোবাইল নাম্বার ও পাসওয়ার্ড দিন</p>
             <form onsubmit="handleLogin(event)">
-                <div class="form-group">
-                    <label>মোবাইল নাম্বার *</label>
-                    <input type="text" id="login-phone" required placeholder="01800000000">
-                </div>
-                <div class="form-group">
-                    <label>পাসওয়ার্ড *</label>
-                    <input type="password" id="login-pass" required placeholder="••••••••">
-                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('login-pass', this)">👁️</span>
-                </div>
+                <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="login-phone" required placeholder="01800000000"></div>
+                <div class="form-group"><label>পাসওয়ার্ড *</label><input type="password" id="login-pass" required placeholder="••••••••"><span class="password-toggle-icon" onclick="togglePasswordVisibility('login-pass', this)">👁️</span></div>
                 <button type="submit" class="btn-submit">লগইন করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('register')">নতুন একাউন্ট তৈরি করুন</button>
@@ -348,13 +251,13 @@
                     <h2 id="banner-title">My Business Hisab</h2>
                     <p id="banner-slogan">"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"</p>
                 </div>
-                <button class="banner-settings-btn" onclick="openModal('banner-modal')" title="ব্যানার কাস্টমাইজ">⚙️</button>
+                <button class="banner-settings-btn" onclick="openModal('banner-modal')" title="পাসওয়ার্ড কাস্টমাইজ ও সেটিংস">⚙️</button>
             </div>
 
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
                 <div class="dashboard-filter-header">
-                    <h2>ব্যবসার ড্যাশবোর্ড</h2>
+                    <h2>ব্যবসার ড্যাশবোর্ড (সামগ্রিক হিসাব)</h2>
                     <div class="filter-controls">
                         <select id="time-filter" class="time-select" onchange="filterDashboardData()">
                             <option value="all">সব সময় (টোটাল)</option>
@@ -367,8 +270,8 @@
                 </div>
                 <div class="dashboard-grid">
                     <div class="card green"><div class="card-header-box"><h3>মোট বিক্রি</h3><div class="card-icon">🛍️</div></div><div class="value" id="dash-total-sales">৳ 0</div></div>
-                    <div class="card red"><div class="card-header-box"><h3>মোট খরচ</h3><div class="card-icon">💸</div></div><div class="value" id="dash-total-expense">৳ 0</div></div>
-                    <div class="card green"><div class="card-header-box"><h3>আনুমানিক লাভ</h3><div class="card-icon">📈</div></div><div class="value" id="dash-total-profit">৳ 0</div></div>
+                    <div class="card red"><div class="card-header-box"><h3>মোট খরচ (কাঁচামাল+অন্যান্য)</h3><div class="card-icon">💸</div></div><div class="value" id="dash-total-expense">৳ 0</div></div>
+                    <div class="card green"><div class="card-header-box"><h3>নেট লাভ</h3><div class="card-icon">📈</div></div><div class="value" id="dash-total-profit">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>হাতে নগদ</h3><div class="card-icon">💵</div></div><div class="value" id="dash-cash-in-hand">৳ 0</div></div>
                     <div class="card orange"><div class="card-header-box"><h3>কুরিয়ারে পাওনা</h3><div class="card-icon">🚚</div></div><div class="value" id="dash-courier-due">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
@@ -383,8 +286,8 @@
                     <div class="summary-mini-card"><span>Delivered অর্ডার</span><h4 id="sum-delivered" style="color: #059669;">0 টি</h4></div>
                     <div class="summary-mini-card"><span>Returned অর্ডার</span><h4 id="sum-returned" style="color: #dc2626;">0 টি</h4></div>
                 </div>
-                <div class="section-header"><h2>অর্ডার ও বিক্রি</h2><button class="btn" onclick="resetOrderForm(); openModal('order-modal');">+ নতুন অর্ডার</button></div>
-                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>অর্ডার আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="orders-table"></tbody></table></div>
+                <div class="section-header"><h2>অর্ডার ও বিক্রি</h2><button class="btn" onclick="openModal('order-modal');">+ নতুন অর্ডার</button></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>অর্ডার আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th></tr></thead><tbody id="orders-table"></tbody></table></div>
             </div>
 
             <!-- Raw Materials Tab -->
@@ -396,32 +299,49 @@
                         <button class="btn" onclick="openModal('raw-modal')">+ নতুন কেনা</button>
                     </div>
                 </div>
-                <div class="table-container"><table><thead><tr><th>ছবি</th><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ (TK)</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr></thead><tbody id="raw-materials-table"></tbody></table></div>
+                <div class="table-container"><table><thead><tr><th>ছবি</th><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ (TK)</th><th>সাপ্লায়ার</th></tr></thead><tbody id="raw-materials-table"></tbody></table></div>
             </div>
 
             <!-- Products Tab -->
-            <div id="tab-products" class="tab-content">
-                <div class="section-header"><h2>পণ্য তালিকা</h2><button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button></div>
-                <div class="table-container"><table><thead><tr><th>ছবি</th><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr></thead><tbody id="products-table"></tbody></table></div>
-            </div>
-
-            <!-- Production Tab -->
-            <div id="tab-production" class="tab-content"><div class="section-header"><h2>উৎপাদন ও স্টক</h2><button class="btn" onclick="openModal('prod-modal')">+ নতুন উৎপাদন</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>তৈরি পণ্য</th><th>পরিমাণ</th><th>উপকরণ</th><th>খরচ (TK)</th><th>অ্যাকশন</th></tr></thead><tbody id="production-table"></tbody></table></div></div>
-
-            <!-- Courier Tab -->
+            <div id="tab-products" class="tab-content"><div class="section-header"><h2>পণ্য তালিকা</h2><button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button></div><div class="table-container"><table><thead><tr><th>ছবি</th><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th></tr></thead><tbody id="products-table"></tbody></table></div></div>
+            <div id="tab-production" class="tab-content"><div class="section-header"><h2>উৎপাদন ও স্টক</h2><button class="btn" onclick="openModal('prod-modal')">+ নতুন উৎপাদন</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>পণ্য</th><th>পরিমাণ</th><th>খরচ</th></tr></thead><tbody id="production-table"></tbody></table></div></div>
             <div id="tab-courier" class="tab-content"><div class="section-header"><h2>Steadfast কুরিয়ার</h2><button class="btn" onclick="openModal('courier-modal')">+ কুরিয়ার এন্ট্রি</button></div><div class="table-container"><table><thead><tr><th>পার্সেল আইডি</th><th>অর্ডার</th><th>COD</th><th>চার্জ</th><th>স্ট্যাটাস</th><th>পাওনা</th></tr></thead><tbody id="courier-table"></tbody></table></div></div>
+            <div id="tab-expenses" class="tab-content"><div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>ক্যাটাগরি</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead><tbody id="expenses-table"></tbody></table></div></div>
+            <div id="tab-cash" class="tab-content"><div class="section-header"><h2>নগদ ও মূলধন</h2><button class="btn" onclick="openModal('cash-modal')">+ এন্ট্রি যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>টাইপ</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead><tbody id="cash-table"></tbody></table></div></div>
+            <div id="tab-dues" class="tab-content"><div class="section-header"><h2>পাওনা ও দেনা</h2><button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা</button></div><div class="table-container"><table><thead><tr><th>নাম</th><th>ধরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th></tr></thead><tbody id="dues-table"></tbody></table></div></div>
 
-            <!-- Expenses Tab -->
-            <div id="tab-expenses" class="tab-content"><div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>ক্যাটাগরি</th><th>বিবরণ</th><th>পরিমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="expenses-table"></tbody></table></div></div>
+            <!-- Reports Tab with Custom PDF Download Options -->
+            <div id="tab-reports" class="tab-content">
+                <div class="section-header">
+                    <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2>
+                    <div class="filter-controls" style="display:flex; gap:8px;">
+                        <select id="report-time-filter" class="time-select">
+                            <option value="all">সকল সময়</option>
+                            <option value="today">আজ</option>
+                            <option value="week">এই সপ্তাহ</option>
+                            <option value="month" selected>এই মাস</option>
+                            <option value="year">এই বছর</option>
+                        </select>
+                    </div>
+                </div>
 
-            <!-- Cash Tab -->
-            <div id="tab-cash" class="tab-content"><div class="section-header"><h2>নগদ ও মূলধন</h2><button class="btn" onclick="openModal('cash-modal')">+ এন্ট্রি যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>টাইপ</th><th>বিবরণ</th><th>পরিমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="cash-table"></tbody></table></div></div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+                    <button class="btn" style="flex:1; padding: 14px; font-size:15px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার টোটাল হিসাব (PDF)</button>
+                    <button class="btn-outline" style="flex:1; padding: 14px; font-size:15px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
+                </div>
 
-            <!-- Dues Tab -->
-            <div id="tab-dues" class="tab-content"><div class="section-header"><h2>পাওনা ও দেনা</h2><button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা</button></div><div class="table-container"><table><thead><tr><th>নাম ও ফোন</th><th>ধরণ</th><th>বিবরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th></tr></thead><tbody id="dues-table"></tbody></table></div></div>
+                <!-- Printable Hidden Area for PDF Generation -->
+                <div id="pdf-report-container" style="background: white; padding: 25px; border-radius: var(--radius); border: 1px solid var(--border-color); display:none;">
+                    <h2 style="color: #be185d; text-align: center; margin-bottom: 5px;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                    <p id="pdf-report-subtitle" style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px;"></p>
+                    <div id="pdf-report-content"></div>
+                </div>
 
-            <!-- Reports Tab -->
-            <div id="tab-reports" class="tab-content"><div class="section-header"><h2>লাভ-লোকসান রিপোর্ট</h2><button class="btn" onclick="window.print()">প্রিন্ট</button></div><div style="background: white; padding: 20px; border-radius: var(--radius);"><h3>সার্বিক আর্থিক বিবরণী</h3><p style="color: var(--text-muted); font-size: 13px;">সকল হিসাব স্বয়ংক্রিয়ভাবে প্রস্তুত হচ্ছে।</p></div></div>
+                <div style="background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="color: #831843; margin-bottom: 10px;">সার্বিক আর্থিক সারসংক্ষেপ</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">উপরের বাটনগুলোতে ক্লিক করে আপনার পছন্দমতো ফিন্যান্সিয়াল বা ইনভেন্টরি পিডিএফ সরাসরি ডাউনলোড করে নিতে পারবেন।</p>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -439,59 +359,97 @@
         <div class="modal-content" style="max-width:550px;">
             <h3>🔐 এডমিন সিকিউরিটি প্যানেল</h3>
             <div id="admin-login-view">
-                <div class="form-group"><label>এডমিন পাসওয়ার্ড দিন</label><input type="password" id="admin-pass-input" placeholder="ডিফল্ট পিন: 1234"></div>
+                <div class="form-group"><label>এডমিন পাসওয়ার্ড দিন</label><input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন"></div>
                 <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button><button class="btn-modal-save" onclick="verifyAdminPass()">আনলক করুন</button></div>
             </div>
             <div id="admin-dashboard-view" style="display:none;">
-                <h4 style="color:#be185d; margin-bottom:12px;">👤 ইউজার তালিকা ও পাসওয়ার্ড হেল্প:</h4>
-                <div class="table-container" style="max-height: 200px; overflow-y: auto;">
+                <h4 style="color:#be185d; margin-bottom:12px;">👤 নিবন্ধিত ইউজার ও পাসওয়ার্ড তালিকা:</h4>
+                <div class="table-container" style="max-height: 150px; overflow-y: auto; margin-bottom:15px;">
                     <table><thead><tr><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead><tbody id="user-list-table"></tbody></table>
                 </div>
-                <hr style="margin:15px 0; border:0; border-top:1px solid #fce7f3;">
-                <h4 style="color:#be185d; margin-bottom:8px;">📸 ডেভেলপার/এডমিন ছবি পরিবর্তন:</h4>
+
+                <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
+                <h4 style="color:#be185d; margin-bottom:8px;">🔑 এডমিন পাসওয়ার্ড পরিবর্তন করুন:</h4>
+                <div class="form-group"><input type="password" id="new-admin-pass" placeholder="নতুন এডমিন পাসওয়ার্ড দিন"></div>
+                <button class="btn" style="width:100%; margin-bottom:15px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
+
+                <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
+                <h4 style="color:#be185d; margin-bottom:8px;">📸 ডেভেলপার/এডমিন ছবি পরিবর্তন করুন:</h4>
                 <div class="form-group"><input type="file" id="admin-dev-img-file" accept="image/*" onchange="changeDeveloperAvatar(event)"></div>
+                
                 <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">বন্ধ করুন</button></div>
             </div>
         </div>
     </div>
 
+    <!-- Banner Settings Modal (User Password Customization & Slogan) -->
+    <div id="banner-modal" class="modal">
+        <div class="modal-content">
+            <h3>⚙️ অ্যাকাউন্ট ও ব্যানার সেটিংস</h3>
+            <form onsubmit="saveBannerSettings(event)">
+                <div class="form-group">
+                    <label>ব্যবসার স্লোগান</label>
+                    <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
+                </div>
+                <hr style="margin:15px 0; border:0; border-top:1px solid #fce7f3;">
+                <h4 style="color:#be185d; margin-bottom:10px; font-size:15px;">🔑 নিজস্ব পাসওয়ার্ড পরিবর্তন করুন:</h4>
+                <div class="form-group">
+                    <label>নতুন পাসওয়ার্ড দিন</label>
+                    <input type="password" id="user-new-pass" placeholder="নতুন সিক্রেট পাসওয়ার্ড">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ পরিবর্তন সেভ করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modals -->
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="banner-modal" class="modal"><div class="modal-content"><h3>⚙️ ব্যানার ও সেটিং</h3><form onsubmit="saveBannerSettings(event)"><div class="form-group"><label>ব্যবসার স্লোগান</label><input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন"></div><div class="form-group"><label>ব্যানার ব্যাকগ্রাউন্ড ছবি</label><input type="file" id="input-bg-file" accept="image/*" onchange="previewBannerImage(event)"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><select id="exp-cat"><option value="Facebook Boosting">Facebook Boosting</option><option value="যাতায়াত">যাতায়াত</option><option value="অন্যান্য">অন্যান্য</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার</h3><form onsubmit="saveOrder(event)"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="পণ্য"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-123"></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ</h3><form onsubmit="saveCash(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option>মূলধন যোগ</option><option>ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required placeholder="5000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc" placeholder="বিবরণ"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
+        // PWA Install Prompt Logic
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('pwa-install-banner').style.display = 'flex';
+        });
+
+        document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                let { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    document.getElementById('pwa-install-banner').style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-                iconEl.innerText = "🙈";
-            } else {
-                input.type = "password";
-                iconEl.innerText = "👁️";
-            }
+            if (input.type === "password") { input.type = "text"; iconEl.innerText = "🙈"; }
+            else { input.type = "password"; iconEl.innerText = "👁️"; }
         }
 
-        let selectedAuthProfileImg = null;
-        let selectedBannerImageData = null, selectedProductImageData = null, selectedRawImageData = null;
-        let allOrders = [], allExpenses = [], allRaw = [];
-        let expenseCategories = ['Facebook Boosting', 'যাতায়াত', 'অন্যান্য'];
+        let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null;
+        let allOrders = [], allExpenses = [], allRaw = [], allProducts = [], allProduction = [], allCourier = [], allCash = [], allDues = [];
 
         window.onload = function() {
             let slogan = localStorage.getItem('banner_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
-            let bgImg = localStorage.getItem('banner_bg_img') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
             let devImg = localStorage.getItem('app_dev_avatar');
 
             if (devImg) document.getElementById('header-dev-img').src = devImg;
             document.getElementById('banner-slogan').innerText = slogan;
-            document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgImg}') center/cover`;
             document.getElementById('input-slogan').value = slogan;
 
             checkAuthSession();
@@ -500,24 +458,15 @@
 
         function checkAuthSession() {
             let loggedUser = localStorage.getItem('current_logged_user');
-            if (loggedUser) {
-                document.getElementById('auth-screen').style.display = 'none';
-            } else {
-                document.getElementById('auth-screen').style.display = 'flex';
-            }
+            if (loggedUser) { document.getElementById('auth-screen').style.display = 'none'; }
+            else { document.getElementById('auth-screen').style.display = 'flex'; }
         }
 
         function toggleAuthMode(mode) {
-            if (mode === 'login') {
-                document.getElementById('register-card').style.display = 'none';
-                document.getElementById('login-card').style.display = 'block';
-            } else {
-                document.getElementById('register-card').style.display = 'block';
-                document.getElementById('login-card').style.display = 'none';
-            }
+            if (mode === 'login') { document.getElementById('register-card').style.display = 'none'; document.getElementById('login-card').style.display = 'block'; }
+            else { document.getElementById('register-card').style.display = 'block'; document.getElementById('login-card').style.display = 'none'; }
         }
 
-        /* Image Compression Logic to Prevent Database Crashes */
         function previewAuthProfileImage(e) {
             let file = e.target.files[0];
             if (file) {
@@ -528,8 +477,7 @@
                     img.onload = function() {
                         let canvas = document.createElement('canvas');
                         let ctx = canvas.getContext('2d');
-                        canvas.width = 150;
-                        canvas.height = 150;
+                        canvas.width = 150; canvas.height = 150;
                         ctx.drawImage(img, 0, 0, 150, 150);
                         selectedAuthProfileImg = canvas.toDataURL('image/jpeg', 0.7);
                         document.getElementById('reg-img-preview').innerHTML = `<img src="${selectedAuthProfileImg}">`;
@@ -541,27 +489,18 @@
 
         function handleRegister(e) {
             e.preventDefault();
-
             let name = document.getElementById('reg-name').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-pass').value.trim();
-
             let defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>";
 
-            let newUser = {
-                name: name,
-                phone: phone,
-                pass: pass,
-                img: selectedAuthProfileImg || defaultAvatar
-            };
-
+            let newUser = { name, phone, pass, img: selectedAuthProfileImg || defaultAvatar };
             let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
             usersList.push(newUser);
             localStorage.setItem('registered_app_users', JSON.stringify(usersList));
-
             localStorage.setItem('current_logged_user', JSON.stringify(newUser));
 
-            alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!");
+            alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!");
             document.getElementById('auth-screen').style.display = 'none';
         }
 
@@ -569,7 +508,6 @@
             e.preventDefault();
             let phone = document.getElementById('login-phone').value.trim();
             let pass = document.getElementById('login-pass').value.trim();
-
             let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
             let found = usersList.find(u => u.phone === phone && u.pass === pass);
 
@@ -591,12 +529,25 @@
 
         function verifyAdminPass() {
             let val = document.getElementById('admin-pass-input').value;
-            if (val === '1234') {
+            let currentAdminPass = localStorage.getItem('app_admin_secret_pass') || '1234';
+
+            if (val === currentAdminPass) {
                 document.getElementById('admin-login-view').style.display = 'none';
                 document.getElementById('admin-dashboard-view').style.display = 'block';
                 loadUsersForAdmin();
             } else {
-                alert("ভুল পাসওয়ার্ড!");
+                alert("ভুল এডমিন পাসওয়ার্ড!");
+            }
+        }
+
+        function updateAdminPassword() {
+            let newPass = document.getElementById('new-admin-pass').value.trim();
+            if(newPass.length >= 3) {
+                localStorage.setItem('app_admin_secret_pass', newPass);
+                alert("এডমিন পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!");
+                document.getElementById('new-admin-pass').value = '';
+            } else {
+                alert("কমপক্ষে ৩ অক্ষরের পাসওয়ার্ড দিন।");
             }
         }
 
@@ -614,10 +565,19 @@
             if (file) {
                 let reader = new FileReader();
                 reader.onload = function(evt) {
-                    let devImg = evt.target.result;
-                    localStorage.setItem('app_dev_avatar', devImg);
-                    document.getElementById('header-dev-img').src = devImg;
-                    alert("ছবি আপডেট হয়েছে!");
+                    let img = new Image();
+                    img.src = evt.target.result;
+                    img.onload = function() {
+                        let canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        canvas.width = 150; canvas.height = 150;
+                        ctx.drawImage(img, 0, 0, 150, 150);
+                        let devImg = canvas.toDataURL('image/jpeg', 0.8);
+                        
+                        localStorage.setItem('app_dev_avatar', devImg);
+                        document.getElementById('header-dev-img').src = devImg;
+                        alert("ডেভেলপার ছবি সফলভাবে আপডেট হয়েছে!");
+                    }
                 }
                 reader.readAsDataURL(file);
             }
@@ -642,6 +602,7 @@
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
+        /* Save functions */
         function saveRawMaterial(e) {
             e.preventDefault();
             let data = {
@@ -654,15 +615,12 @@
             };
             allRaw.push(data);
             localStorage.setItem('app_raw_materials', JSON.stringify(allRaw));
-            selectedRawImageData = null;
-            closeModal('raw-modal');
-            loadAllData();
+            selectedRawImageData = null; closeModal('raw-modal'); loadAllData();
         }
 
         function saveProduct(e) {
             e.preventDefault();
-            let prods = JSON.parse(localStorage.getItem('app_products') || '[]');
-            prods.push({
+            allProducts.push({
                 img: selectedProductImageData || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>',
                 name: document.getElementById('prod-name').value,
                 sku: document.getElementById('prod-sku').value,
@@ -670,25 +628,13 @@
                 price: parseFloat(document.getElementById('prod-price').value),
                 stock: parseInt(document.getElementById('prod-stock').value)
             });
-            localStorage.setItem('app_products', JSON.stringify(prods));
-            selectedProductImageData = null;
-            closeModal('product-modal');
-            loadAllData();
-        }
-
-        function resetOrderForm() {
-            document.getElementById('ord-edit-id').value = '';
-            document.getElementById('ord-id').value = '';
-            document.getElementById('ord-customer').value = '';
-            document.getElementById('ord-phone').value = '';
-            document.getElementById('ord-address').value = '';
-            document.getElementById('ord-amount').value = '';
-            document.getElementById('ord-status').value = 'Pending';
+            localStorage.setItem('app_products', JSON.stringify(allProducts));
+            selectedProductImageData = null; closeModal('product-modal'); loadAllData();
         }
 
         function saveOrder(e) {
             e.preventDefault();
-            let data = {
+            allOrders.push({
                 orderId: document.getElementById('ord-id').value,
                 customer: document.getElementById('ord-customer').value,
                 phone: document.getElementById('ord-phone').value,
@@ -696,15 +642,36 @@
                 amount: parseFloat(document.getElementById('ord-amount').value),
                 status: document.getElementById('ord-status').value,
                 date: new Date().toISOString().split('T')[0]
-            };
-            allOrders.push(data);
+            });
             localStorage.setItem('app_orders', JSON.stringify(allOrders));
-            closeModal('order-modal');
-            loadAllData();
+            closeModal('order-modal'); loadAllData();
         }
 
-        function saveProduction(e) { e.preventDefault(); closeModal('prod-modal'); }
-        function saveCourier(e) { e.preventDefault(); closeModal('courier-modal'); }
+        function saveProduction(e) {
+            e.preventDefault();
+            allProduction.push({
+                date: document.getElementById('p-date').value,
+                item: document.getElementById('p-item').value,
+                qty: parseInt(document.getElementById('p-qty').value),
+                cost: parseFloat(document.getElementById('p-cost').value)
+            });
+            localStorage.setItem('app_production', JSON.stringify(allProduction));
+            closeModal('prod-modal'); loadAllData();
+        }
+
+        function saveCourier(e) {
+            e.preventDefault();
+            allCourier.push({
+                parcelId: document.getElementById('courier-parcel').value,
+                orderNo: document.getElementById('courier-ord').value,
+                cod: parseFloat(document.getElementById('courier-cod').value),
+                charge: parseFloat(document.getElementById('courier-charge').value),
+                status: document.getElementById('courier-status').value
+            });
+            localStorage.setItem('app_courier', JSON.stringify(allCourier));
+            closeModal('courier-modal'); loadAllData();
+        }
+
         function saveExpense(e) {
             e.preventDefault();
             allExpenses.push({
@@ -714,49 +681,216 @@
                 desc: document.getElementById('exp-desc').value
             });
             localStorage.setItem('app_expenses', JSON.stringify(allExpenses));
-            closeModal('expense-modal');
-            loadAllData();
+            closeModal('expense-modal'); loadAllData();
         }
-        function saveCash(e) { e.preventDefault(); closeModal('cash-modal'); }
-        function saveDue(e) { e.preventDefault(); closeModal('due-modal'); }
-        function saveBannerSettings(e) { e.preventDefault(); localStorage.setItem('banner_slogan', document.getElementById('input-slogan').value); closeModal('banner-modal'); }
+
+        function saveCash(e) {
+            e.preventDefault();
+            allCash.push({
+                date: document.getElementById('cash-date').value,
+                type: document.getElementById('cash-type').value,
+                amount: parseFloat(document.getElementById('cash-amt').value),
+                desc: document.getElementById('cash-desc').value
+            });
+            localStorage.setItem('app_cash', JSON.stringify(allCash));
+            closeModal('cash-modal'); loadAllData();
+        }
+
+        function saveDue(e) {
+            e.preventDefault();
+            allDues.push({
+                name: document.getElementById('due-name').value,
+                type: document.getElementById('due-type').value,
+                amount: parseFloat(document.getElementById('due-amt').value),
+                status: document.getElementById('due-status').value
+            });
+            localStorage.setItem('app_dues', JSON.stringify(allDues));
+            closeModal('due-modal'); loadAllData();
+        }
+
+        function saveBannerSettings(e) {
+            e.preventDefault();
+            let newSlogan = document.getElementById('input-slogan').value.trim();
+            let newPass = document.getElementById('user-new-pass').value.trim();
+
+            localStorage.setItem('banner_slogan', newSlogan);
+            document.getElementById('banner-slogan').innerText = newSlogan;
+
+            if (newPass.length > 0) {
+                let loggedUser = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
+                if (loggedUser && loggedUser.phone) {
+                    loggedUser.pass = newPass;
+                    localStorage.setItem('current_logged_user', JSON.stringify(loggedUser));
+
+                    let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
+                    usersList = usersList.map(u => u.phone === loggedUser.phone ? loggedUser : u);
+                    localStorage.setItem('registered_app_users', JSON.stringify(usersList));
+                    alert("✅ আপনার স্লোগান ও নতুন পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!");
+                }
+            } else {
+                alert("✅ স্লোগান সফলভাবে আপডেট হয়েছে!");
+            }
+            closeModal('banner-modal');
+        }
 
         function previewRawImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedRawImageData = evt.target.result; document.getElementById('raw-img-preview').innerHTML = `<img src="${selectedRawImageData}">`; }; r.readAsDataURL(f); } }
         function previewProductImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedProductImageData = evt.target.result; document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`; }; r.readAsDataURL(f); } }
-        function previewBannerImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedBannerImageData = evt.target.result; }; r.readAsDataURL(f); } }
 
+        /* Comprehensive Dashboard Calculation */
         function filterDashboardData() {
-            let totalSales = 0, totalExp = 0;
-            allOrders.forEach(i => { if(i.status === 'Delivered') totalSales += i.amount; });
-            allExpenses.forEach(i => totalExp += i.amount);
-            allRaw.forEach(i => totalExp += i.cost);
+            let filterType = document.getElementById('time-filter').value;
+            let now = new Date();
+            let startDate = new Date(0), endDate = new Date(2099, 11, 31);
+
+            if(filterType === 'today') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            } else if(filterType === 'week') {
+                let firstDay = now.getDate() - now.getDay();
+                startDate = new Date(now.setDate(firstDay)); endDate = new Date();
+            } else if(filterType === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+            } else if(filterType === 'year') {
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+            }
+
+            let totalSales = 0, totalExp = 0, cashInHand = 0, courierDue = 0, totalStockCount = 0;
+
+            allOrders.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate && i.status === 'Delivered') totalSales += i.amount;
+            });
+
+            allRaw.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) totalExp += i.cost;
+            });
+
+            allExpenses.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) totalExp += i.amount;
+            });
+
+            allProduction.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) totalExp += i.cost;
+            });
+
+            allCash.forEach(i => {
+                if(i.type === 'মূলধন যোগ') cashInHand += i.amount;
+                else cashInHand -= i.amount;
+            });
+
+            allCourier.forEach(i => {
+                if(i.status !== 'Paid') courierDue += (i.cod - i.charge);
+            });
+
+            allProducts.forEach(i => { totalStockCount += i.stock; });
+
             document.getElementById('dash-total-sales').innerText = `৳ ${totalSales}`;
             document.getElementById('dash-total-expense').innerText = `৳ ${totalExp}`;
             document.getElementById('dash-total-profit').innerText = `৳ ${totalSales - totalExp}`;
+            document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashInHand}`;
+            document.getElementById('dash-courier-due').innerText = `৳ ${courierDue}`;
+            document.getElementById('dash-total-stock').innerText = `${totalStockCount} পিস`;
+        }
+
+        /* PDF Generation Functions */
+        function downloadFinancialPDF() {
+            let filter = document.getElementById('report-time-filter').value;
+            let subtitle = `প্রতিবেদনের সময়সীমা: ${filter.toUpperCase()} | প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}`;
+            document.getElementById('pdf-report-subtitle').innerText = subtitle;
+
+            let totalSales = 0, totalExp = 0;
+            allOrders.forEach(o => { if(o.status === 'Delivered') totalSales += o.amount; });
+            allRaw.forEach(r => totalExp += r.cost);
+            allExpenses.forEach(e => totalExp += e.amount);
+            allProduction.forEach(p => totalExp += p.cost);
+
+            let htmlContent = `
+                <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:8px;">বিবরণ</th><th style="border:1px solid #fbcfe8; padding:8px;">টাকা (TK)</th></tr>
+                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">মোট সফল বিক্রি (Delivered Orders)</td><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
+                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">কাঁচামাল কেনা খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allRaw.reduce((sum,i)=>sum+i.cost,0)}</td></tr>
+                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">উৎপাদন খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allProduction.reduce((sum,i)=>sum+i.cost,0)}</td></tr>
+                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">অন্যান্য খরচ (Boosting & Others)</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allExpenses.reduce((sum,i)=>sum+i.amount,0)}</td></tr>
+                    <tr style="background:#fff1f2;"><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold;">সর্বমোট খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold; color:#dc2626;">৳ ${totalExp}</td></tr>
+                    <tr style="background:#ecfdf5;"><td style="border:1px solid #fbcfe8; padding:10px; font-weight:bold; font-size:15px;">নেট লাভ</td><td style="border:1px solid #fbcfe8; padding:10px; font-weight:bold; font-size:15px; color:#059669;">৳ ${totalSales - totalExp}</td></tr>
+                </table>
+            `;
+            document.getElementById('pdf-report-content').innerHTML = htmlContent;
+            
+            let element = document.getElementById('pdf-report-container');
+            element.style.display = 'block';
+            html2pdf().from(element).save('Financial_Summary_Report.pdf').then(() => { element.style.display = 'none'; });
+        }
+
+        function downloadInventoryPDF() {
+            let subtitle = `ইনভেন্টরি ও মাল-সামানা রিপোর্ট | প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}`;
+            document.getElementById('pdf-report-subtitle').innerText = subtitle;
+
+            let htmlContent = `
+                <h4 style="color:#831843; margin-bottom:6px;">📦 পণ্য স্টক তালিকা:</h4>
+                <table style="width:100%; border-collapse:collapse; margin-bottom:15px;">
+                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:6px;">SKU</th><th style="border:1px solid #fbcfe8; padding:6px;">নাম</th><th style="border:1px solid #fbcfe8; padding:6px;">স্টক</th><th style="border:1px solid #fbcfe8; padding:6px;">মূল্য</th></tr>
+                    ${allProducts.map(p => `<tr><td style="border:1px solid #fbcfe8; padding:6px;">${p.sku}</td><td style="border:1px solid #fbcfe8; padding:6px;">${p.name}</td><td style="border:1px solid #fbcfe8; padding:6px;">${p.stock} পিস</td><td style="border:1px solid #fbcfe8; padding:6px;">৳ ${p.price}</td></tr>`).join('')}
+                </table>
+
+                <h4 style="color:#831843; margin-bottom:6px;">🪵 কাঁচামাল তালিকা:</h4>
+                <table style="width:100%; border-collapse:collapse;">
+                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:6px;">তারিখ</th><th style="border:1px solid #fbcfe8; padding:6px;">নাম</th><th style="border:1px solid #fbcfe8; padding:6px;">পরিমাণ</th><th style="border:1px solid #fbcfe8; padding:6px;">খরচ</th></tr>
+                    ${allRaw.map(r => `<tr><td style="border:1px solid #fbcfe8; padding:6px;">${r.date}</td><td style="border:1px solid #fbcfe8; padding:6px;">${r.name}</td><td style="border:1px solid #fbcfe8; padding:6px;">${r.qty}</td><td style="border:1px solid #fbcfe8; padding:6px;">৳ ${r.cost}</td></tr>`).join('')}
+                </table>
+            `;
+            document.getElementById('pdf-report-content').innerHTML = htmlContent;
+
+            let element = document.getElementById('pdf-report-container');
+            element.style.display = 'block';
+            html2pdf().from(element).save('Inventory_Stock_Report.pdf').then(() => { element.style.display = 'none'; });
         }
 
         function loadAllData() {
             allRaw = JSON.parse(localStorage.getItem('app_raw_materials') || '[]');
-            let rawH = '';
-            allRaw.forEach(i => rawH += `<tr><td><img src="${i.img}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td>-</td></tr>`);
-            document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="7">কোনো তথ্য নেই</td></tr>';
+            let rawH = ''; allRaw.forEach(i => rawH += `<tr><td><img src="${i.img}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td></tr>`);
+            document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>';
+
+            allProducts = JSON.parse(localStorage.getItem('app_products') || '[]');
+            let prodH = ''; allProducts.forEach(i => prodH += `<tr><td><img src="${i.img}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td></tr>`);
+            document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="6">কোনো পণ্য নেই</td></tr>';
 
             allOrders = JSON.parse(localStorage.getItem('app_orders') || '[]');
             let ordH = '', p = 0, d = 0, r = 0;
             allOrders.forEach(i => {
                 if(i.status === 'Pending') p++; if(i.status === 'Delivered') d++; if(i.status === 'Returned') r++;
-                ordH += `<tr><td>${i.date}</td><td>${i.orderId}</td><td>${i.customer}</td><td>${i.phone}</td><td>${i.address}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td>-</td></tr>`;
+                ordH += `<tr><td>${i.date}</td><td>${i.orderId}</td><td>${i.customer}</td><td>${i.phone}</td><td>${i.address}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`;
             });
             document.getElementById('sum-total').innerText = `${allOrders.length} টি`;
             document.getElementById('sum-pending').innerText = `${p} টি`;
             document.getElementById('sum-delivered').innerText = `${d} টি`;
             document.getElementById('sum-returned').innerText = `${r} টি`;
-            document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="8">কোনো অর্ডার নেই</td></tr>';
+            document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="7">কোনো অর্ডার নেই</td></tr>';
+
+            allProduction = JSON.parse(localStorage.getItem('app_production') || '[]');
+            let prodnTbl = ''; allProduction.forEach(i => prodnTbl += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td></tr>`);
+            document.getElementById('production-table').innerHTML = prodnTbl || '<tr><td colspan="4">কোনো উৎপাদন নেই</td></tr>';
+
+            allCourier = JSON.parse(localStorage.getItem('app_courier') || '[]');
+            let courTbl = ''; allCourier.forEach(i => courTbl += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`);
+            document.getElementById('courier-table').innerHTML = courTbl || '<tr><td colspan="6">কোনো কুরিয়ার নেই</td></tr>';
 
             allExpenses = JSON.parse(localStorage.getItem('app_expenses') || '[]');
-            let expH = '';
-            allExpenses.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td>-</td></tr>`);
-            document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>';
+            let expH = ''; allExpenses.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td></tr>`);
+            document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="4">কোনো খরচ নেই</td></tr>';
+
+            allCash = JSON.parse(localStorage.getItem('app_cash') || '[]');
+            let cashH = ''; allCash.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td></tr>`);
+            document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="4">কোনো লেনদেন নেই</td></tr>';
+
+            allDues = JSON.parse(localStorage.getItem('app_dues') || '[]');
+            let dueH = ''; allDues.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`);
+            document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="4">কোনো পাওনা নেই</td></tr>';
 
             filterDashboardData();
         }
