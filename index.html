@@ -11,13 +11,13 @@
             --accent-green: #059669;
             --accent-red: #dc2626;
             --accent-orange: #d97706;
-            --bg-gradient: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
-            --card-bg: #ffffff;
+            --bg-gradient: linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #f3e8ff 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --border-color: #fbcfe8;
-            --radius: 16px;
-            --shadow: 0 8px 20px -4px rgba(236, 72, 153, 0.12);
+            --radius: 18px;
+            --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.15), 0 8px 10px -6px rgba(236, 72, 153, 0.1);
         }
 
         * {
@@ -47,15 +47,15 @@
             color: white;
         }
         .lock-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(15px);
             padding: 35px;
             border-radius: var(--radius);
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             text-align: center;
             width: 90%;
             max-width: 380px;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.25);
         }
         .lock-card h2 { margin-bottom: 10px; color: #f472b6; font-size: 24px; }
         .lock-card p { font-size: 13px; color: #fbcfe8; margin-bottom: 20px; }
@@ -63,7 +63,7 @@
             width: 100%;
             padding: 14px;
             margin-bottom: 15px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #f472b6;
             background: rgba(0,0,0,0.3);
             color: white;
@@ -77,22 +77,22 @@
             background: linear-gradient(135deg, #ec4899, #db2777);
             color: white;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
 
-        /* Clean Header without top buttons */
+        /* Clean Header */
         header {
             background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
-            padding: 14px 20px;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3);
             position: sticky;
             top: 0;
             z-index: 100;
@@ -102,10 +102,10 @@
         /* Banner Section */
         .flower-banner {
             position: relative;
-            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), 
+            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), 
                         url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover;
             color: white;
-            padding: 25px 20px;
+            padding: 22px 18px;
             border-radius: 0 0 var(--radius) var(--radius);
             margin-bottom: 15px;
             box-shadow: var(--shadow);
@@ -113,8 +113,8 @@
             justify-content: space-between;
             align-items: center;
         }
-        .banner-text h2 { font-size: 22px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .banner-text p { font-size: 13px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
+        .banner-text h2 { font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .banner-text p { font-size: 12px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
         .banner-settings-btn {
             background: rgba(255, 255, 255, 0.25);
             border: 1px solid rgba(255,255,255,0.4);
@@ -146,7 +146,7 @@
         .nav-links li {
             padding: 12px 14px;
             margin-bottom: 6px;
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             font-weight: 500;
             color: var(--text-muted);
@@ -170,50 +170,103 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Grid Layout Dashboard Cards */
+        /* Filter Section (Section Header) */
+        .dashboard-filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 18px;
+            background: white;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(236,72,153,0.06);
+            border: 1px solid #fbcfe8;
+        }
+        .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
+        
+        .filter-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .time-select {
+            padding: 8px 12px;
+            border: 1px solid #f472b6;
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #831843;
+            background: #fff5f8;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Unique & Attractive Dashboard Box Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
+            gap: 14px;
             margin-bottom: 20px;
         }
         @media (min-width: 768px) {
-            .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+            .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
         }
 
         .card {
             background: var(--card-bg);
-            padding: 16px;
-            border-radius: var(--radius);
+            padding: 18px 16px;
+            border-radius: 20px;
             box-shadow: var(--shadow);
-            border: 1px solid #fce7f3;
+            border: 1px solid rgba(251, 207, 232, 0.7);
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             position: relative;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(8px);
         }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
+            background: linear-gradient(90deg, #ec4899, #be185d);
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px -5px rgba(236, 72, 153, 0.25);
+        }
+
+        .card.green::before { background: linear-gradient(90deg, #34d399, #059669); }
+        .card.red::before { background: linear-gradient(90deg, #f87171, #dc2626); }
+        .card.orange::before { background: linear-gradient(90deg, #fbbf24, #d97706); }
+
         .card-header-box {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         .card-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 20px;
             background: #fdf2f8;
+            box-shadow: inset 0 0 8px rgba(236,72,153,0.1);
         }
-        .card h3 { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-        .card .value { font-size: 18px; font-weight: 800; color: var(--text-main); margin-top: 4px; }
+        .card h3 { font-size: 13px; color: #4b5563; font-weight: 600; }
+        .card .value { font-size: 20px; font-weight: 800; color: #111827; margin-top: 2px; }
 
-        .card.green .card-icon { background: #d1fae5; color: #059669; }
-        .card.red .card-icon { background: #fee2e2; color: #dc2626; }
-        .card.orange .card-icon { background: #fef3c7; color: #d97706; }
+        .card.green .card-icon { background: #e6f4ea; color: #059669; }
+        .card.red .card-icon { background: #fce8e6; color: #dc2626; }
+        .card.orange .card-icon { background: #feefc3; color: #d97706; }
 
         /* Tables & Forms */
         .section-header {
@@ -225,6 +278,7 @@
             padding: 12px 16px;
             border-radius: var(--radius);
             box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+            border: 1px solid var(--border-color);
         }
         .section-header h2 { font-size: 16px; color: #831843; }
         
@@ -252,19 +306,19 @@
         /* Modals */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(131, 24, 67, 0.4); backdrop-filter: blur(4px);
+            background: rgba(131, 24, 67, 0.4); backdrop-filter: blur(5px);
             display: flex; justify-content: center; align-items: center; z-index: 1000; display: none;
         }
         .modal-content {
             background: white; padding: 25px; border-radius: var(--radius);
             width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
         }
         .modal-content h3 { color: #831843; margin-bottom: 15px; font-size: 18px; }
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; color: #4b5563; }
         .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid #f472b6; border-radius: 8px; font-size: 13px; outline: none;
+            width: 100%; padding: 10px; border: 1px solid #f472b6; border-radius: 10px; font-size: 13px; outline: none;
         }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
@@ -298,7 +352,7 @@
         </div>
     </div>
 
-    <!-- Clean Header (Buttons Removed) -->
+    <!-- Clean Header -->
     <header>
         <h1>🌸 My Business Hisab</h1>
     </header>
@@ -332,12 +386,27 @@
 
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
-                <div class="section-header">
+                <!-- Customized Filter Header -->
+                <div class="dashboard-filter-header">
                     <h2>ব্যবসার ড্যাশবোর্ড</h2>
-                    <span id="current-date" style="font-size: 12px; color: var(--primary-rose); font-weight: 600;"></span>
+                    <div class="filter-controls">
+                        <select id="time-filter" class="time-select" onchange="filterDashboardData()">
+                            <option value="all">সব সময় (টোটাল)</option>
+                            <option value="today">আজ</option>
+                            <option value="week">এই সপ্তাহ</option>
+                            <option value="month" selected>এই মাস</option>
+                            <option value="year">এই বছর</option>
+                            <option value="custom">কাস্টম তারিখ</option>
+                        </select>
+                        <div id="custom-date-range" style="display: none; align-items: center; gap: 4px;">
+                            <input type="date" id="filter-start-date" style="padding:4px; font-size:11px;" onchange="filterDashboardData()">
+                            <span>-</span>
+                            <input type="date" id="filter-end-date" style="padding:4px; font-size:11px;" onchange="filterDashboardData()">
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Box/Grid Format Dashboard -->
+                <!-- Unique & Attractive Box Grid Format Dashboard -->
                 <div class="dashboard-grid">
                     <div class="card green">
                         <div class="card-header-box">
@@ -550,7 +619,7 @@
         </div>
     </nav>
 
-    <!-- Banner Customize Modal (Direct Image Upload) -->
+    <!-- Banner Customize Modal -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
             <h3>⚙️ ব্যানার কাস্টমাইজ করুন</h3>
@@ -591,7 +660,8 @@
     <script>
         let db;
         let selectedBannerImageData = null;
-        const dbName = "MyBusinessHisabDB_FlowerClean";
+        let allOrders = [], allExpenses = [], allRaw = [];
+        const dbName = "MyBusinessHisabDB_FlowerCustomFilter";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -608,15 +678,12 @@
             if(!savedPin) {
                 document.getElementById('lock-title').innerText = "🌸 নতুন পিন সেট করুন";
             }
-            document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD', {year: 'numeric', month: 'long', day: 'numeric'});
 
-            // Load Saved Banner Settings
             let slogan = localStorage.getItem('banner_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
             let bgImg = localStorage.getItem('banner_bg_img') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
             
             document.getElementById('banner-slogan').innerText = slogan;
             document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgImg}') center/cover`;
-            
             document.getElementById('input-slogan').value = slogan;
         }
 
@@ -624,9 +691,7 @@
             let file = event.target.files[0];
             if (file) {
                 let reader = new FileReader();
-                reader.onload = function(e) {
-                    selectedBannerImageData = e.target.result;
-                }
+                reader.onload = function(e) { selectedBannerImageData = e.target.result; }
                 reader.readAsDataURL(file);
             }
         }
@@ -634,17 +699,12 @@
         function saveBannerSettings(e) {
             e.preventDefault();
             let newSlogan = document.getElementById('input-slogan').value;
-
             localStorage.setItem('banner_slogan', newSlogan);
-            if (selectedBannerImageData) {
-                localStorage.setItem('banner_bg_img', selectedBannerImageData);
-            }
+            if (selectedBannerImageData) localStorage.setItem('banner_bg_img', selectedBannerImageData);
 
             let bgImg = localStorage.getItem('banner_bg_img') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
-
             document.getElementById('banner-slogan').innerText = newSlogan;
             document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgImg}') center/cover`;
-
             closeModal('banner-modal');
         }
 
@@ -783,8 +843,69 @@
             }, () => closeModal('due-modal'));
         }
 
+        // Custom Date Filtering Logic
+        function filterDashboardData() {
+            let filterType = document.getElementById('time-filter').value;
+            let customRange = document.getElementById('custom-date-range');
+            
+            if(filterType === 'custom') customRange.style.display = 'flex';
+            else customRange.style.display = 'none';
+
+            let now = new Date();
+            let startDate = new Date(0);
+            let endDate = new Date(2099, 11, 31);
+
+            if(filterType === 'today') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            } else if(filterType === 'week') {
+                let firstDay = now.getDate() - now.getDay();
+                startDate = new Date(now.setDate(firstDay));
+                endDate = new Date();
+            } else if(filterType === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+            } else if(filterType === 'year') {
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+            } else if(filterType === 'custom') {
+                let s = document.getElementById('filter-start-date').value;
+                let e = document.getElementById('filter-end-date').value;
+                if(s) startDate = new Date(s);
+                if(e) endDate = new Date(e + 'T23:59:59');
+            }
+
+            let totalSales = 0, totalExp = 0;
+
+            allOrders.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate && i.status === 'Delivered') {
+                    totalSales += i.amount;
+                }
+            });
+
+            allExpenses.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) {
+                    totalExp += i.amount;
+                }
+            });
+
+            allRaw.forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) {
+                    totalExp += i.cost;
+                }
+            });
+
+            document.getElementById('dash-total-sales').innerText = `৳ ${totalSales}`;
+            document.getElementById('dash-total-expense').innerText = `৳ ${totalExp}`;
+            document.getElementById('dash-total-profit').innerText = `৳ ${totalSales - totalExp}`;
+        }
+
         function loadAllData() {
             getAllRecords('rawMaterials', (data) => {
+                allRaw = data;
                 let h = '';
                 data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.category}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
                 document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="7" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
@@ -807,13 +928,13 @@
             });
 
             getAllRecords('orders', (orders) => {
-                let h = '', totalSales = 0;
+                allOrders = orders;
+                let h = '';
                 orders.forEach(i => {
-                    if(i.status === 'Delivered') totalSales += i.amount;
                     h += `<tr><td>${i.orderId}</td><td>${i.customer}</td><td>${i.date}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('orders', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('orders-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-total-sales').innerText = `৳ ${totalSales}`;
+                filterDashboardData();
             });
 
             getAllRecords('courier', (couriers) => {
@@ -827,13 +948,13 @@
             });
 
             getAllRecords('expenses', (expenses) => {
-                let h = '', tExp = 0;
+                allExpenses = expenses;
+                let h = '';
                 expenses.forEach(i => {
-                    tExp += i.amount;
                     h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-total-expense').innerText = `৳ ${tExp}`;
+                filterDashboardData();
             });
 
             getAllRecords('cash', (cashList) => {
