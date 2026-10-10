@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
-    <!-- Firebase SDK (Compat Version for Easy Integration) -->
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
     
@@ -16,7 +16,7 @@
             --accent-red: #dc2626;
             --accent-orange: #d97706;
             --bg-gradient: linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #f3e8ff 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --border-color: #fbcfe8;
@@ -39,7 +39,7 @@
             flex-direction: column;
         }
 
-        /* Auth Screen */
+        /* Auth Screen Styling Fix */
         #auth-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,39 +53,81 @@
             padding: 20px;
         }
         .auth-card {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(18px);
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(20px);
             padding: 30px;
-            border-radius: var(--radius);
+            border-radius: 24px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             text-align: center;
             width: 100%;
             max-width: 400px;
-            border: 1px solid rgba(255,255,255,0.25);
+            border: 1px solid rgba(255,255,255,0.3);
         }
         .auth-card h2 { margin-bottom: 8px; color: #f472b6; font-size: 22px; }
         .auth-card p { font-size: 13px; color: #fbcfe8; margin-bottom: 18px; }
-        .auth-card .form-group { text-align: left; margin-bottom: 12px; }
-        .auth-card label { color: #fbcfe8; font-size: 12px; font-weight: 600; margin-bottom: 4px; display: block; }
-        .auth-card input {
+        .auth-card .form-group { text-align: left; margin-bottom: 14px; position: relative; }
+        .auth-card label { color: #fbcfe8; font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block; }
+        
+        /* Fixed Input Field Visibility */
+        .auth-card input[type="text"],
+        .auth-card input[type="password"] {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #f472b6;
-            background: rgba(0,0,0,0.3);
-            color: white;
-            font-size: 14px;
+            padding: 13px 40px 13px 14px;
+            border-radius: 12px;
+            border: 2px solid #f472b6;
+            background: #ffffff !important;
+            color: #111827 !important;
+            font-size: 15px;
+            font-weight: 600;
             outline: none;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
         }
-        .auth-card button {
+
+        .auth-card input::placeholder {
+            color: #9ca3af !important;
+            font-weight: normal;
+        }
+
+        /* Password Show/Hide Toggle Button */
+        .password-toggle-icon {
+            position: absolute;
+            right: 12px;
+            top: 36px;
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
+            color: #831843;
+        }
+
+        /* Beautiful Profile Image Frame */
+        .auth-img-frame {
+            width: 90px;
+            height: 90px;
+            margin: 10px auto 0;
+            border-radius: 50%;
+            border: 3.5px solid #ec4899;
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.5), inset 0 0 8px rgba(0,0,0,0.2);
+            overflow: hidden;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .auth-img-frame img {
             width: 100%;
-            padding: 13px;
-            margin-top: 10px;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .auth-card button.btn-submit {
+            width: 100%;
+            padding: 14px;
+            margin-top: 15px;
             background: linear-gradient(135deg, #ec4899, #db2777);
             color: white;
             border: none;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 16px;
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
@@ -95,9 +137,9 @@
             border: none !important;
             box-shadow: none !important;
             color: #f472b6 !important;
-            font-size: 12px !important;
+            font-size: 13px !important;
             text-decoration: underline;
-            margin-top: 12px !important;
+            margin-top: 14px !important;
             cursor: pointer;
         }
 
@@ -110,28 +152,20 @@
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3);
-            position: sticky;
-            top: 0;
-            z-index: 100;
+            position: sticky; top: 0; z-index: 100;
         }
         header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
-        
         .header-profile-group { display: flex; align-items: center; gap: 10px; }
         .admin-lock-btn {
             background: rgba(255, 255, 255, 0.2);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            color: #fbcfe8;
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 14px;
+            color: #fbcfe8; width: 34px; height: 34px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 15px;
         }
         .developer-avatar {
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            border: 2px solid #f472b6;
-            object-fit: cover;
-            background-color: #fff;
+            width: 40px; height: 40px; border-radius: 50%;
+            border: 2px solid #f472b6; object-fit: cover; background-color: #fff;
         }
 
         /* Banner Section */
@@ -139,40 +173,25 @@
             position: relative;
             background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), 
                         url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover;
-            color: white;
-            padding: 22px 18px;
-            border-radius: 0 0 var(--radius) var(--radius);
-            margin-bottom: 15px;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            color: white; padding: 22px 18px; border-radius: 0 0 var(--radius) var(--radius);
+            margin-bottom: 15px; box-shadow: var(--shadow);
+            display: flex; justify-content: space-between; align-items: center;
         }
         .banner-text h2 { font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .banner-text p { font-size: 12px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
         .banner-settings-btn {
             background: rgba(255, 255, 255, 0.25);
             border: 1px solid rgba(255,255,255,0.4);
-            color: white; width: 38px; height: 38px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 18px;
+            color: white; width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px;
         }
 
         .app-container { display: flex; flex: 1; overflow: hidden; }
 
         /* Sidebar */
-        sidebar {
-            width: 250px; background: white;
-            border-right: 1px solid var(--border-color);
-            display: flex; flex-direction: column; overflow-y: auto;
-        }
+        sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; }
         .nav-links { list-style: none; padding: 15px 10px; }
-        .nav-links li {
-            padding: 12px 14px; margin-bottom: 6px;
-            border-radius: 12px; cursor: pointer; font-weight: 500;
-            color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 14px;
-        }
+        .nav-links li { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 14px; }
         .nav-links li:hover, .nav-links li.active { background: #fdf2f8; color: var(--primary-rose); font-weight: 700; }
 
         /* Main Area */
@@ -180,24 +199,14 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        .dashboard-filter-header {
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white;
-            padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8;
-        }
+        .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
 
-        .dashboard-grid {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px;
-        }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
         @media (min-width: 768px) { .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
-        .card {
-            background: var(--card-bg); padding: 18px 16px; border-radius: 20px;
-            box-shadow: var(--shadow); border: 1px solid rgba(251, 207, 232, 0.7);
-            display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;
-        }
+        .card { background: var(--card-bg); padding: 18px 16px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(251, 207, 232, 0.7); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #ec4899, #be185d); }
         .card.green::before { background: linear-gradient(90deg, #34d399, #059669); }
         .card.red::before { background: linear-gradient(90deg, #f87171, #dc2626); }
@@ -214,11 +223,7 @@
         .summary-mini-card span { font-size: 12px; color: var(--text-muted); font-weight: 600; }
         .summary-mini-card h4 { font-size: 18px; font-weight: 800; color: #831843; margin-top: 4px; }
 
-        .section-header {
-            display: flex; justify-content: space-between; align-items: center;
-            flex-wrap: wrap; gap: 10px; margin-bottom: 15px; background: white;
-            padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-color);
-        }
+        .section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-color); }
         .section-header h2 { font-size: 16px; color: #831843; }
         .action-btn-group { display: flex; gap: 8px; }
 
@@ -239,7 +244,7 @@
         .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
         .form-group { margin-bottom: 14px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #831843; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13.5px; outline: none; background: #fffdfd; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13.5px; outline: none; background: #fffdfd; color: #111827; }
         .input-tk-wrapper { position: relative; display: flex; align-items: center; }
         .input-tk-wrapper input { padding-right: 42px; }
         .input-tk-wrapper .tk-suffix { position: absolute; right: 14px; font-weight: 800; color: #be185d; font-size: 13px; pointer-events: none; }
@@ -264,21 +269,33 @@
 </head>
 <body>
 
-    <!-- Auth Screen -->
+    <!-- Auth Screen with Password Toggle & Beautiful Photo Frame -->
     <div id="auth-screen">
         <div class="auth-card" id="register-card">
             <h2>🌸 রেজিস্ট্রেশন করুন</h2>
             <p>হিসাব অ্যাপে ঢুকতে আপনার তথ্য দিন</p>
             <form onsubmit="handleRegister(event)">
-                <div class="form-group"><label>আপনার নাম *</label><input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম"></div>
-                <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000"></div>
+                <div class="form-group">
+                    <label>আপনার নাম *</label>
+                    <input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম">
+                </div>
+                <div class="form-group">
+                    <label>মোবাইল নাম্বার *</label>
+                    <input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000">
+                </div>
                 <div class="form-group">
                     <label>আপনার ছবি আপলোড করুন *</label>
-                    <input type="file" id="reg-img-file" accept="image/*" required onchange="previewAuthProfileImage(event)">
-                    <div class="img-preview-box" id="reg-img-preview" style="height:70px; margin-top:5px;"><span style="font-size:11px; color:#fbcfe8;">ছবি নির্বাচন করুন</span></div>
+                    <input type="file" id="reg-img-file" accept="image/*" required onchange="previewAuthProfileImage(event)" style="background:#fff; padding:8px;">
+                    <div class="auth-img-frame" id="reg-img-preview">
+                        <span style="font-size:11px; color:#9ca3af;">ছবি দিন</span>
+                    </div>
                 </div>
-                <div class="form-group"><label>সিক্রেট পাসওয়ার্ড *</label><input type="password" id="reg-pass" required placeholder="••••••••"></div>
-                <button type="submit">একাউন্ট তৈরি করুন</button>
+                <div class="form-group">
+                    <label>সিক্রেট পাসওয়ার্ড *</label>
+                    <input type="password" id="reg-pass" required placeholder="••••••••">
+                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
+                </div>
+                <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('login')">ইতিমধ্যে একাউন্ট আছে? লগইন করুন</button>
         </div>
@@ -287,9 +304,16 @@
             <h2>🌸 অ্যাপ লগইন</h2>
             <p>আপনার মোবাইল নাম্বার ও পাসওয়ার্ড দিন</p>
             <form onsubmit="handleLogin(event)">
-                <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="login-phone" required placeholder="01800000000"></div>
-                <div class="form-group"><label>পাসওয়ার্ড *</label><input type="password" id="login-pass" required placeholder="••••••••"></div>
-                <button type="submit">লগইন করুন</button>
+                <div class="form-group">
+                    <label>মোবাইল নাম্বার *</label>
+                    <input type="text" id="login-phone" required placeholder="01800000000">
+                </div>
+                <div class="form-group">
+                    <label>পাসওয়ার্ড *</label>
+                    <input type="password" id="login-pass" required placeholder="••••••••">
+                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('login-pass', this)">👁️</span>
+                </div>
+                <button type="submit" class="btn-submit">লগইন করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('register')">নতুন একাউন্ট তৈরি করুন</button>
         </div>
@@ -447,23 +471,16 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // --- Firebase Configuration (আপনার ফায়ারবেস প্রজেক্টের ইনফো এখানে বসাতে হবে) ---
-        const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_PROJECT_ID.appspot.com",
-            messagingSenderId: "SENDER_ID",
-            appId: "APP_ID"
-        };
-        
-        // ফায়ারবেস ইনিশিয়ালাইজ (যদি কনফিগার করা না থাকে তবে লোকাল ডাটাবেজে ফলব্যাক করবে)
-        try {
-            firebase.initializeApp(firebaseConfig);
-            var dbRef = firebase.database();
-        } catch(e) {
-            console.log("Firebase not configured yet, running local mode.");
+        // Password Visibility Toggle Function
+        function togglePasswordVisibility(inputId, iconEl) {
+            const input = document.getElementById(inputId);
+            if (input.type === "password") {
+                input.type = "text";
+                iconEl.innerText = "🙈";
+            } else {
+                input.type = "password";
+                iconEl.innerText = "👁️";
+            }
         }
 
         let db;
@@ -471,7 +488,7 @@
         let allOrders = [], allExpenses = [], allRaw = [];
         let expenseCategories = ['Facebook Boosting', 'যাতায়াত', 'অন্যান্য'];
 
-        const dbName = "MyBusinessHisabDB_CloudReadyV11";
+        const dbName = "MyBusinessHisabDB_CloudReadyV12";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -531,7 +548,7 @@
             let phone = document.getElementById('reg-phone').value;
             let pass = document.getElementById('reg-pass').value;
 
-            if (!selectedAuthProfileImg) { alert("অনুগ্রহ করে ছবি দিন!"); return; }
+            if (!selectedAuthProfileImg) { alert("অনুগ্রহ করে একটি ছবি দিন!"); return; }
 
             let user = { name, phone, pass, img: selectedAuthProfileImg };
             addRecord('users', user, () => {
@@ -552,7 +569,7 @@
                     localStorage.setItem('current_logged_user', JSON.stringify(found));
                     document.getElementById('auth-screen').style.display = 'none';
                 } else {
-                    alert("ভুল নম্বর বা পাসওয়ার্ড!");
+                    alert("ভুল মোবাইল নম্বর বা পাসওয়ার্ড!");
                 }
             });
         }
@@ -751,7 +768,7 @@
             });
             getAllRecords('production', (data) => { let h = ''; data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ</td><td>৳ ${i.cost}</td><td><button class="btn-danger" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`); document.getElementById('production-table').innerHTML = h || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>'; });
             getAllRecords('courier', (couriers) => { let h = '', cDue = 0; couriers.forEach(i => { if(i.status !== 'Paid') cDue += (i.cod - i.charge); h += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`; }); document.getElementById('courier-table').innerHTML = h || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>'; document.getElementById('dash-courier-due').innerText = `৳ ${cDue}`; });
-            getAllRecords('expenses', (expenses) => { allExpenses = expenses; let h = ''; expenses.forEach(i => h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`); document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>'; filterDashboardData(); });
+            getAllRecords('expenses', (expenses) => { allExpenses = expenses; let h = ''; expenses.forEach(i => h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></div>`); document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>'; filterDashboardData(); });
             getAllRecords('cash', (cashList) => { let h = '', cashIn = 0; cashList.forEach(i => { if(i.type === 'মূলধন যোগ') cashIn += i.amount; else cashIn -= i.amount; h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn-danger" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`; }); document.getElementById('cash-table').innerHTML = h || '<tr><td colspan="5">কোনো লেনদেন নেই</td></tr>'; document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashIn}`; });
             getAllRecords('dues', (dues) => { let h = ''; dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>-</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`); document.getElementById('dues-table').innerHTML = h || '<tr><td colspan="5">কোনো পাওনা নেই</td></tr>'; });
         }
