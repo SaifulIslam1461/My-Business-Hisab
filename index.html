@@ -2,7 +2,7 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
     
     <!-- PWA Manifest & App Icon Meta Tags -->
@@ -29,7 +29,18 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-gradient); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+        
+        /* Smooth Scrolling Enhancement */
+        html, body {
+            height: 100%;
+            overflow-x: hidden;
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        body { display: flex; flex-direction: column; }
 
         /* Auth Screen */
         #auth-screen {
@@ -76,9 +87,10 @@
         }
         .developer-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
-        /* Banner */
+        /* Dynamic Custom Background Banner */
         .flower-banner {
-            position: relative; background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover;
+            position: relative; 
+            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
             color: white; padding: 22px 18px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
         }
         .banner-text h2 { font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
@@ -91,7 +103,15 @@
         .nav-links li { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 14px; }
         .nav-links li:hover, .nav-links li.active { background: #fdf2f8; color: var(--primary-rose); font-weight: 700; }
 
-        main { flex: 1; padding: 15px; overflow-y: auto; max-height: calc(100vh - 60px); }
+        /* Main Scrolling Container Fix */
+        main { 
+            flex: 1; 
+            padding: 15px; 
+            overflow-y: auto; 
+            -webkit-overflow-scrolling: touch; 
+            overscroll-behavior-y: contain;
+        }
+        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
@@ -149,13 +169,15 @@
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
 
-        /* PWA Install Banner Notice */
+        /* Enhanced PWA Install Banner Notice */
         #pwa-install-banner {
-            position: fixed; bottom: 65px; left: 15px; right: 15px; background: #831843; color: white; padding: 12px 16px;
-            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 999; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
+            position: fixed; bottom: 68px; left: 12px; right: 12px; background: #831843; color: white; padding: 12px 16px;
+            border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); z-index: 999; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
         }
-        #pwa-install-banner p { font-size: 13px; color: #fbcfe8; }
-        #pwa-install-banner button { background: #ec4899; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        #pwa-install-banner p { font-size: 11.5px; color: #fbcfe8; margin-top: 2px; }
+        .pwa-action-btns { display: flex; align-items: center; gap: 8px; }
+        #pwa-install-btn { background: #ec4899; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
+        .pwa-close-btn { background: transparent; border: none; color: #fbcfe8; font-size: 18px; cursor: pointer; padding: 0 4px; }
 
         /* Mobile Nav */
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
@@ -166,7 +188,7 @@
         @media (max-width: 768px) {
             sidebar { display: none; }
             .mobile-bottom-nav { display: flex; }
-            main { padding-bottom: 75px; }
+            main { padding-bottom: 85px; }
         }
     </style>
 </head>
@@ -181,7 +203,10 @@
                 <p>এক ক্লিকেই মোবাইলে অ্যাপের মতো ব্যবহার করুন</p>
             </div>
         </div>
-        <button id="pwa-install-btn">ইনস্টল</button>
+        <div class="pwa-action-btns">
+            <button id="pwa-install-btn" onclick="executeAppInstall()">ইনস্টল</button>
+            <button class="pwa-close-btn" onclick="dismissPwaBanner()">✕</button>
+        </div>
     </div>
 
     <!-- Auth Screen -->
@@ -378,25 +403,36 @@
         </div>
     </div>
 
-    <!-- Banner Settings Modal (Customization & Password) -->
+    <!-- Banner Settings Modal (Custom Banner Image & Password Customization) -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
-            <h3>⚙️ ব্যানার, অ্যাকাউন্ট ও খরচ খাত সেটিংস</h3>
+            <h3>⚙️ ব্যানার ও অ্যাকাউন্ট সেটিংস</h3>
             <form onsubmit="saveBannerSettings(event)">
                 <div class="form-group">
-                    <label>ব্যবসার স্লোগান (ব্যানার কাস্টমাইজ)</label>
+                    <label>🖼️ ব্যক্তিগত ব্যানার ছবি পরিবর্তন করুন</label>
+                    <input type="file" id="custom-banner-file" accept="image/*" onchange="previewCustomBanner(event)" style="padding: 8px; background: #fff;">
+                    <div class="img-preview-box" id="banner-preview-box" style="margin-top: 8px;">
+                        <span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>ব্যবসার স্লোগান (ব্যানার টেক্সট)</label>
                     <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
                 </div>
+
                 <div class="form-group">
                     <label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে আলাদা করুন)</label>
                     <input type="text" id="input-expense-categories" placeholder="যেমন: Facebook Boosting, যাতায়াত, বিদ্যুৎ বিল">
                 </div>
+
                 <hr style="margin:15px 0; border:0; border-top:1px solid #fce7f3;">
                 <h4 style="color:#be185d; margin-bottom:10px; font-size:15px;">🔑 নিজস্ব পাসওয়ার্ড পরিবর্তন করুন:</h4>
                 <div class="form-group">
                     <label>নতুন পাসওয়ার্ড দিন</label>
                     <input type="password" id="user-new-pass" placeholder="নতুন সিক্রেট পাসওয়ার্ড">
                 </div>
+
                 <div class="modal-actions">
                     <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
                     <button type="submit" class="btn-modal-save">✓ পরিবর্তন সেভ করুন</button>
@@ -416,24 +452,44 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // PWA Install Prompt Logic
-        let deferredPrompt;
+        // Smart PWA Install Prompt & Dismissal State Management
+        let deferredPrompt = null;
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            document.getElementById('pwa-install-banner').style.display = 'flex';
+            checkAndShowPwaBanner();
         });
 
-        document.getElementById('pwa-install-btn').addEventListener('click', async () => {
+        function checkAndShowPwaBanner() {
+            let isDismissed = localStorage.getItem('pwa_banner_dismissed');
+            let isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+            if (!isDismissed && !isStandalone) {
+                document.getElementById('pwa-install-banner').style.display = 'flex';
+            } else {
+                document.getElementById('pwa-install-banner').style.display = 'none';
+            }
+        }
+
+        async function executeAppInstall() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    document.getElementById('pwa-install-banner').style.display = 'none';
+                    dismissPwaBanner();
                 }
                 deferredPrompt = null;
+            } else {
+                alert("📲 অ্যাপটি ইনস্টল করতে আপনার ব্রাউজারের ওপরের ডানপাশের ৩-ডটে (⋮) চাপ দিয়ে 'Add to Home screen' বা 'Install app' অপশনটি বেছে নিন।");
+                dismissPwaBanner();
             }
-        });
+        }
+
+        function dismissPwaBanner() {
+            localStorage.setItem('pwa_banner_dismissed', 'true');
+            document.getElementById('pwa-install-banner').style.display = 'none';
+        }
 
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
@@ -441,20 +497,39 @@
             else { input.type = "password"; iconEl.innerText = "👁️"; }
         }
 
-        let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null;
+        let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null, selectedCustomBannerImg = null;
         let allOrders = [], allExpenses = [], allRaw = [], allProducts = [], allProduction = [], allCourier = [], allCash = [], allDues = [];
 
         window.onload = function() {
             let slogan = localStorage.getItem('banner_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
             let devImg = localStorage.getItem('app_dev_avatar');
+            let customBanner = localStorage.getItem('app_custom_banner');
 
             if (devImg) document.getElementById('header-dev-img').src = devImg;
+            if (customBanner) {
+                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${customBanner}')`;
+                document.getElementById('banner-preview-box').innerHTML = `<img src="${customBanner}">`;
+            }
+            
             document.getElementById('banner-slogan').innerText = slogan;
             document.getElementById('input-slogan').value = slogan;
             
             loadExpenseCategories();
             checkAuthSession();
             loadAllData();
+            checkAndShowPwaBanner();
+        }
+
+        function previewCustomBanner(e) {
+            let file = e.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(evt) {
+                    selectedCustomBannerImg = evt.target.result;
+                    document.getElementById('banner-preview-box').innerHTML = `<img src="${selectedCustomBannerImg}">`;
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         function loadExpenseCategories() {
@@ -728,6 +803,11 @@
             localStorage.setItem('banner_slogan', newSlogan);
             document.getElementById('banner-slogan').innerText = newSlogan;
 
+            if (selectedCustomBannerImg) {
+                localStorage.setItem('app_custom_banner', selectedCustomBannerImg);
+                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${selectedCustomBannerImg}')`;
+            }
+
             if (newCats.length > 0) {
                 localStorage.setItem('app_expense_categories', JSON.stringify(newCats));
                 loadExpenseCategories();
@@ -744,7 +824,7 @@
                     localStorage.setItem('registered_app_users', JSON.stringify(usersList));
                 }
             }
-            alert("✅ সেটিংস সফলভাবে আপডেট হয়েছে!");
+            alert("✅ ব্যানার ও সেটিংস সফলভাবে আপডেট হয়েছে!");
             closeModal('banner-modal');
         }
 
