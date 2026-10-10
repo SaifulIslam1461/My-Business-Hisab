@@ -268,7 +268,7 @@
         .card.red .card-icon { background: #fce8e6; color: #dc2626; }
         .card.orange .card-icon { background: #feefc3; color: #d97706; }
 
-        /* Order Summary Grid */
+        /* Order Summary Grid (৪টি অপশনের সামারি) */
         .order-summary-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -793,7 +793,7 @@
         let db;
         let selectedBannerImageData = null;
         let allOrders = [], allExpenses = [], allRaw = [];
-        const dbName = "MyBusinessHisabDB_FlowerEditV5";
+        const dbName = "MyBusinessHisabDB_FlowerEditV6";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
