@@ -170,7 +170,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Filter Section (Section Header) */
+        /* Filter Header */
         .dashboard-filter-header {
             display: flex;
             justify-content: space-between;
@@ -203,7 +203,7 @@
             cursor: pointer;
         }
 
-        /* Unique & Attractive Dashboard Box Cards */
+        /* Dashboard Grid Cards */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -306,21 +306,80 @@
         /* Modals */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(131, 24, 67, 0.4); backdrop-filter: blur(5px);
+            background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px);
             display: flex; justify-content: center; align-items: center; z-index: 1000; display: none;
         }
         .modal-content {
-            background: white; padding: 25px; border-radius: var(--radius);
-            width: 90%; max-width: 500px; max-height: 85vh; overflow-y: auto;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+            background: white; padding: 25px; border-radius: 22px;
+            width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(131, 24, 67, 0.3);
+            border: 1px solid var(--border-color);
         }
-        .modal-content h3 { color: #831843; margin-bottom: 15px; font-size: 18px; }
-        .form-group { margin-bottom: 14px; }
-        .form-group label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 12px; color: #4b5563; }
+        .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #831843; }
         .form-group input, .form-group select {
-            width: 100%; padding: 10px; border: 1px solid #f472b6; border-radius: 10px; font-size: 13px; outline: none;
+            width: 100%; padding: 12px 14px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13.5px; outline: none; background: #fffdfd;
+            transition: all 0.2s;
         }
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .form-group input:focus { border-color: #db2777; box-shadow: 0 0 0 3px rgba(236,72,153,0.15); }
+
+        /* Input field with TK suffix */
+        .input-tk-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .input-tk-wrapper input {
+            padding-right: 42px;
+        }
+        .input-tk-wrapper .tk-suffix {
+            position: absolute;
+            right: 14px;
+            font-weight: 800;
+            color: #be185d;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        /* Attractive Modal Action Buttons */
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 22px;
+            padding-top: 12px;
+            border-top: 1px solid #fce7f3;
+        }
+        .btn-modal-cancel {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            border: none;
+            padding: 11px 22px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .btn-modal-cancel:hover { transform: translateY(-1px); opacity: 0.95; }
+
+        .btn-modal-save {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white;
+            border: none;
+            padding: 11px 26px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
+            transition: all 0.2s;
+            display: flex; align-items: center; gap: 6px;
+        }
+        .btn-modal-save:hover { transform: translateY(-1px); opacity: 0.95; }
 
         /* Mobile Nav */
         .mobile-bottom-nav {
@@ -336,7 +395,6 @@
             sidebar { display: none; }
             .mobile-bottom-nav { display: flex; }
             main { padding-bottom: 75px; }
-            .form-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -386,7 +444,6 @@
 
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
-                <!-- Customized Filter Header -->
                 <div class="dashboard-filter-header">
                     <h2>ব্যবসার ড্যাশবোর্ড</h2>
                     <div class="filter-controls">
@@ -406,7 +463,7 @@
                     </div>
                 </div>
 
-                <!-- Unique & Attractive Box Grid Format Dashboard -->
+                <!-- Dashboard Box Grid -->
                 <div class="dashboard-grid">
                     <div class="card green">
                         <div class="card-header-box">
@@ -462,7 +519,7 @@
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>তারিখ</th><th>নাম</th><th>ক্যাটাগরি</th><th>পরিমাণ</th><th>খরচ</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr>
+                            <tr><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ (TK)</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr>
                         </thead>
                         <tbody id="raw-materials-table"></tbody>
                     </table>
@@ -478,7 +535,7 @@
                 <div class="table-container">
                     <table>
                         <thead>
-                            <tr><th>তারিখ</th><th>তৈরি পণ্য</th><th>পরিমাণ</th><th>উপকরণ</th><th>খরচ</th><th>অ্যাকশন</th></tr>
+                            <tr><th>তারিখ</th><th>তৈরি পণ্য</th><th>পরিমাণ</th><th>উপকরণ</th><th>খরচ (TK)</th><th>অ্যাকশন</th></tr>
                         </thead>
                         <tbody id="production-table"></tbody>
                     </table>
@@ -619,6 +676,42 @@
         </div>
     </nav>
 
+    <!-- Modal 1: Raw Material Form (Category Removed, Custom Placeholders, TK Added & Beautiful Buttons) -->
+    <div id="raw-modal" class="modal">
+        <div class="modal-content">
+            <h3>কাঁচামাল কেনা</h3>
+            <form onsubmit="saveRawMaterial(event)">
+                <div class="form-group">
+                    <label>তারিখ</label>
+                    <input type="date" id="raw-date" required>
+                </div>
+                <div class="form-group">
+                    <label>পণ্যের নাম</label>
+                    <input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড, গাম, কার্টুন ইত্যাদি">
+                </div>
+                <div class="form-group">
+                    <label>পরিমাণ</label>
+                    <input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস / ৪০টি">
+                </div>
+                <div class="form-group">
+                    <label>খরচ (TK)</label>
+                    <div class="input-tk-wrapper">
+                        <input type="number" id="raw-cost" required placeholder="যেমন :- 500">
+                        <span class="tk-suffix">TK</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>সাপ্লায়ার</label>
+                    <input type="text" id="raw-supplier" placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ সেভ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Banner Customize Modal -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
@@ -632,36 +725,34 @@
                     <label>গ্যালারি/প্রোফাইল থেকে ফুলের ছবি বেছে নিন</label>
                     <input type="file" id="input-bg-file" accept="image/*" onchange="previewBannerImage(event)">
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
-                    <button type="button" class="btn btn-danger" onclick="closeModal('banner-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সেভ করুন</button>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ সেভ</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Modals -->
-    <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-row"><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required></div></div><div class="form-row"><div class="form-group"><label>ক্যাটাগরি</label><select id="raw-cat"><option>ফুল</option><option>PVC বোর্ড</option><option>আঠা</option></select></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required></div></div><div class="form-row"><div class="form-group"><label>খরচ (৳)</label><input type="number" id="raw-cost" required></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier"></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('raw-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <!-- Other Modals with updated buttons -->
+    <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="যেমন :- ফুলের চিরুনি"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="যেমন :- FC-101"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-row"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required></div></div><div class="form-row"><div class="form-group"><label>খরচ (৳)</label><input type="number" id="prod-cost" required></div><div class="form-group"><label>বিক্রয়মূল্য (৳)</label><input type="number" id="prod-price" required></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('product-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন এন্ট্রি</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="যেমন :- ফুলের চিরুনি টাইপ ১"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন এন্ট্রি</h3><form onsubmit="saveProduction(event)"><div class="form-row"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required></div></div><div class="form-row"><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required></div><div class="form-group"><label>খরচ (৳)</label><input type="number" id="p-cost" required></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('prod-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার ও বিক্রি</h3><form onsubmit="saveOrder(event)"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>ক্রেতা</label><input type="text" id="ord-customer" required placeholder="ক্রেতার নাম ও ফোন"></div><div class="form-group"><label>টাকা (TK)</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option>Delivered</option><option>Pending</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার ও বিক্রি</h3><form onsubmit="saveOrder(event)"><div class="form-row"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required></div><div class="form-group"><label>ক্রেতা</label><input type="text" id="ord-customer" required></div></div><div class="form-row"><div class="form-group"><label>টাকা (৳)</label><input type="number" id="ord-amount" required></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option>Delivered</option><option>Pending</option></select></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('order-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার এন্ট্রি</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-12345"></div><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার এন্ট্রি</h3><form onsubmit="saveCourier(event)"><div class="form-row"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required></div><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="courier-ord" required></div></div><div class="form-row"><div class="form-group"><label>COD (৳)</label><input type="number" id="courier-cod" required></div><div class="form-group"><label>চার্জ (৳)</label><input type="number" id="courier-charge" required></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option></select></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('courier-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><select id="exp-cat"><option>Facebook Boosting</option><option>যাতায়াত</option><option>অন্যান্য</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="exp-desc" placeholder="বিবরণ লিখুন"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-row"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><select id="exp-cat"><option>Facebook Boosting</option><option>যাতায়াত</option><option>অন্যান্য</option></select></div></div><div class="form-row"><div class="form-group"><label>পরিমাণ (৳)</label><input type="number" id="exp-amt" required></div><div class="form-group"><label>বিবরণ</label><input type="text" id="exp-desc"></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('expense-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ লেনদেন</h3><form onsubmit="saveCash(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option>মূলধন যোগ</option><option>ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required placeholder="5000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc" placeholder="বিবরণ"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ লেনদেন</h3><form onsubmit="saveCash(event)"><div class="form-row"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option>মূলধন যোগ</option><option>ব্যক্তিগত উত্তোলন</option></select></div></div><div class="form-row"><div class="form-group"><label>পরিমাণ (৳)</label><input type="number" id="cash-amt" required></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc"></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('cash-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
-
-    <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-row"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div></div><div class="form-row"><div class="form-group"><label>পরিমাণ (৳)</label><input type="number" id="due-amt" required></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option>Unpaid</option><option>Paid</option></select></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('due-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
+    <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="ব্যক্তির নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option>Unpaid</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
         let db;
         let selectedBannerImageData = null;
         let allOrders = [], allExpenses = [], allRaw = [];
-        const dbName = "MyBusinessHisabDB_FlowerCustomFilter";
+        const dbName = "MyBusinessHisabDB_FlowerFinalV2";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -762,7 +853,6 @@
             addRecord('rawMaterials', {
                 date: document.getElementById('raw-date').value,
                 name: document.getElementById('raw-name').value,
-                category: document.getElementById('raw-cat').value,
                 qty: document.getElementById('raw-qty').value,
                 cost: parseFloat(document.getElementById('raw-cost').value),
                 supplier: document.getElementById('raw-supplier').value
@@ -843,7 +933,6 @@
             }, () => closeModal('due-modal'));
         }
 
-        // Custom Date Filtering Logic
         function filterDashboardData() {
             let filterType = document.getElementById('time-filter').value;
             let customRange = document.getElementById('custom-date-range');
@@ -907,15 +996,15 @@
             getAllRecords('rawMaterials', (data) => {
                 allRaw = data;
                 let h = '';
-                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.category}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
-                document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="7" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost} TK</td><td>${i.supplier}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
+                document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
             getAllRecords('products', (data) => {
                 let h = '', totalStk = 0;
                 data.forEach(i => {
                     totalStk += i.stock;
-                    h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost} TK</td><td>৳ ${i.price} TK</td><td>${i.stock} পিস</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('products-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-total-stock').innerText = `${totalStk} পিস`;
@@ -923,7 +1012,7 @@
 
             getAllRecords('production', (data) => {
                 let h = '';
-                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${i.cost}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`);
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${i.cost} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`);
                 document.getElementById('production-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
@@ -931,7 +1020,7 @@
                 allOrders = orders;
                 let h = '';
                 orders.forEach(i => {
-                    h += `<tr><td>${i.orderId}</td><td>${i.customer}</td><td>${i.date}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('orders', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.orderId}</td><td>${i.customer}</td><td>${i.date}</td><td>৳ ${i.amount} TK</td><td>${i.status}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('orders', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('orders-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 filterDashboardData();
@@ -941,7 +1030,7 @@
                 let h = '', cDue = 0;
                 couriers.forEach(i => {
                     if(i.status === 'Pending' || i.status === 'Delivered') cDue += (i.cod - i.charge);
-                    h += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`;
+                    h += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod} TK</td><td>৳ ${i.charge} TK</td><td>${i.status}</td><td>৳ ${i.cod - i.charge} TK</td></tr>`;
                 });
                 document.getElementById('courier-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-courier-due').innerText = `৳ ${cDue}`;
@@ -951,7 +1040,7 @@
                 allExpenses = expenses;
                 let h = '';
                 expenses.forEach(i => {
-                    h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 filterDashboardData();
@@ -962,7 +1051,7 @@
                 cashList.forEach(i => {
                     if(i.type === 'মূলধন যোগ') cashIn += i.amount;
                     else cashIn -= i.amount;
-                    h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('cash-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashIn}`;
@@ -970,7 +1059,7 @@
 
             getAllRecords('dues', (dues) => {
                 let h = '';
-                dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`);
+                dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td>${i.status}</td></tr>`);
                 document.getElementById('dues-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
         }
