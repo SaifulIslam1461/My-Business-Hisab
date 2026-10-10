@@ -43,6 +43,37 @@
 
         body { display: flex; flex-direction: column; }
 
+        /* Floating Direct App Install Button */
+        #direct-app-install-btn {
+            position: fixed;
+            bottom: 75px;
+            right: 15px;
+            background: linear-gradient(135deg, #be185d, #ec4899);
+            color: white;
+            border: 2px solid #ffffff;
+            padding: 10px 16px;
+            border-radius: 30px;
+            box-shadow: 0 8px 20px rgba(190, 24, 93, 0.4);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #direct-app-install-btn:active {
+            transform: scale(0.95);
+        }
+
+        #direct-app-install-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: white;
+        }
+
         /* Auth Screen */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -81,12 +112,16 @@
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3); position: sticky; top: 0; z-index: 100;
         }
         header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
-        .header-profile-group { display: flex; align-items: center; gap: 10px; }
-        .admin-lock-btn {
+        .header-profile-group { display: flex; align-items: center; gap: 8px; }
+        
+        .admin-lock-btn, .logout-btn {
             background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fbcfe8;
             width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
+            transition: background 0.2s ease;
         }
-        .developer-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
+        .logout-btn:hover { background: rgba(220, 38, 38, 0.6); }
+
+        .developer-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
         /* Banner */
         .flower-banner {
@@ -168,16 +203,6 @@
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
 
-        /* PWA Install Banner Notice */
-        #pwa-install-banner {
-            position: fixed; bottom: 68px; left: 12px; right: 12px; background: #831843; color: white; padding: 12px 16px;
-            border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); z-index: 999; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
-        }
-        #pwa-install-banner p { font-size: 11.5px; color: #fbcfe8; margin-top: 2px; }
-        .pwa-action-btns { display: flex; align-items: center; gap: 8px; }
-        #pwa-install-btn { background: #ec4899; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .pwa-close-btn { background: transparent; border: none; color: #fbcfe8; font-size: 18px; cursor: pointer; padding: 0 4px; }
-
         /* Mobile Nav */
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .mobile-nav-item { text-align: center; font-size: 10px; color: var(--text-muted); cursor: pointer; }
@@ -193,20 +218,11 @@
 </head>
 <body>
 
-    <!-- PWA Install Banner Notice -->
-    <div id="pwa-install-banner" style="display:none;">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 26px;">🌸</span>
-            <div>
-                <strong>হোম স্ক্রিনে অ্যাপ ইনস্টল করুন</strong>
-                <p>এক ক্লিকেই ফুল মোবাইল অ্যাপ হিসেবে নামান</p>
-            </div>
-        </div>
-        <div class="pwa-action-btns">
-            <button id="pwa-install-btn" onclick="executeAppInstall()">ইনস্টল</button>
-            <button class="pwa-close-btn" onclick="dismissPwaBanner()">✕</button>
-        </div>
-    </div>
+    <!-- Floating Direct App Install Button (Bottom Right) -->
+    <button id="direct-app-install-btn" onclick="executeAppInstall()">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        <span>ইনস্টল অ্যাপ</span>
+    </button>
 
     <!-- Auth Screen -->
     <div id="auth-screen">
@@ -244,6 +260,7 @@
         <h1 id="app-header-title">🌸 My Business Hisab</h1>
         <div class="header-profile-group">
             <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
+            <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
             <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
         </div>
     </header>
@@ -456,27 +473,38 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
+        // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration Failed', err));
             });
         }
 
+        // Logout function
+        function handleLogout() {
+            if (confirm("আপনি কি অ্যাপ থেকে বের হতে চান? বের হলে পরবর্তীতে পাসওয়ার্ড দিয়ে লগইন করতে হবে।")) {
+                localStorage.removeItem('current_logged_user');
+                document.getElementById('auth-screen').style.display = 'flex';
+                toggleAuthMode('login');
+            }
+        }
+
+        // PWA Direct Install Handler
         let deferredPrompt = null;
+        const installBtn = document.getElementById('direct-app-install-btn');
+
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            checkAndShowPwaBanner();
+            checkAppModeAndToggleBtn();
         });
 
-        function checkAndShowPwaBanner() {
-            let isDismissed = localStorage.getItem('pwa_banner_dismissed');
+        function checkAppModeAndToggleBtn() {
             let isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-
-            if (!isDismissed && !isStandalone) {
-                document.getElementById('pwa-install-banner').style.display = 'flex';
+            if (isStandalone) {
+                if (installBtn) installBtn.style.display = 'none';
             } else {
-                document.getElementById('pwa-install-banner').style.display = 'none';
+                if (installBtn) installBtn.style.display = 'flex';
             }
         }
 
@@ -485,19 +513,18 @@
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
                 if (outcome === 'accepted') {
-                    dismissPwaBanner();
+                    if (installBtn) installBtn.style.display = 'none';
                 }
                 deferredPrompt = null;
             } else {
-                alert("📲 ব্রাউজারের ওপরের ৩-ডটে (⋮) ট্যাপ করে 'Install App' বা 'Add to Home screen' অপশনটি সিলেক্ট করুন।");
-                dismissPwaBanner();
+                alert("📲 সরাসরি ইনস্টল ডায়ালগ পেতে আপনার ক্রোম ব্রাউজারের উপরে ডান কোণায় থাকা ৩-ডটে (⋮) চাপ দিয়ে 'Install app' বা 'Add to Home screen' ক্লিক করুন।");
             }
         }
 
-        function dismissPwaBanner() {
-            localStorage.setItem('pwa_banner_dismissed', 'true');
-            document.getElementById('pwa-install-banner').style.display = 'none';
-        }
+        window.addEventListener('appinstalled', () => {
+            if (installBtn) installBtn.style.display = 'none';
+            deferredPrompt = null;
+        });
 
         function changeAppIcon(e) {
             let file = e.target.files[0];
@@ -533,7 +560,7 @@
             loadExpenseCategories();
             checkAuthSession();
             loadAllData();
-            checkAndShowPwaBanner();
+            checkAppModeAndToggleBtn();
         }
 
         function previewCustomBanner(e) {
