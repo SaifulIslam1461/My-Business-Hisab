@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Business Hisab — অফলাইন ব্যবসার হিসাব অ্যাপ</title>
+    <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
     <style>
         :root {
-            --primary-dark: #0f172a;
-            --primary-teal: #0d9488;
-            --accent-green: #10b981;
-            --accent-red: #ef4444;
-            --accent-orange: #f59e0b;
-            --bg-light: #f8fafc;
+            --primary-rose: #be185d;
+            --primary-pink: #ec4899;
+            --accent-green: #059669;
+            --accent-red: #dc2626;
+            --accent-orange: #d97706;
+            --bg-gradient: linear-gradient(135deg, #fdf2f8 0%, #f3e8ff 100%);
             --card-bg: #ffffff;
-            --text-main: #334155;
-            --text-muted: #64748b;
-            --border-color: #e2e8f0;
-            --radius: 12px;
-            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --text-main: #1f2937;
+            --text-muted: #6b7280;
+            --border-color: #fbcfe8;
+            --radius: 16px;
+            --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.1), 0 8px 10px -6px rgba(236, 72, 153, 0.1);
         }
 
         * {
@@ -28,21 +28,18 @@
         }
 
         body {
-            background-color: var(--bg-light);
+            background: var(--bg-gradient);
             color: var(--text-main);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Lock Screen Styling */
+        /* Lock Screen */
         #lock-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--primary-dark);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #831843, #500724);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -50,63 +47,69 @@
             color: white;
         }
         .lock-card {
-            background: #1e293b;
-            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            padding: 35px;
             border-radius: var(--radius);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
             text-align: center;
             width: 90%;
-            max-width: 400px;
+            max-width: 380px;
+            border: 1px solid rgba(255,255,255,0.2);
         }
-        .lock-card h2 { margin-bottom: 20px; color: var(--accent-green); }
+        .lock-card h2 { margin-bottom: 10px; color: #f472b6; font-size: 24px; }
+        .lock-card p { font-size: 13px; color: #fbcfe8; margin-bottom: 20px; }
         .lock-card input {
             width: 100%;
-            padding: 12px;
+            padding: 14px;
             margin-bottom: 15px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #0f172a;
+            border-radius: 10px;
+            border: 1px solid #f472b6;
+            background: rgba(0,0,0,0.3);
             color: white;
-            font-size: 16px;
+            font-size: 18px;
             text-align: center;
+            outline: none;
         }
         .lock-card button {
             width: 100%;
-            padding: 12px;
-            background: var(--primary-teal);
+            padding: 14px;
+            background: linear-gradient(135deg, #ec4899, #db2777);
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
-        .lock-card button:hover { background: #0f766e; }
 
-        /* Layout & Navigation */
+        /* Header */
         header {
-            background: var(--primary-dark);
+            background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: var(--shadow);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             position: sticky;
             top: 0;
             z-index: 100;
         }
-        header h1 { font-size: 20px; display: flex; align-items: center; gap: 10px; }
+        header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         header .actions button {
-            background: rgba(255,255,255,0.1);
-            border: none;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
             color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
             cursor: pointer;
-            margin-left: 5px;
+            font-size: 12px;
+            margin-left: 4px;
+            transition: all 0.2s;
         }
-        header .actions button:hover { background: rgba(255,255,255,0.2); }
+        header .actions button:hover { background: rgba(255,255,255,0.3); }
 
         .app-container {
             display: flex;
@@ -114,7 +117,7 @@
             overflow: hidden;
         }
 
-        /* Sidebar for Desktop */
+        /* Sidebar Desktop */
         sidebar {
             width: 260px;
             background: white;
@@ -122,15 +125,16 @@
             display: flex;
             flex-direction: column;
             overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.02);
         }
         .nav-links {
             list-style: none;
-            padding: 15px 10px;
+            padding: 15px 12px;
         }
         .nav-links li {
-            padding: 12px 15px;
-            margin-bottom: 5px;
-            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 6px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 500;
             color: var(--text-muted);
@@ -138,13 +142,15 @@
             align-items: center;
             gap: 12px;
             transition: all 0.2s;
+            font-size: 14px;
         }
         .nav-links li:hover, .nav-links li.active {
-            background: #f0fdf4;
-            color: var(--primary-teal);
+            background: #fdf2f8;
+            color: var(--primary-rose);
+            font-weight: 600;
         }
 
-        /* Main Content Area */
+        /* Main Area */
         main {
             flex: 1;
             padding: 20px;
@@ -158,70 +164,86 @@
         /* Dashboard Cards */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
             margin-bottom: 25px;
         }
         .card {
             background: var(--card-bg);
-            padding: 20px;
+            padding: 22px;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            border-left: 5px solid var(--primary-teal);
+            border-left: 6px solid var(--primary-pink);
+            transition: transform 0.2s;
+            position: relative;
+            overflow: hidden;
         }
+        .card:hover { transform: translateY(-3px); }
         .card.green { border-left-color: var(--accent-green); }
         .card.red { border-left-color: var(--accent-red); }
         .card.orange { border-left-color: var(--accent-orange); }
-        .card h3 { font-size: 14px; color: var(--text-muted); margin-bottom: 8px; }
-        .card .value { font-size: 24px; font-weight: bold; color: var(--primary-dark); }
+        .card h3 { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card .value { font-size: 26px; font-weight: 800; color: var(--text-main); }
 
-        /* Tables & Forms */
+        /* Section & Buttons */
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
+            background: white;
+            padding: 15px 20px;
+            border-radius: var(--radius);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
         }
+        .section-header h2 { font-size: 18px; color: #831843; }
+        
         .btn {
-            background: var(--primary-teal);
+            background: linear-gradient(135deg, #ec4899, #db2777);
             color: white;
             border: none;
             padding: 10px 18px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(236,72,153,0.3);
+            transition: opacity 0.2s;
         }
         .btn:hover { opacity: 0.9; }
-        .btn-danger { background: var(--accent-red); }
-        .btn-warning { background: var(--accent-orange); }
+        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 4px 12px rgba(239,68,68,0.3); }
 
+        /* Tables */
         .table-container {
             background: white;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             overflow-x: auto;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
+            border: 1px solid var(--border-color);
         }
         table {
             width: 100%;
             border-collapse: collapse;
             text-align: left;
+            white-space: nowrap;
         }
         th, td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
+            padding: 14px 18px;
+            border-bottom: 1px solid #fce7f3;
             font-size: 14px;
         }
-        th { background: #f8fafc; font-weight: 600; color: var(--text-muted); }
+        th { background: #fff1f2; font-weight: 600; color: #831843; }
 
         /* Modals */
         .modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(131, 24, 67, 0.4);
+            backdrop-filter: blur(5px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -230,29 +252,38 @@
         }
         .modal-content {
             background: white;
-            padding: 25px;
+            padding: 30px;
             border-radius: var(--radius);
-            width: 90%;
-            max-width: 600px;
+            width: 92%;
+            max-width: 550px;
             max-height: 90vh;
             overflow-y: auto;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            border: 1px solid var(--border-color);
         }
+        .modal-content h3 { color: #831843; margin-bottom: 20px; font-size: 20px; }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 16px;
         }
         .form-group label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 500;
-            font-size: 14px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #4b5563;
         }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
+            padding: 12px;
+            border: 1px solid #f472b6;
+            border-radius: 10px;
             font-size: 14px;
+            outline: none;
+            background: #fffdfd;
+        }
+        .form-group input:focus, .form-group select:focus {
+            border-color: #db2777;
+            box-shadow: 0 0 0 3px rgba(236,72,153,0.15);
         }
         .form-row {
             display: grid;
@@ -260,7 +291,7 @@
             gap: 15px;
         }
 
-        /* Mobile Bottom Nav */
+        /* Mobile Bottom Nav - Super Attractive & Flower Theme */
         .mobile-bottom-nav {
             display: none;
             background: white;
@@ -268,34 +299,37 @@
             position: fixed;
             bottom: 0; left: 0; width: 100%;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 8px 0 12px 0;
             z-index: 100;
+            box-shadow: 0 -5px 20px rgba(236,72,153,0.1);
         }
         .mobile-nav-item {
             text-align: center;
             font-size: 11px;
             color: var(--text-muted);
             cursor: pointer;
+            font-weight: 500;
+            transition: color 0.2s;
         }
-        .mobile-nav-item.active { color: var(--primary-teal); }
-        .mobile-nav-item svg { width: 22px; height: 22px; display: block; margin: 0 auto 2px; }
+        .mobile-nav-item.active { color: var(--primary-rose); font-weight: 700; }
+        .mobile-nav-item svg { width: 24px; height: 24px; display: block; margin: 0 auto 3px; stroke-width: 2.2px; }
 
         @media (max-width: 768px) {
             sidebar { display: none; }
             .mobile-bottom-nav { display: flex; }
-            main { padding-bottom: 70px; max-height: calc(100vh - 120px); }
+            main { padding-bottom: 85px; max-height: calc(100vh - 70px); padding: 12px; }
             .form-row { grid-template-columns: 1fr; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .section-header button { width: 100%; justify-content: center; }
         }
         
         .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
         }
         .badge-success { background: #d1fae5; color: #065f46; }
-        .badge-danger { background: #fee2e2; color: #991b1b; }
-        .badge-warning { background: #fef3c7; color: #92400e; }
     </style>
 </head>
 <body>
@@ -303,18 +337,18 @@
     <!-- Lock Screen -->
     <div id="lock-screen">
         <div class="lock-card">
-            <h2 id="lock-title">My Business Hisab</h2>
-            <p id="lock-desc" style="margin-bottom: 15px; font-size: 13px; color: #94a3b8;">আপনার গোপন পিন কোড দিন</p>
-            <input type="password" id="pin-input" placeholder="পাসওয়ার্ড দিন" />
+            <h2 id="lock-title">🌸 ফুলের হিসাব</h2>
+            <p id="lock-desc">আপনার ব্যবসার সিক্রেট পিন দিন</p>
+            <input type="password" id="pin-input" placeholder="••••" />
             <button onclick="verifyPin()">আনলক করুন</button>
         </div>
     </div>
 
     <!-- Header -->
     <header>
-        <h1>📦 My Business Hisab</h1>
+        <h1>🌸 ফুলের চিরুনি হিসাব</h1>
         <div class="actions">
-            <button onclick="lockApp()">লক করুন</button>
+            <button onclick="lockApp()">লক</button>
             <button onclick="exportBackup()">ব্যাকআপ</button>
             <button onclick="document.getElementById('import-file').click()">রিস্টোর</button>
             <input type="file" id="import-file" style="display:none" onchange="importBackup(event)">
@@ -331,11 +365,11 @@
                 <li onclick="switchTab('production', this)">⚙️ উৎপাদন ও স্টক</li>
                 <li onclick="switchTab('products', this)">🛍️ পণ্য ও তালিকা</li>
                 <li onclick="switchTab('orders', this)">🛒 অর্ডার ও বিক্রি</li>
-                <li onclick="switchTab('courier', this)">🚚 Steadfast কুরিয়ার</li>
+                <li onclick="switchTab('courier', this)">🚚 কুরিয়ার (Steadfast)</li>
                 <li onclick="switchTab('expenses', this)">💸 অন্যান্য খরচ</li>
                 <li onclick="switchTab('cash', this)">💰 নগদ ও মূলধন</li>
                 <li onclick="switchTab('dues', this)">📒 পাওনা ও দেনা</li>
-                <li onclick="switchTab('reports', this)">📈 লাভ-লোকসান রিপোর্ট</li>
+                <li onclick="switchTab('reports', this)">📈 লাভ রিপোর্ট</li>
             </ul>
         </sidebar>
 
@@ -345,7 +379,7 @@
             <div id="tab-dashboard" class="tab-content active">
                 <div class="section-header">
                     <h2>ব্যবসার ড্যাশবোর্ড</h2>
-                    <span id="current-date" style="font-size: 13px; color: var(--text-muted);"></span>
+                    <span id="current-date" style="font-size: 13px; color: var(--primary-rose); font-weight: 600;"></span>
                 </div>
                 <div class="dashboard-grid">
                     <div class="card green">
@@ -369,21 +403,12 @@
                         <div class="value" id="dash-courier-due">৳ 0</div>
                     </div>
                 </div>
-                
-                <div style="background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);">
-                    <h3 style="margin-bottom: 10px;">নির্দেশিকা ও নিরাপত্তা সতর্কতা</h3>
-                    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.6;">
-                        ১. এই অ্যাপটি সম্পূর্ণ অফলাইন-ফার্স্ট এবং আপনার ব্রাউজারের IndexedDB-তে ডেটা সংরক্ষণ করে।<br>
-                        ২. অ্যাপের পাসওয়ার্ডটি লোকাল এনক্রিপ্টেড হলেও ব্রাউজার বা ক্যাশ ডাটা ক্লিয়ার করলে ব্যাকআপ ফাইল থেকে রিস্টোর করতে হবে। নিয়মিত ব্যাকআপ ডাউনলোড করে রাখুন।<br>
-                        ৩. কোনো অনলাইন সংযোগ বা সার্ভারের প্রয়োজন নেই।
-                    </p>
-                </div>
             </div>
 
             <!-- Raw Materials Tab -->
             <div id="tab-raw-materials" class="tab-content">
                 <div class="section-header">
-                    <h2>কাঁচামাল কেনা (ফুল, PVC, আঠা ইত্যাদি)</h2>
+                    <h2>কাঁচামাল কেনা (ফুল, PVC, আঠা)</h2>
                     <button class="btn" onclick="openModal('raw-modal')">+ নতুন কাঁচামাল কেনা</button>
                 </div>
                 <div class="table-container">
@@ -408,7 +433,7 @@
             <div id="tab-production" class="tab-content">
                 <div class="section-header">
                     <h2>উৎপাদন ও স্টক ব্যবস্থাপনা</h2>
-                    <button class="btn" onclick="openModal('prod-modal')">+ নতুন উৎপাদন এন্ট্রি</button>
+                    <button class="btn" onclick="openModal('prod-modal')">+ উৎপাদন এন্ট্রি</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -417,7 +442,7 @@
                                 <th>তারিখ</th>
                                 <th>তৈরি পণ্য</th>
                                 <th>পরিমাণ</th>
-                                <th>ব্যবহৃত কাঁচামাল</th>
+                                <th>ব্যবহৃত উপকরণ</th>
                                 <th>উৎপাদন খরচ</th>
                                 <th>অ্যাকশন</th>
                             </tr>
@@ -431,17 +456,17 @@
             <div id="tab-products" class="tab-content">
                 <div class="section-header">
                     <h2>ফুলের চিরুনি ও পণ্য তালিকা</h2>
-                    <button class="btn" onclick="openModal('product-modal')">+ নতুন পণ্য যোগ করুন</button>
+                    <button class="btn" onclick="openModal('product-modal')">+ নতুন পণ্য যোগ</button>
                 </div>
                 <div class="table-container">
                     <table>
                         <thead>
                             <tr>
-                                <th>SKU/কোড</th>
-                                <th>পণ্যের নাম</th>
-                                <th>ক্রয়/উৎপাদন খরচ</th>
+                                <th>SKU</th>
+                                <th>নাম</th>
+                                <th>খরচ</th>
                                 <th>বিক্রয়মূল্য</th>
-                                <th>বর্তমান স্টক</th>
+                                <th>স্টক</th>
                                 <th>অ্যাকশন</th>
                             </tr>
                         </thead>
@@ -454,7 +479,7 @@
             <div id="tab-orders" class="tab-content">
                 <div class="section-header">
                     <h2>অর্ডার ও বিক্রির হিসাব</h2>
-                    <button class="btn" onclick="openModal('order-modal')">+ নতুন অর্ডার তৈরি</button>
+                    <button class="btn" onclick="openModal('order-modal')">+ নতুন অর্ডার</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -476,7 +501,7 @@
             <!-- Courier Tab -->
             <div id="tab-courier" class="tab-content">
                 <div class="section-header">
-                    <h2>Steadfast কুরিয়ার ও COD হিসাব</h2>
+                    <h2>Steadfast কুরিয়ার হিসাব</h2>
                     <button class="btn" onclick="openModal('courier-modal')">+ কুরিয়ার এন্ট্রি</button>
                 </div>
                 <div class="table-container">
@@ -485,10 +510,10 @@
                             <tr>
                                 <th>পার্সেল আইডি</th>
                                 <th>অর্ডার</th>
-                                <th>COD পরিমাণ</th>
-                                <th>কুরিয়ার চার্জ</th>
+                                <th>COD</th>
+                                <th>চার্জ</th>
                                 <th>স্ট্যাটাস</th>
-                                <th>পাওনা/পরিশোধ</th>
+                                <th>প্রাপ্য</th>
                             </tr>
                         </thead>
                         <tbody id="courier-table"></tbody>
@@ -499,8 +524,8 @@
             <!-- Expenses Tab -->
             <div id="tab-expenses" class="tab-content">
                 <div class="section-header">
-                    <h2>অন্যান্য খরচ (বিজ্ঞাপন, যাতায়াত ইত্যাদি)</h2>
-                    <button class="btn" onclick="openModal('expense-modal')">+ নতুন খরচ যোগ</button>
+                    <h2>অন্যান্য খরচ (বস্টিং, যাতায়াত)</h2>
+                    <button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -518,11 +543,11 @@
                 </div>
             </div>
 
-            <!-- Cash & Capital Tab -->
+            <!-- Cash Tab -->
             <div id="tab-cash" class="tab-content">
                 <div class="section-header">
-                    <h2>নগদ টাকা, বিনিয়োগ ও মূলধন</h2>
-                    <button class="btn" onclick="openModal('cash-modal')">+ মূলধন/লেনদেন যোগ</button>
+                    <h2>নগদ টাকা ও মূলধন</h2>
+                    <button class="btn" onclick="openModal('cash-modal')">+ মূলধন/উত্তোলন</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -544,7 +569,7 @@
             <div id="tab-dues" class="tab-content">
                 <div class="section-header">
                     <h2>পাওনা ও দেনার হিসাব</h2>
-                    <button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা এন্ট্রি</button>
+                    <button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা</button>
                 </div>
                 <div class="table-container">
                     <table>
@@ -565,110 +590,107 @@
             <!-- Reports Tab -->
             <div id="tab-reports" class="tab-content">
                 <div class="section-header">
-                    <h2>লাভ-লোকসান ও রিপোর্ট</h2>
-                    <button class="btn" onclick="printReport()">প্রিন্ট রিপোর্ট</button>
+                    <h2>লাভ-লোকসান রিপোর্ট</h2>
+                    <button class="btn" onclick="window.print()">প্রিন্ট</button>
                 </div>
-                <div style="background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow);">
-                    <h3>সার্বিক সারসংক্ষেপ প্রতিবেদন</h3>
-                    <p style="margin-top: 15px;" id="report-summary-text">তথ্য প্রস্তুত করা হচ্ছে...</p>
+                <div style="background: white; padding: 25px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+                    <h3 style="color: #831843; margin-bottom: 10px;">সার্বিক আর্থিক বিবরণী</h3>
+                    <p id="report-summary-text" style="color: var(--text-muted);">সকল হিসাব ড্যাশবোর্ড থেকে স্বয়ংক্রিয়ভাবে আপডেট হচ্ছে।</p>
                 </div>
             </div>
         </main>
     </div>
 
-    <!-- Mobile Bottom Navigation -->
+    <!-- Mobile Bottom Navigation (Attractive Flower Theme) -->
     <nav class="mobile-bottom-nav">
         <div class="mobile-nav-item active" onclick="switchTab('dashboard', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             ড্যাশবোর্ড
         </div>
         <div class="mobile-nav-item" onclick="switchTab('raw-materials', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
             কাঁচামাল
         </div>
         <div class="mobile-nav-item" onclick="switchTab('products', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"></path></svg>
             পণ্য
         </div>
         <div class="mobile-nav-item" onclick="switchTab('orders', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
             অর্ডার
         </div>
         <div class="mobile-nav-item" onclick="switchTab('reports', this)">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             রিপোর্ট
         </div>
     </nav>
 
-    <!-- Modals Generic Structure -->
+    <!-- Modals -->
     <div id="raw-modal" class="modal">
         <div class="modal-content">
             <h3>নতুন কাঁচামাল কেনা</h3>
             <form onsubmit="saveRawMaterial(event)">
                 <div class="form-row">
                     <div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div>
-                    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন: ফুল, PVC বোর্ড"></div>
+                    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="ফুল, PVC বোর্ড ইত্যাদি"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>ক্যাটাগরি</label><select id="raw-cat"><option>ফুল</option><option>PVC বোর্ড</option><option>আঠা</option><option>প্যাকেজিং</option><option>অন্যান্য</option></select></div>
-                    <div class="form-group"><label>পরিমাণ ও একক</label><input type="text" id="raw-qty" required placeholder="যেমন: ১০০ পিস/কেজি"></div>
+                    <div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="১০০ পিস/কেজি"></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>মোট ক্রয়মূল্য (৳)</label><input type="number" id="raw-cost" required></div>
-                    <div class="form-group"><label>সাপ্লায়ার নাম ও ফোন</label><input type="text" id="raw-supplier"></div>
+                    <div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="দোকানের নাম"></div>
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('raw-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Product Modal -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <h3>নতুন পণ্য যোগ করুন</h3>
             <form onsubmit="saveProduct(event)">
                 <div class="form-row">
-                    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="prod-name" required placeholder="যেমন: ফুলের চিরুনি টাইপ-১"></div>
+                    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="prod-name" required placeholder="ফুলের চিরুনি"></div>
                     <div class="form-group"><label>SKU/কোড</label><input type="text" id="prod-sku" required></div>
                 </div>
                 <div class="form-row">
-                    <div class="form-group"><label>উৎপাদন খরচ (৳)</label><input type="number" id="prod-cost" required></div>
+                    <div class="form-group"><label>খরচ (৳)</label><input type="number" id="prod-cost" required></div>
                     <div class="form-group"><label>বিক্রয়মূল্য (৳)</label><input type="number" id="prod-price" required></div>
                 </div>
                 <div class="form-group"><label>প্রাথমিক স্টক</label><input type="number" id="prod-stock" value="0"></div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('product-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Production Modal -->
     <div id="prod-modal" class="modal">
         <div class="modal-content">
             <h3>উৎপাদন এন্ট্রি</h3>
             <form onsubmit="saveProduction(event)">
                 <div class="form-row">
                     <div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div>
-                    <div class="form-group"><label>তৈরি পণ্য</label><input type="text" id="p-item" required placeholder="পণ্যের নাম"></div>
+                    <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="p-item" required></div>
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required></div>
-                    <div class="form-group"><label>মোট উৎপাদন খরচ (৳)</label><input type="number" id="p-cost" required></div>
+                    <div class="form-group"><label>উৎপাদন খরচ (৳)</label><input type="number" id="p-cost" required></div>
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('prod-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Order Modal -->
     <div id="order-modal" class="modal">
         <div class="modal-content">
             <h3>নতুন অর্ডার ও বিক্রি</h3>
@@ -679,17 +701,16 @@
                 </div>
                 <div class="form-row">
                     <div class="form-group"><label>মোট টাকা (৳)</label><input type="number" id="ord-amount" required></div>
-                    <div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option>Pending</option><option>Delivered</option><option>Returned</option></select></div>
+                    <div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option>Delivered</option><option>Pending</option><option>Returned</option></select></div>
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('order-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Courier Modal -->
     <div id="courier-modal" class="modal">
         <div class="modal-content">
             <h3>Steadfast কুরিয়ার এন্ট্রি</h3>
@@ -703,15 +724,14 @@
                     <div class="form-group"><label>কুরিয়ার চার্জ (৳)</label><input type="number" id="courier-charge" required></div>
                 </div>
                 <div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option><option>Returned</option></select></div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('courier-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Expense Modal -->
     <div id="expense-modal" class="modal">
         <div class="modal-content">
             <h3>অন্যান্য খরচ</h3>
@@ -724,15 +744,14 @@
                     <div class="form-group"><label>পরিমাণ (৳)</label><input type="number" id="exp-amt" required></div>
                     <div class="form-group"><label>বিবরণ</label><input type="text" id="exp-desc"></div>
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('expense-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Cash Modal -->
     <div id="cash-modal" class="modal">
         <div class="modal-content">
             <h3>নগদ ও মূলধন লেনদেন</h3>
@@ -745,15 +764,14 @@
                     <div class="form-group"><label>পরিমাণ (৳)</label><input type="number" id="cash-amt" required></div>
                     <div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc"></div>
                 </div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('cash-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Due Modal -->
     <div id="due-modal" class="modal">
         <div class="modal-content">
             <h3>পাওনা ও দেনা এন্ট্রি</h3>
@@ -767,344 +785,282 @@
                     <div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option>Unpaid</option><option>Paid</option></select></div>
                 </div>
                 <div class="form-group"><label>বিবরণ</label><input type="text" id="due-desc"></div>
-                <div style="text-align: right; margin-top: 15px;">
+                <div style="text-align: right; margin-top: 20px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('due-modal')">বাতিল</button>
-                    <button type="submit" class="btn">সংরক্ষণ করুন</button>
+                    <button type="submit" class="btn">সেভ করুন</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- JavaScript Logic -->
+    <!-- Script Logic -->
     <script>
-        // IndexedDB Configuration
         let db;
-        const dbName = "MyBusinessHisabDB";
+        const dbName = "MyBusinessHisabDB_Flower";
         const request = indexedDB.open(dbName, 1);
 
-        request.onerror = (event) => console.error("Database error: " + event.target.errorCode);
-        request.onsuccess = (event) => {
-            db = event.target.result;
-            loadAllData();
+        request.onerror = (e) => console.error("DB error", e);
+        request.onsuccess = (e) => { db = e.target.result; loadAllData(); };
+        request.onupgradeneeded = (e) => {
+            let db = e.target.result;
+            ['rawMaterials', 'production', 'products', 'orders', 'courier', 'expenses', 'cash', 'dues'].forEach(store => {
+                if (!db.objectStoreNames.contains(store)) db.createObjectStore(store, { keyPath: 'id', autoIncrement: true });
+            });
         };
 
-        request.onupgradeneeded = (event) => {
-            let db = event.target.result;
-            if (!db.objectStoreNames.contains('rawMaterials')) db.createObjectStore('rawMaterials', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('production')) db.createObjectStore('production', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('products')) db.createObjectStore('products', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('orders')) db.createObjectStore('orders', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('courier')) db.createObjectStore('courier', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('expenses')) db.createObjectStore('expenses', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('cash')) db.createObjectStore('cash', { keyPath: 'id', autoIncrement: true });
-            if (!db.objectStoreNames.contains('dues')) db.createObjectStore('dues', { keyPath: 'id', autoIncrement: true });
-        };
-
-        // Pin Management
         window.onload = function() {
             let savedPin = localStorage.getItem('app_pin');
             if(!savedPin) {
-                document.getElementById('lock-title').innerText = "নতুন পাসওয়ার্ড সেট করুন";
-                document.getElementById('lock-desc').innerText = "প্রথমবার ব্যবহারের জন্য একটি পিন বা পাসওয়ার্ড দিন";
+                document.getElementById('lock-title').innerText = "🌸 নতুন পিন সেট করুন";
+                document.getElementById('lock-desc').innerText = "আপনার ব্যবসার জন্য একটি পাসওয়ার্ড দিন";
             }
             document.getElementById('current-date').innerText = new Date().toLocaleDateString('bn-BD', {year: 'numeric', month: 'long', day: 'numeric'});
         }
 
         function verifyPin() {
-            let pinInput = document.getElementById('pin-input').value;
-            let savedPin = localStorage.getItem('app_pin');
-            if(!savedPin) {
-                if(pinInput.length < 3) { alert('কমপক্ষে ৩ অক্ষরের পাসওয়ার্ড দিন'); return; }
-                localStorage.setItem('app_pin', pinInput);
+            let val = document.getElementById('pin-input').value;
+            let saved = localStorage.getItem('app_pin');
+            if(!saved) {
+                if(val.length < 3) { alert('কমপক্ষে ৩ অক্ষরের পিন দিন'); return; }
+                localStorage.setItem('app_pin', val);
                 document.getElementById('lock-screen').style.display = 'none';
             } else {
-                if(pinInput === savedPin) {
+                if(val === saved) {
                     document.getElementById('lock-screen').style.display = 'none';
                 } else {
-                    alert('ভুল পাসওয়ার্ড!');
+                    alert('ভুল পিন!');
                 }
             }
             document.getElementById('pin-input').value = '';
         }
 
-        function lockApp() {
-            document.getElementById('lock-screen').style.display = 'flex';
-        }
+        function lockApp() { document.getElementById('lock-screen').style.display = 'flex'; }
 
-        // Tab Switching
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
-            
             if(el) {
+                document.querySelectorAll('.mobile-nav-item').forEach(i => i.classList.remove('active'));
                 document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
                 el.classList.add('active');
             }
         }
 
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'flex';
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
             let today = new Date().toISOString().split('T')[0];
-            if(document.getElementById('raw-date')) document.getElementById('raw-date').value = today;
-            if(document.getElementById('p-date')) document.getElementById('p-date').value = today;
-            if(document.getElementById('exp-date')) document.getElementById('exp-date').value = today;
-            if(document.getElementById('cash-date')) document.getElementById('cash-date').value = today;
+            ['raw-date', 'p-date', 'exp-date', 'cash-date'].forEach(field => {
+                if(document.getElementById(field)) document.getElementById(field).value = today;
+            });
+        }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function addRecord(storeName, data, cb) {
+            let tx = db.transaction([storeName], "readwrite");
+            tx.objectStore(storeName).add(data);
+            tx.oncomplete = () => { if(cb) cb(); loadAllData(); };
+        }
+        function getAllRecords(storeName, cb) {
+            let tx = db.transaction([storeName], "readonly");
+            let req = tx.objectStore(storeName).getAll();
+            req.onsuccess = () => cb(req.result);
+        }
+        function deleteRecord(storeName, id) {
+            let tx = db.transaction([storeName], "readwrite");
+            tx.objectStore(storeName).delete(id);
+            tx.oncomplete = () => loadAllData();
         }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-
-        // Generic Add & Load functions
-        function addRecord(storeName, data, callback) {
-            let transaction = db.transaction([storeName], "readwrite");
-            let store = transaction.objectStore(storeName);
-            store.add(data);
-            transaction.oncomplete = () => { if(callback) callback(); loadAllData(); };
-        }
-
-        function getAllRecords(storeName, callback) {
-            let transaction = db.transaction([storeName], "readonly");
-            let store = transaction.objectStore(storeName);
-            let request = store.getAll();
-            request.onsuccess = () => callback(request.result);
-        }
-
-        function deleteRecord(storeName, id, callback) {
-            let transaction = db.transaction([storeName], "readwrite");
-            let store = transaction.objectStore(storeName);
-            store.delete(id);
-            transaction.oncomplete = () => { if(callback) callback(); loadAllData(); };
-        }
-
-        // Form Handlers
         function saveRawMaterial(e) {
             e.preventDefault();
-            let data = {
+            addRecord('rawMaterials', {
                 date: document.getElementById('raw-date').value,
                 name: document.getElementById('raw-name').value,
                 category: document.getElementById('raw-cat').value,
                 qty: document.getElementById('raw-qty').value,
                 cost: parseFloat(document.getElementById('raw-cost').value),
                 supplier: document.getElementById('raw-supplier').value
-            };
-            addRecord('rawMaterials', data, () => closeModal('raw-modal'));
+            }, () => closeModal('raw-modal'));
         }
 
         function saveProduct(e) {
             e.preventDefault();
-            let data = {
+            addRecord('products', {
                 name: document.getElementById('prod-name').value,
                 sku: document.getElementById('prod-sku').value,
                 cost: parseFloat(document.getElementById('prod-cost').value),
                 price: parseFloat(document.getElementById('prod-price').value),
                 stock: parseInt(document.getElementById('prod-stock').value)
-            };
-            addRecord('products', data, () => closeModal('product-modal'));
+            }, () => closeModal('product-modal'));
         }
 
         function saveProduction(e) {
             e.preventDefault();
-            let data = {
+            addRecord('production', {
                 date: document.getElementById('p-date').value,
                 item: document.getElementById('p-item').value,
                 qty: parseInt(document.getElementById('p-qty').value),
                 cost: parseFloat(document.getElementById('p-cost').value)
-            };
-            addRecord('production', data, () => closeModal('prod-modal'));
+            }, () => closeModal('prod-modal'));
         }
 
         function saveOrder(e) {
             e.preventDefault();
-            let data = {
+            addRecord('orders', {
                 orderId: document.getElementById('ord-id').value,
                 customer: document.getElementById('ord-customer').value,
                 amount: parseFloat(document.getElementById('ord-amount').value),
                 status: document.getElementById('ord-status').value,
                 date: new Date().toISOString().split('T')[0]
-            };
-            addRecord('orders', data, () => closeModal('order-modal'));
+            }, () => closeModal('order-modal'));
         }
 
         function saveCourier(e) {
             e.preventDefault();
-            let data = {
+            addRecord('courier', {
                 parcelId: document.getElementById('courier-parcel').value,
                 orderNo: document.getElementById('courier-ord').value,
                 cod: parseFloat(document.getElementById('courier-cod').value),
                 charge: parseFloat(document.getElementById('courier-charge').value),
                 status: document.getElementById('courier-status').value
-            };
-            addRecord('courier', data, () => closeModal('courier-modal'));
+            }, () => closeModal('courier-modal'));
         }
 
         function saveExpense(e) {
             e.preventDefault();
-            let data = {
+            addRecord('expenses', {
                 date: document.getElementById('exp-date').value,
                 category: document.getElementById('exp-cat').value,
                 amount: parseFloat(document.getElementById('exp-amt').value),
                 desc: document.getElementById('exp-desc').value
-            };
-            addRecord('expenses', data, () => closeModal('expense-modal'));
+            }, () => closeModal('expense-modal'));
         }
 
         function saveCash(e) {
             e.preventDefault();
-            let data = {
+            addRecord('cash', {
                 date: document.getElementById('cash-date').value,
                 type: document.getElementById('cash-type').value,
                 amount: parseFloat(document.getElementById('cash-amt').value),
                 desc: document.getElementById('cash-desc').value
-            };
-            addRecord('cash', data, () => closeModal('cash-modal'));
+            }, () => closeModal('cash-modal'));
         }
 
         function saveDue(e) {
             e.preventDefault();
-            let data = {
+            addRecord('dues', {
                 name: document.getElementById('due-name').value,
                 type: document.getElementById('due-type').value,
                 amount: parseFloat(document.getElementById('due-amt').value),
                 status: document.getElementById('due-status').value,
                 desc: document.getElementById('due-desc').value
-            };
-            addRecord('dues', data, () => closeModal('due-modal'));
+            }, () => closeModal('due-modal'));
         }
 
-        // Data Loader & Dashboard Aggregator
         function loadAllData() {
             getAllRecords('rawMaterials', (data) => {
-                let html = '';
-                data.forEach(item => {
-                    html += `<tr><td>${item.date}</td><td>${item.name}</td><td>${item.category}</td><td>${item.qty}</td><td>৳ ${item.cost}</td><td>${item.supplier}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('rawMaterials', ${item.id})">মুছে ফেলুন</button></td></tr>`;
-                });
-                document.getElementById('raw-materials-table').innerHTML = html || '<tr><td colspan="7" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+                let h = '';
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.category}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
+                document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="7" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
             getAllRecords('products', (data) => {
-                let html = '';
-                data.forEach(item => {
-                    html += `<tr><td>${item.sku}</td><td>${item.name}</td><td>৳ ${item.cost}</td><td>৳ ${item.price}</td><td>${item.stock} পিস</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('products', ${item.id})">মুছে ফেলুন</button></td></tr>`;
-                });
-                document.getElementById('products-table').innerHTML = html || '<tr><td colspan="6" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+                let h = '';
+                data.forEach(i => h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`);
+                document.getElementById('products-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
             getAllRecords('production', (data) => {
-                let html = '';
-                data.forEach(item => {
-                    html += `<tr><td>${item.date}</td><td>${item.item}</td><td>${item.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${item.cost}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('production', ${item.id})">মুছে ফেলুন</button></td></tr>`;
-                });
-                document.getElementById('production-table').innerHTML = html || '<tr><td colspan="6" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+                let h = '';
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${i.cost}</td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`);
+                document.getElementById('production-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
             getAllRecords('orders', (orders) => {
-                let html = '';
-                let totalSales = 0;
-                orders.forEach(item => {
-                    if(item.status === 'Delivered') totalSales += item.amount;
-                    html += `<tr><td>${item.orderId}</td><td>${item.customer}</td><td>${item.date}</td><td>৳ ${item.amount}</td><td><span class="badge badge-success">${item.status}</span></td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('orders', ${item.id})">মুছে ফেলুন</button></td></tr>`;
+                let h = '', totalSales = 0;
+                orders.forEach(i => {
+                    if(i.status === 'Delivered') totalSales += i.amount;
+                    h += `<tr><td>${i.orderId}</td><td>${i.customer}</td><td>${i.date}</td><td>৳ ${i.amount}</td><td><span class="badge badge-success">${i.status}</span></td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('orders', ${i.id})">মুছুন</button></td></tr>`;
                 });
-                document.getElementById('orders-table').innerHTML = html || '<tr><td colspan="6" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+                document.getElementById('orders-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-total-sales').innerText = `৳ ${totalSales}`;
             });
 
             getAllRecords('courier', (couriers) => {
-                let html = '';
-                let courierDue = 0;
-                couriers.forEach(item => {
-                    if(item.status === 'Pending' || item.status === 'Delivered') courierDue += (item.cod - item.charge);
-                    html += `<tr><td>${item.parcelId}</td><td>${item.orderNo}</td><td>৳ ${item.cod}</td><td>৳ ${item.charge}</td><td>${item.status}</td><td>৳ ${item.cod - item.charge}</td></tr>`;
+                let h = '', cDue = 0;
+                couriers.forEach(i => {
+                    if(i.status === 'Pending' || i.status === 'Delivered') cDue += (i.cod - i.charge);
+                    h += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`;
                 });
-                document.getElementById('courier-table').innerHTML = html || '<tr><td colspan="6" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-courier-due').innerText = `৳ ${courierDue}`;
+                document.getElementById('courier-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
+                document.getElementById('dash-courier-due').innerText = `৳ ${cDue}`;
             });
 
             getAllRecords('expenses', (expenses) => {
-                let html = '';
-                let totalExp = 0;
-                expenses.forEach(item => {
-                    totalExp += item.amount;
-                    html += `<tr><td>${item.date}</td><td>${item.category}</td><td>${item.desc}</td><td>৳ ${item.amount}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('expenses', ${item.id})">মুছে ফেলুন</button></td></tr>`;
+                let h = '', tExp = 0;
+                expenses.forEach(i => {
+                    tExp += i.amount;
+                    h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
                 });
-                document.getElementById('expenses-table').innerHTML = html || '<tr><td colspan="5" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-total-expense').innerText = `৳ ${totalExp}`;
+                document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
+                document.getElementById('dash-total-expense').innerText = `৳ ${tExp}`;
             });
 
             getAllRecords('cash', (cashList) => {
-                let html = '';
-                let cashInHand = 0;
-                cashList.forEach(item => {
-                    if(item.type === 'মূলধন যোগ') cashInHand += item.amount;
-                    else cashInHand -= item.amount;
-                    html += `<tr><td>${item.date}</td><td>${item.type}</td><td>${item.desc}</td><td>৳ ${item.amount}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:12px;" onclick="deleteRecord('cash', ${item.id})">মুছে ফেলুন</button></td></tr>`;
+                let h = '', cashIn = 0;
+                cashList.forEach(i => {
+                    if(i.type === 'মূলধন যোগ') cashIn += i.amount;
+                    else cashIn -= i.amount;
+                    h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn btn-danger" style="padding:4px 10px;font-size:11px;" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`;
                 });
-                document.getElementById('cash-table').innerHTML = html || '<tr><td colspan="5" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashInHand}`;
+                document.getElementById('cash-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
+                document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashIn}`;
             });
 
             getAllRecords('dues', (dues) => {
-                let html = '';
-                dues.forEach(item => {
-                    html += `<tr><td>${item.name}</td><td>${item.type}</td><td>${item.desc}</td><td>৳ ${item.amount}</td><td>${item.status}</td></tr>`;
-                });
-                document.getElementById('dues-table').innerHTML = html || '<tr><td colspan="5" style="text-align:center;">কোনো তথ্য নেই</td></tr>';
+                let h = '';
+                dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`);
+                document.getElementById('dues-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
         }
 
-        // Backup and Restore
         function exportBackup() {
-            let storeNames = ['rawMaterials', 'production', 'products', 'orders', 'courier', 'expenses', 'cash', 'dues'];
-            let backupData = {};
-            let count = 0;
-
-            storeNames.forEach(storeName => {
-                getAllRecords(storeName, (records) => {
-                    backupData[storeName] = records;
+            let stores = ['rawMaterials', 'production', 'products', 'orders', 'courier', 'expenses', 'cash', 'dues'];
+            let backup = {}, count = 0;
+            stores.forEach(s => {
+                getAllRecords(s, (res) => {
+                    backup[s] = res;
                     count++;
-                    if(count === storeNames.length) {
-                        let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData));
-                        let downloadAnchor = document.createElement('a');
-                        downloadAnchor.setAttribute("href", dataStr);
-                        downloadAnchor.setAttribute("download", `my_business_hisab_backup_${new Date().toISOString().split('T')[0]}.json`);
-                        document.body.appendChild(downloadAnchor);
-                        downloadAnchor.click();
-                        downloadAnchor.remove();
+                    if(count === stores.length) {
+                        let blob = new Blob([JSON.stringify(backup)], {type: "application/json"});
+                        let a = document.createElement('a');
+                        a.href = URL.createObjectURL(blob);
+                        a.download = `flower_business_backup_${new Date().toISOString().split('T')[0]}.json`;
+                        a.click();
                     }
                 });
             });
         }
 
-        function importBackup(event) {
-            let file = event.target.files[0];
+        function importBackup(e) {
+            let file = e.target.files[0];
             if(!file) return;
             let reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function(evt) {
                 try {
-                    let backupData = JSON.parse(e.target.result);
-                    let storeNames = Object.keys(backupData);
-                    storeNames.forEach(storeName => {
-                        let records = backupData[storeName];
-                        if(Array.isArray(records)) {
-                            let transaction = db.transaction([storeName], "readwrite");
-                            let store = transaction.objectStore(storeName);
-                            store.clear();
-                            records.forEach(rec => store.add(rec));
-                        }
+                    let data = JSON.parse(evt.target.result);
+                    Object.keys(data).forEach(s => {
+                        let tx = db.transaction([s], "readwrite");
+                        let store = tx.objectStore(s);
+                        store.clear();
+                        data[s].forEach(item => store.add(item));
                     });
-                    alert('ব্যাকআপ সফলভাবে রিস্টোর করা হয়েছে!');
+                    alert('ব্যাকআপ সফলভাবে রিস্টোর হয়েছে!');
                     loadAllData();
-                } catch(err) {
-                    alert('ভুল ফাইল ফরম্যাট!');
-                }
+                } catch(err) { alert('ফাইলটি সঠিক নয়!'); }
             };
             reader.readAsText(file);
-        }
-
-        function printReport() {
-            window.print();
         }
     </script>
 </body>
 </html>
-
