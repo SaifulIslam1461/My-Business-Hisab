@@ -84,11 +84,11 @@
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
 
-        /* Header */
+        /* Header with Developer Profile Image */
         header {
             background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
-            padding: 15px 20px;
+            padding: 12px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -98,6 +98,27 @@
             z-index: 100;
         }
         header h1 { font-size: 19px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        
+        /* Developer Avatar Styling */
+        .developer-avatar-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .developer-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 2.5px solid #f472b6;
+            object-fit: cover;
+            box-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .developer-avatar:hover {
+            transform: scale(1.08);
+            border-color: #ffffff;
+        }
 
         /* Banner Section */
         .flower-banner {
@@ -268,7 +289,7 @@
         .card.red .card-icon { background: #fce8e6; color: #dc2626; }
         .card.orange .card-icon { background: #feefc3; color: #d97706; }
 
-        /* Order Summary Grid (৪টি অপশনের সামারি) */
+        /* Order Summary Grid */
         .order-summary-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -337,6 +358,15 @@
         th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; }
         th { background: #fff1f2; color: #831843; font-weight: 600; }
 
+        .tbl-thumb {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid #fbcfe8;
+            vertical-align: middle;
+        }
+
         /* Modals */
         .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -366,6 +396,24 @@
         .input-tk-wrapper input { padding-right: 42px; }
         .input-tk-wrapper .tk-suffix {
             position: absolute; right: 14px; font-weight: 800; color: #be185d; font-size: 13px; pointer-events: none;
+        }
+
+        .img-preview-box {
+            width: 100%;
+            height: 100px;
+            border: 2px dashed #f472b6;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 8px;
+            background: #fff5f8;
+            overflow: hidden;
+        }
+        .img-preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .modal-actions {
@@ -413,9 +461,13 @@
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Header with Developer Image -->
     <header>
         <h1>🌸 My Business Hisab</h1>
+        <div class="developer-avatar-container" title="ডেভেলপার প্রোফাইল">
+            <!-- Developer Image inside Round Frame -->
+            <img src="https://i.ibb.co/6P06L78/dev-avatar.jpg" alt="Developer" class="developer-avatar" id="dev-pic" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'">
+        </div>
     </header>
 
     <!-- App Main Layout -->
@@ -515,7 +567,6 @@
 
             <!-- Orders Tab -->
             <div id="tab-orders" class="tab-content">
-                <!-- Order Summary Mini Cards -->
                 <div class="order-summary-grid">
                     <div class="summary-mini-card">
                         <span>মোট অর্ডার</span>
@@ -549,6 +600,22 @@
                 </div>
             </div>
 
+            <!-- Products Tab with Image Support -->
+            <div id="tab-products" class="tab-content">
+                <div class="section-header">
+                    <h2>পণ্য তালিকা</h2>
+                    <button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>ছবি</th><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr>
+                        </thead>
+                        <tbody id="products-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Raw Materials Tab -->
             <div id="tab-raw-materials" class="tab-content">
                 <div class="section-header">
@@ -577,22 +644,6 @@
                             <tr><th>তারিখ</th><th>তৈরি পণ্য</th><th>পরিমাণ</th><th>উপকরণ</th><th>খরচ (TK)</th><th>অ্যাকশন</th></tr>
                         </thead>
                         <tbody id="production-table"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Products Tab -->
-            <div id="tab-products" class="tab-content">
-                <div class="section-header">
-                    <h2>পণ্য তালিকা</h2>
-                    <button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr>
-                        </thead>
-                        <tbody id="products-table"></tbody>
                     </table>
                 </div>
             </div>
@@ -699,52 +750,45 @@
         </div>
     </nav>
 
-    <!-- Modal: Order Form (4 Options in Status) -->
+    <!-- Modal: Product Add/Edit with Image Upload Feature -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <h3>পণ্য যোগ করুন</h3>
+            <form onsubmit="saveProduct(event)">
+                <div class="form-group">
+                    <label>পণ্যর ছবি আপলোড করুন</label>
+                    <input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)">
+                    <div class="img-preview-box" id="prod-img-preview">
+                        <span style="font-size:12px; color:#9ca3af;">ছবি নির্বাচন করুন</span>
+                    </div>
+                </div>
+                <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="prod-name" required placeholder="যেমন :- ফুলের চিরুনি"></div>
+                <div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="যেমন :- FC-101"></div>
+                <div class="form-group"><label>উৎপাদন খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div>
+                <div class="form-group"><label>বিক্রয়মূল্য (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div>
+                <div class="form-group"><label>স্টক পরিমাণ</label><input type="number" id="prod-stock" value="0"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ সেভ</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal: Order Form -->
     <div id="order-modal" class="modal">
         <div class="modal-content">
             <h3 id="order-modal-title">অর্ডার ও বিক্রি</h3>
             <form onsubmit="saveOrder(event)">
                 <input type="hidden" id="ord-edit-id">
-                <div class="form-group">
-                    <label>অর্ডার নম্বর</label>
-                    <input type="text" id="ord-id" required placeholder="যেমন :- #ORD-001">
-                </div>
-                <div class="form-group">
-                    <label>কাস্টমারের নাম</label>
-                    <input type="text" id="ord-customer" required placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক">
-                </div>
-                <div class="form-group">
-                    <label>মোবাইল নাম্বার</label>
-                    <input type="text" id="ord-phone" required placeholder="যেমন :- 01603146149">
-                </div>
-                <div class="form-group">
-                    <label>ঠিকানা</label>
-                    <input type="text" id="ord-address" placeholder="যেমন :- পরশুরাম, ফেনী">
-                </div>
-                <div class="form-group">
-                    <label>টাকা (TK)</label>
-                    <div class="input-tk-wrapper">
-                        <input type="number" id="ord-amount" required placeholder="1150">
-                        <span class="tk-suffix">TK</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>স্ট্যাটাস</label>
-                    <select id="ord-status">
-                        <option value="Pending">Pending</option>
-                        <option value="Confirmed">Confirmed</option>
-                        <option value="Delivered">Delivered</option>
-                        <option value="Returned">Returned</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>মন্তব্য / নোট</label>
-                    <textarea id="ord-note" rows="2" placeholder="অর্ডার সংক্রান্ত কোনো মন্তব্য থাকলে লিখুন..."></textarea>
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button>
-                    <button type="submit" class="btn-modal-save">✓ সেভ</button>
-                </div>
+                <div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="যেমন :- #ORD-001"></div>
+                <div class="form-group"><label>কাস্টমারের নাম</label><input type="text" id="ord-customer" required placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক"></div>
+                <div class="form-group"><label>মোবাইল নাম্বার</label><input type="text" id="ord-phone" required placeholder="যেমন :- 01603146149"></div>
+                <div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="যেমন :- পরশুরাম, ফেনী"></div>
+                <div class="form-group"><label>টাকা (TK)</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div>
+                <div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div>
+                <div class="form-group"><label>মন্তব্য / নোট</label><textarea id="ord-note" rows="2" placeholder="অর্ডার সংক্রান্ত কোনো মন্তব্য থাকলে লিখুন..."></textarea></div>
+                <div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div>
             </form>
         </div>
     </div>
@@ -777,23 +821,18 @@
     </div>
 
     <!-- Other Modals -->
-    <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="যেমন :- ফুলের চিরুনি"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="যেমন :- FC-101"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন এন্ট্রি</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="যেমন :- ফুলের চিরুনি টাইপ ১"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার এন্ট্রি</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-12345"></div><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><select id="exp-cat"><option>Facebook Boosting</option><option>যাতায়াত</option><option>অন্যান্য</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="exp-desc" placeholder="বিবরণ লিখুন"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ লেনদেন</h3><form onsubmit="saveCash(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option>মূলধন যোগ</option><option>ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required placeholder="5000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc" placeholder="বিবরণ"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="ব্যক্তির নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option>Unpaid</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
         let db;
         let selectedBannerImageData = null;
+        let selectedProductImageData = null;
         let allOrders = [], allExpenses = [], allRaw = [];
-        const dbName = "MyBusinessHisabDB_FlowerEditV6";
+        const dbName = "MyBusinessHisabDB_FlowerFinalV7";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -824,6 +863,18 @@
             if (file) {
                 let reader = new FileReader();
                 reader.onload = function(e) { selectedBannerImageData = e.target.result; }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewProductImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedProductImageData = e.target.result;
+                    document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`;
+                }
                 reader.readAsDataURL(file);
             }
         }
@@ -894,6 +945,22 @@
             tx.oncomplete = () => loadAllData();
         }
 
+        function saveProduct(e) {
+            e.preventDefault();
+            addRecord('products', {
+                img: selectedProductImageData || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100&auto=format&fit=crop&q=80',
+                name: document.getElementById('prod-name').value,
+                sku: document.getElementById('prod-sku').value,
+                cost: parseFloat(document.getElementById('prod-cost').value),
+                price: parseFloat(document.getElementById('prod-price').value),
+                stock: parseInt(document.getElementById('prod-stock').value)
+            }, () => {
+                selectedProductImageData = null;
+                document.getElementById('prod-img-preview').innerHTML = '<span style="font-size:12px; color:#9ca3af;">ছবি নির্বাচন করুন</span>';
+                closeModal('product-modal');
+            });
+        }
+
         function resetOrderForm() {
             document.getElementById('ord-edit-id').value = '';
             document.getElementById('ord-id').value = '';
@@ -953,17 +1020,6 @@
                 cost: parseFloat(document.getElementById('raw-cost').value),
                 supplier: document.getElementById('raw-supplier').value
             }, () => closeModal('raw-modal'));
-        }
-
-        function saveProduct(e) {
-            e.preventDefault();
-            addRecord('products', {
-                name: document.getElementById('prod-name').value,
-                sku: document.getElementById('prod-sku').value,
-                cost: parseFloat(document.getElementById('prod-cost').value),
-                price: parseFloat(document.getElementById('prod-price').value),
-                stock: parseInt(document.getElementById('prod-stock').value)
-            }, () => closeModal('product-modal'));
         }
 
         function saveProduction(e) {
@@ -1078,6 +1134,25 @@
         }
 
         function loadAllData() {
+            getAllRecords('products', (data) => {
+                let h = '', totalStk = 0;
+                data.forEach(i => {
+                    totalStk += i.stock;
+                    let imgSrc = i.img || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100&auto=format&fit=crop&q=80';
+                    h += `<tr>
+                        <td><img src="${imgSrc}" class="tbl-thumb"></td>
+                        <td>${i.sku}</td>
+                        <td>${i.name}</td>
+                        <td>৳ ${i.cost} TK</td>
+                        <td>৳ ${i.price} TK</td>
+                        <td>${i.stock} পিস</td>
+                        <td><button class="btn-danger" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td>
+                    </tr>`;
+                });
+                document.getElementById('products-table').innerHTML = h || '<tr><td colspan="7" style="text-align:center;color:#9ca3af;">কোনো পণ্য নেই</td></tr>';
+                document.getElementById('dash-total-stock').innerText = `${totalStk} পিস`;
+            });
+
             getAllRecords('orders', (orders) => {
                 allOrders = orders;
                 let h = '';
@@ -1103,7 +1178,6 @@
                     </tr>`;
                 });
 
-                // Update Order Summary Data
                 document.getElementById('sum-total').innerText = `${orders.length} টি`;
                 document.getElementById('sum-pending').innerText = `${pendingCount} টি`;
                 document.getElementById('sum-delivered').innerText = `${deliveredCount} টি`;
@@ -1118,16 +1192,6 @@
                 let h = '';
                 data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost} TK</td><td>${i.supplier}</td><td><button class="btn-danger" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
                 document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-            });
-
-            getAllRecords('products', (data) => {
-                let h = '', totalStk = 0;
-                data.forEach(i => {
-                    totalStk += i.stock;
-                    h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost} TK</td><td>৳ ${i.price} TK</td><td>${i.stock} পিস</td><td><button class="btn-danger" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`;
-                });
-                document.getElementById('products-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-                document.getElementById('dash-total-stock').innerText = `${totalStk} পিস`;
             });
 
             getAllRecords('production', (data) => {
