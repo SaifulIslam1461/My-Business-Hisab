@@ -86,8 +86,8 @@
             width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;
             transition: background 0.2s ease;
         }
-        .logout-btn { background: rgba(220, 38, 38, 0.4); border-color: #f87171; }
-        .logout-btn:active { background: rgba(220, 38, 38, 0.8); }
+        .logout-btn { background: rgba(220, 38, 38, 0.5); border-color: #f87171; color: white; }
+        .logout-btn:active { background: rgba(220, 38, 38, 0.9); }
 
         .developer-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
@@ -120,7 +120,7 @@
 
         /* Mobile Extra Features Grid Layout */
         .mobile-quick-features {
-            margin-top: 25px;
+            margin-top: 20px;
             background: white;
             padding: 18px 15px;
             border-radius: var(--radius);
@@ -206,7 +206,7 @@
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
 
-        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 20px; }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 15px; }
         @media (min-width: 768px) { .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
 
         .card { background: var(--card-bg); padding: 18px 16px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(251, 207, 232, 0.7); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
@@ -358,6 +358,45 @@
                     <div class="card orange"><div class="card-header-box"><h3>কুরিয়ারে পাওনা</h3><div class="card-icon">🚚</div></div><div class="value" id="dash-courier-due">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
+
+                <!-- 🌸 ড্যাশবোর্ডের ঠিক নিচের খালি জায়গায় ইউনিক ফিচার গ্রিড ও অ্যাপ ইনস্টল বাটন 🌸 -->
+                <div class="mobile-quick-features">
+                    <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
+                    <div class="feature-grid-container">
+                        <div class="feature-card-btn" onclick="switchTab('production')">
+                            <div class="feat-icon">⚙️</div>
+                            <div class="feat-title">উৎপাদন ও স্টক</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('courier')">
+                            <div class="feat-icon">🚚</div>
+                            <div class="feat-title">কুরিয়ার (Steadfast)</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('cash')">
+                            <div class="feat-icon">💰</div>
+                            <div class="feat-title">নগদ ও মূলধন</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('dues')">
+                            <div class="feat-icon">📒</div>
+                            <div class="feat-title">পাওনা ও দেনা</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
+                            <div class="feat-icon">💸</div>
+                            <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
+                        </div>
+                    </div>
+
+                    <!-- Install App Direct Card -->
+                    <div class="mobile-install-app-card" onclick="executeAppInstall()">
+                        <div class="install-card-left">
+                            <div class="inst-icon">📲</div>
+                            <div>
+                                <h4>অ্যাপ ইনস্টল করুন</h4>
+                                <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
+                            </div>
+                        </div>
+                        <div class="install-card-btn-badge">ইনস্টল</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Orders Tab -->
@@ -422,45 +461,6 @@
                     <h2 style="color: #be185d; text-align: center; margin-bottom: 5px;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
                     <p id="pdf-report-subtitle" style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px;"></p>
                     <div id="pdf-report-content"></div>
-                </div>
-            </div>
-
-            <!-- 🌸 Mobile Extra Features & Install App Container 🌸 -->
-            <div class="mobile-quick-features">
-                <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
-                <div class="feature-grid-container">
-                    <div class="feature-card-btn" onclick="switchTab('production')">
-                        <div class="feat-icon">⚙️</div>
-                        <div class="feat-title">উৎপাদন ও স্টক</div>
-                    </div>
-                    <div class="feature-card-btn" onclick="switchTab('courier')">
-                        <div class="feat-icon">🚚</div>
-                        <div class="feat-title">কুরিয়ার (Steadfast)</div>
-                    </div>
-                    <div class="feature-card-btn" onclick="switchTab('cash')">
-                        <div class="feat-icon">💰</div>
-                        <div class="feat-title">নগদ ও মূলধন</div>
-                    </div>
-                    <div class="feature-card-btn" onclick="switchTab('dues')">
-                        <div class="feat-icon">📒</div>
-                        <div class="feat-title">পাওনা ও দেনা</div>
-                    </div>
-                    <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
-                        <div class="feat-icon">💸</div>
-                        <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
-                    </div>
-                </div>
-
-                <!-- Install App Direct Card -->
-                <div class="mobile-install-app-card" onclick="executeAppInstall()">
-                    <div class="install-card-left">
-                        <div class="inst-icon">📲</div>
-                        <div>
-                            <h4>অ্যাপ ইনস্টল করুন</h4>
-                            <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
-                        </div>
-                    </div>
-                    <div class="install-card-btn-badge">ইনস্টল</div>
                 </div>
             </div>
         </main>
