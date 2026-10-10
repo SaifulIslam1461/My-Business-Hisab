@@ -1,0 +1,18 @@
+{
+  "name": "My Business Hisab",
+  "short_name": "Hisab",
+  "description": "ফুলের কম্ব ব্যবসার পূর্ণাঙ্গ ডিজিটাল হিসাব খাতা",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fff1f2",
+  "theme_color": "#be185d",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='120' fill='%23be185d'/><circle cx='256' cy='256' r='180' fill='%23ec4899' opacity='0.3'/><circle cx='256' cy='256' r='60' fill='%23fbbf24'/><path d='M256 76c28 50 14 100-20 120-34-20-48-70-20-120zM256 76c-28 50-14 100 20 120 34-20 48-70 20-120zM436 256c-50 28-100 14-120-20 20-34 70-48 120-20zM436 256c-50-28-100-14-120 20 20 34 70 48 120 20zM256 436c-28-50-14-100 20-120 34 20 48 70 20 120zM256 436c28-50 14-100-20-120-34 20-48 70-20 120zM76 256c50-28 100-14 120 20-20 34-70 48-120 20zM76 256c50 28 100 14 120-20-20-34-70-48-120-20z' fill='%23ffffff'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
