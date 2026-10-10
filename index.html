@@ -84,11 +84,11 @@
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
 
-        /* Header */
+        /* Clean Header without top buttons */
         header {
             background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
-            padding: 12px 20px;
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -97,17 +97,7 @@
             top: 0;
             z-index: 100;
         }
-        header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
-        header .actions button {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 4px;
-        }
+        header h1 { font-size: 19px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
 
         /* Banner Section */
         .flower-banner {
@@ -183,7 +173,7 @@
         /* Grid Layout Dashboard Cards */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2 columns for mobile box format */
+            grid-template-columns: repeat(2, 1fr);
             gap: 12px;
             margin-bottom: 20px;
         }
@@ -308,15 +298,9 @@
         </div>
     </div>
 
-    <!-- Header -->
+    <!-- Clean Header (Buttons Removed) -->
     <header>
         <h1>🌸 My Business Hisab</h1>
-        <div class="actions">
-            <button onclick="lockApp()">লক</button>
-            <button onclick="exportBackup()">ব্যাকআপ</button>
-            <button onclick="document.getElementById('import-file').click()">রিস্টোর</button>
-            <input type="file" id="import-file" style="display:none" onchange="importBackup(event)">
-        </div>
     </header>
 
     <!-- App Main Layout -->
@@ -566,18 +550,18 @@
         </div>
     </nav>
 
-    <!-- Banner Customize Modal -->
+    <!-- Banner Customize Modal (Direct Image Upload) -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
-            <h3>⚙️ ব্যানার ও স্লোগান সেটিংস</h3>
+            <h3>⚙️ ব্যানার কাস্টমাইজ করুন</h3>
             <form onsubmit="saveBannerSettings(event)">
                 <div class="form-group">
                     <label>ব্যবসার স্লোগান</label>
                     <input type="text" id="input-slogan" required placeholder="আপনার স্লোগান লিখুন">
                 </div>
                 <div class="form-group">
-                    <label>ফুলের ছবির লিঙ্ক (Image URL)</label>
-                    <input type="text" id="input-bg-url" required placeholder="https://example.com/flower.jpg">
+                    <label>গ্যালারি/প্রোফাইল থেকে ফুলের ছবি বেছে নিন</label>
+                    <input type="file" id="input-bg-file" accept="image/*" onchange="previewBannerImage(event)">
                 </div>
                 <div style="text-align: right; margin-top: 15px;">
                     <button type="button" class="btn btn-danger" onclick="closeModal('banner-modal')">বাতিল</button>
@@ -587,7 +571,7 @@
         </div>
     </div>
 
-    <!-- Other Modals -->
+    <!-- Modals -->
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-row"><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required></div></div><div class="form-row"><div class="form-group"><label>ক্যাটাগরি</label><select id="raw-cat"><option>ফুল</option><option>PVC বোর্ড</option><option>আঠা</option></select></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required></div></div><div class="form-row"><div class="form-group"><label>খরচ (৳)</label><input type="number" id="raw-cost" required></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier"></div></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('raw-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
 
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-row"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required></div></div><div class="form-row"><div class="form-group"><label>খরচ (৳)</label><input type="number" id="prod-cost" required></div><div class="form-group"><label>বিক্রয়মূল্য (৳)</label><input type="number" id="prod-price" required></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div style="text-align: right; margin-top: 15px;"><button type="button" class="btn btn-danger" onclick="closeModal('product-modal')">বাতিল</button><button type="submit" class="btn">সেভ</button></div></form></div></div>
@@ -606,7 +590,8 @@
 
     <script>
         let db;
-        const dbName = "MyBusinessHisabDB_FlowerGrid";
+        let selectedBannerImageData = null;
+        const dbName = "MyBusinessHisabDB_FlowerClean";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -627,25 +612,38 @@
 
             // Load Saved Banner Settings
             let slogan = localStorage.getItem('banner_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
-            let bgUrl = localStorage.getItem('banner_bg') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
+            let bgImg = localStorage.getItem('banner_bg_img') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
             
             document.getElementById('banner-slogan').innerText = slogan;
-            document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgUrl}') center/cover`;
+            document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgImg}') center/cover`;
             
             document.getElementById('input-slogan').value = slogan;
-            document.getElementById('input-bg-url').value = bgUrl;
+        }
+
+        function previewBannerImage(event) {
+            let file = event.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedBannerImageData = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         function saveBannerSettings(e) {
             e.preventDefault();
             let newSlogan = document.getElementById('input-slogan').value;
-            let newBg = document.getElementById('input-bg-url').value;
 
             localStorage.setItem('banner_slogan', newSlogan);
-            localStorage.setItem('banner_bg', newBg);
+            if (selectedBannerImageData) {
+                localStorage.setItem('banner_bg_img', selectedBannerImageData);
+            }
+
+            let bgImg = localStorage.getItem('banner_bg_img') || 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80';
 
             document.getElementById('banner-slogan').innerText = newSlogan;
-            document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${newBg}') center/cover`;
+            document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.75)), url('${bgImg}') center/cover`;
 
             closeModal('banner-modal');
         }
@@ -663,8 +661,6 @@
             }
             document.getElementById('pin-input').value = '';
         }
-
-        function lockApp() { document.getElementById('lock-screen').style.display = 'flex'; }
 
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
@@ -856,41 +852,6 @@
                 dues.forEach(i => h += `<tr><td>${i.name}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`);
                 document.getElementById('dues-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
-        }
-
-        function exportBackup() {
-            let stores = ['rawMaterials', 'production', 'products', 'orders', 'courier', 'expenses', 'cash', 'dues'];
-            let backup = {}, count = 0;
-            stores.forEach(s => {
-                getAllRecords(s, (res) => {
-                    backup[s] = res; count++;
-                    if(count === stores.length) {
-                        let blob = new Blob([JSON.stringify(backup)], {type: "application/json"});
-                        let a = document.createElement('a');
-                        a.href = URL.createObjectURL(blob);
-                        a.download = `flower_business_backup_${new Date().toISOString().split('T')[0]}.json`;
-                        a.click();
-                    }
-                });
-            });
-        }
-
-        function importBackup(e) {
-            let file = e.target.files[0];
-            if(!file) return;
-            let reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    let data = JSON.parse(evt.target.result);
-                    Object.keys(data).forEach(s => {
-                        let tx = db.transaction([s], "readwrite");
-                        tx.objectStore(s).clear();
-                        data[s].forEach(item => tx.objectStore(s).add(item));
-                    });
-                    alert('রিস্টোর সফল হয়েছে!'); loadAllData();
-                } catch(err) { alert('ভুল ফাইল!'); }
-            };
-            reader.readAsText(file);
         }
     </script>
 </body>
