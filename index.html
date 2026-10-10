@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
     
-    <!-- PWA Manifest & App Icon Meta Tags -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22My%20Business%20Hisab%22%2C%22short_name%22%3A%22Hisab%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fff1f2%22%2C%22theme_color%22%3A%22%23be185d%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27256%27%20fill%3D%27%23ec4899%27%2F%3E%3Cpath%20d%3D%27M256%20110c-50%200-90%2040-90%2090%200%2040%2030%2075%2070%2085-40%2010-70%2045-70%2085%200%2050%2040%2090%2090%2090s90-40%2090-90c0-40-30-75-70-85%2040-10%2070-45%2070-85%200-50-40-90-90-90z%27%20fill%3D%27%23ffffff%27%2F%3E%3C%2Fsvg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg+xml%22%7D%5D%7D">
+    <!-- PWA Manifest Link -->
+    <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#be185d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!-- External Libraries for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -30,7 +32,6 @@
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         
-        /* Smooth Scrolling Enhancement */
         html, body {
             height: 100%;
             overflow-x: hidden;
@@ -87,7 +88,7 @@
         }
         .developer-avatar { width: 40px; height: 40px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
-        /* Dynamic Custom Background Banner */
+        /* Banner */
         .flower-banner {
             position: relative; 
             background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
@@ -103,7 +104,6 @@
         .nav-links li { padding: 12px 14px; margin-bottom: 6px; border-radius: 12px; cursor: pointer; font-weight: 500; color: var(--text-muted); display: flex; align-items: center; gap: 10px; font-size: 14px; }
         .nav-links li:hover, .nav-links li.active { background: #fdf2f8; color: var(--primary-rose); font-weight: 700; }
 
-        /* Main Scrolling Container Fix */
         main { 
             flex: 1; 
             padding: 15px; 
@@ -146,8 +146,7 @@
 
         .btn { background: linear-gradient(135deg, #ec4899, #db2777); color: white; border: none; padding: 9px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
         .btn-outline { background: #fff0f5; color: #be185d; border: 1.5px solid #f472b6; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
-        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
-
+        
         .table-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
         th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; }
@@ -169,7 +168,7 @@
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
 
-        /* Enhanced PWA Install Banner Notice */
+        /* PWA Install Banner Notice */
         #pwa-install-banner {
             position: fixed; bottom: 68px; left: 12px; right: 12px; background: #831843; color: white; padding: 12px 16px;
             border-radius: 18px; box-shadow: 0 10px 25px rgba(0,0,0,0.35); z-index: 999; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
@@ -195,12 +194,12 @@
 <body>
 
     <!-- PWA Install Banner Notice -->
-    <div id="pwa-install-banner">
+    <div id="pwa-install-banner" style="display:none;">
         <div style="display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 26px;">🌸</span>
             <div>
                 <strong>হোম স্ক্রিনে অ্যাপ ইনস্টল করুন</strong>
-                <p>এক ক্লিকেই মোবাইলে অ্যাপের মতো ব্যবহার করুন</p>
+                <p>এক ক্লিকেই ফুল মোবাইল অ্যাপ হিসেবে নামান</p>
             </div>
         </div>
         <div class="pwa-action-btns">
@@ -242,7 +241,7 @@
 
     <!-- Header -->
     <header>
-        <h1>🌸 My Business Hisab</h1>
+        <h1 id="app-header-title">🌸 My Business Hisab</h1>
         <div class="header-profile-group">
             <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
             <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
@@ -390,6 +389,15 @@
                 </div>
 
                 <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
+                <h4 style="color:#be185d; margin-bottom:8px;">🎨 মোবাইল অ্যাপ আইকন কাস্টমাইজ করুন:</h4>
+                <div class="form-group">
+                    <input type="file" id="admin-app-icon-file" accept="image/*" onchange="changeAppIcon(event)">
+                    <div class="img-preview-box" id="app-icon-preview-box" style="margin-top:8px;">
+                        <span style="font-size:12px; color:#9ca3af;">নতুন অ্যাপ আইকন প্রিভিউ</span>
+                    </div>
+                </div>
+
+                <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
                 <h4 style="color:#be185d; margin-bottom:8px;">🔑 এডমিন পাসওয়ার্ড পরিবর্তন করুন:</h4>
                 <div class="form-group"><input type="password" id="new-admin-pass" placeholder="নতুন এডমিন পাসওয়ার্ড দিন"></div>
                 <button class="btn" style="width:100%; margin-bottom:15px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
@@ -403,7 +411,7 @@
         </div>
     </div>
 
-    <!-- Banner Settings Modal (Custom Banner Image & Password Customization) -->
+    <!-- Banner Settings Modal -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
             <h3>⚙️ ব্যানার ও অ্যাকাউন্ট সেটিংস</h3>
@@ -415,24 +423,20 @@
                         <span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>ব্যবসার স্লোগান (ব্যানার টেক্সট)</label>
                     <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
                 </div>
-
                 <div class="form-group">
                     <label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে আলাদা করুন)</label>
                     <input type="text" id="input-expense-categories" placeholder="যেমন: Facebook Boosting, যাতায়াত, বিদ্যুৎ বিল">
                 </div>
-
                 <hr style="margin:15px 0; border:0; border-top:1px solid #fce7f3;">
                 <h4 style="color:#be185d; margin-bottom:10px; font-size:15px;">🔑 নিজস্ব পাসওয়ার্ড পরিবর্তন করুন:</h4>
                 <div class="form-group">
                     <label>নতুন পাসওয়ার্ড দিন</label>
                     <input type="password" id="user-new-pass" placeholder="নতুন সিক্রেট পাসওয়ার্ড">
                 </div>
-
                 <div class="modal-actions">
                     <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
                     <button type="submit" class="btn-modal-save">✓ পরিবর্তন সেভ করুন</button>
@@ -452,9 +456,13 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // Smart PWA Install Prompt & Dismissal State Management
-        let deferredPrompt = null;
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration Failed', err));
+            });
+        }
 
+        let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
@@ -481,7 +489,7 @@
                 }
                 deferredPrompt = null;
             } else {
-                alert("📲 অ্যাপটি ইনস্টল করতে আপনার ব্রাউজারের ওপরের ডানপাশের ৩-ডটে (⋮) চাপ দিয়ে 'Add to Home screen' বা 'Install app' অপশনটি বেছে নিন।");
+                alert("📲 ব্রাউজারের ওপরের ৩-ডটে (⋮) ট্যাপ করে 'Install App' বা 'Add to Home screen' অপশনটি সিলেক্ট করুন।");
                 dismissPwaBanner();
             }
         }
@@ -491,10 +499,18 @@
             document.getElementById('pwa-install-banner').style.display = 'none';
         }
 
-        function togglePasswordVisibility(inputId, iconEl) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") { input.type = "text"; iconEl.innerText = "🙈"; }
-            else { input.type = "password"; iconEl.innerText = "👁️"; }
+        function changeAppIcon(e) {
+            let file = e.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(evt) {
+                    let imgData = evt.target.result;
+                    localStorage.setItem('app_custom_icon', imgData);
+                    document.getElementById('app-icon-preview-box').innerHTML = `<img src="${imgData}" style="max-height:80px;">`;
+                    alert("✅ নতুন মোবাইল অ্যাপ আইকন সেভ করা হয়েছে!");
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null, selectedCustomBannerImg = null;
@@ -688,7 +704,6 @@
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        /* Save functions */
         function saveRawMaterial(e) {
             e.preventDefault();
             let data = {
@@ -831,7 +846,6 @@
         function previewRawImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedRawImageData = evt.target.result; document.getElementById('raw-img-preview').innerHTML = `<img src="${selectedRawImageData}">`; }; r.readAsDataURL(f); } }
         function previewProductImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedProductImageData = evt.target.result; document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`; }; r.readAsDataURL(f); } }
 
-        /* Comprehensive Dashboard Calculation */
         function filterDashboardData() {
             let filterType = document.getElementById('time-filter').value;
             let now = new Date();
@@ -892,7 +906,6 @@
             document.getElementById('dash-total-stock').innerText = `${totalStockCount} পিস`;
         }
 
-        /* PDF Generation Functions */
         function downloadFinancialPDF() {
             let filter = document.getElementById('report-time-filter').value;
             let subtitle = `প্রতিবেদনের সময়সীমা: ${filter.toUpperCase()} | প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}`;
