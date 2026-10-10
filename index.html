@@ -84,7 +84,7 @@
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
 
-        /* Header with Developer Profile Image */
+        /* Header */
         header {
             background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
@@ -99,7 +99,7 @@
         }
         header h1 { font-size: 19px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         
-        /* Developer Avatar Styling */
+        /* Developer Frame */
         .developer-avatar-container {
             display: flex;
             align-items: center;
@@ -114,6 +114,7 @@
             box-shadow: 0 0 10px rgba(244, 114, 182, 0.6);
             transition: transform 0.3s ease;
             cursor: pointer;
+            background-color: #fff;
         }
         .developer-avatar:hover {
             transform: scale(1.08);
@@ -154,7 +155,7 @@
             overflow: hidden;
         }
 
-        /* Sidebar Desktop */
+        /* Sidebar */
         sidebar {
             width: 250px;
             background: white;
@@ -461,12 +462,11 @@
         </div>
     </div>
 
-    <!-- Header with Developer Image -->
+    <!-- Header -->
     <header>
         <h1>🌸 My Business Hisab</h1>
-        <div class="developer-avatar-container" title="ডেভেলপার প্রোফাইল">
-            <!-- Developer Image inside Round Frame -->
-            <img src="https://i.ibb.co/6P06L78/dev-avatar.jpg" alt="Developer" class="developer-avatar" id="dev-pic" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80'">
+        <div class="developer-avatar-container" title="ডেভেলপার">
+            <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar" id="dev-pic">
         </div>
     </header>
 
@@ -600,7 +600,7 @@
                 </div>
             </div>
 
-            <!-- Products Tab with Image Support -->
+            <!-- Products Tab -->
             <div id="tab-products" class="tab-content">
                 <div class="section-header">
                     <h2>পণ্য তালিকা</h2>
@@ -750,7 +750,7 @@
         </div>
     </nav>
 
-    <!-- Modal: Product Add/Edit with Image Upload Feature -->
+    <!-- Modal: Product Add -->
     <div id="product-modal" class="modal">
         <div class="modal-content">
             <h3>পণ্য যোগ করুন</h3>
@@ -832,7 +832,7 @@
         let selectedBannerImageData = null;
         let selectedProductImageData = null;
         let allOrders = [], allExpenses = [], allRaw = [];
-        const dbName = "MyBusinessHisabDB_FlowerFinalV7";
+        const dbName = "MyBusinessHisabDB_FlowerCleanV8";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -948,7 +948,7 @@
         function saveProduct(e) {
             e.preventDefault();
             addRecord('products', {
-                img: selectedProductImageData || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100&auto=format&fit=crop&q=80',
+                img: selectedProductImageData || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>',
                 name: document.getElementById('prod-name').value,
                 sku: document.getElementById('prod-sku').value,
                 cost: parseFloat(document.getElementById('prod-cost').value),
@@ -1138,7 +1138,7 @@
                 let h = '', totalStk = 0;
                 data.forEach(i => {
                     totalStk += i.stock;
-                    let imgSrc = i.img || 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=100&auto=format&fit=crop&q=80';
+                    let imgSrc = i.img || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>';
                     h += `<tr>
                         <td><img src="${imgSrc}" class="tbl-thumb"></td>
                         <td>${i.sku}</td>
