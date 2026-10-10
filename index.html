@@ -84,7 +84,7 @@
             box-shadow: 0 4px 15px rgba(236,72,153,0.4);
         }
 
-        /* Clean Header */
+        /* Header */
         header {
             background: linear-gradient(135deg, #831843, #9d174d);
             color: white;
@@ -203,7 +203,7 @@
             cursor: pointer;
         }
 
-        /* Dashboard Grid Cards */
+        /* Dashboard Grid */
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
@@ -289,7 +289,18 @@
             cursor: pointer; font-weight: 600; font-size: 13px;
             box-shadow: 0 4px 12px rgba(236,72,153,0.25);
         }
-        .btn-danger { background: linear-gradient(135deg, #ef4444, #dc2626); }
+        .btn-edit {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white; border: none; padding: 5px 10px; border-radius: 8px;
+            font-size: 11px; font-weight: 700; cursor: pointer; margin-right: 4px;
+            box-shadow: 0 2px 6px rgba(59,130,246,0.3);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white; border: none; padding: 5px 10px; border-radius: 8px;
+            font-size: 11px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 2px 6px rgba(239,68,68,0.3);
+        }
 
         .table-container {
             background: white;
@@ -316,70 +327,39 @@
             border: 1px solid var(--border-color);
         }
         .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
-        .form-group { margin-bottom: 16px; }
+        .form-group { margin-bottom: 14px; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #831843; }
-        .form-group input, .form-group select {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%; padding: 12px 14px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13.5px; outline: none; background: #fffdfd;
             transition: all 0.2s;
         }
-        .form-group input:focus { border-color: #db2777; box-shadow: 0 0 0 3px rgba(236,72,153,0.15); }
+        .form-group input:focus, .form-group textarea:focus { border-color: #db2777; box-shadow: 0 0 0 3px rgba(236,72,153,0.15); }
 
-        /* Input field with TK suffix */
         .input-tk-wrapper {
             position: relative;
             display: flex;
             align-items: center;
         }
-        .input-tk-wrapper input {
-            padding-right: 42px;
-        }
+        .input-tk-wrapper input { padding-right: 42px; }
         .input-tk-wrapper .tk-suffix {
-            position: absolute;
-            right: 14px;
-            font-weight: 800;
-            color: #be185d;
-            font-size: 13px;
-            pointer-events: none;
+            position: absolute; right: 14px; font-weight: 800; color: #be185d; font-size: 13px; pointer-events: none;
         }
 
-        /* Attractive Modal Action Buttons */
         .modal-actions {
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-            margin-top: 22px;
-            padding-top: 12px;
-            border-top: 1px solid #fce7f3;
+            display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 12px; border-top: 1px solid #fce7f3;
         }
         .btn-modal-cancel {
             background: linear-gradient(135deg, #ef4444, #dc2626);
-            color: white;
-            border: none;
-            padding: 11px 22px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
-            transition: all 0.2s;
-            display: flex; align-items: center; gap: 6px;
+            color: white; border: none; padding: 11px 22px; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 14px;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35); display: flex; align-items: center; gap: 6px;
         }
-        .btn-modal-cancel:hover { transform: translateY(-1px); opacity: 0.95; }
-
         .btn-modal-save {
             background: linear-gradient(135deg, #ec4899, #be185d);
-            color: white;
-            border: none;
-            padding: 11px 26px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4);
-            transition: all 0.2s;
-            display: flex; align-items: center; gap: 6px;
+            color: white; border: none; padding: 11px 26px; border-radius: 12px;
+            cursor: pointer; font-weight: 700; font-size: 14px;
+            box-shadow: 0 4px 16px rgba(236, 72, 153, 0.4); display: flex; align-items: center; gap: 6px;
         }
-        .btn-modal-save:hover { transform: translateY(-1px); opacity: 0.95; }
 
         /* Mobile Nav */
         .mobile-bottom-nav {
@@ -410,7 +390,7 @@
         </div>
     </div>
 
-    <!-- Clean Header -->
+    <!-- Header -->
     <header>
         <h1>🌸 My Business Hisab</h1>
     </header>
@@ -510,6 +490,22 @@
                 </div>
             </div>
 
+            <!-- Orders Tab -->
+            <div id="tab-orders" class="tab-content">
+                <div class="section-header">
+                    <h2>অর্ডার ও বিক্রি</h2>
+                    <button class="btn" onclick="resetOrderForm(); openModal('order-modal');">+ নতুন অর্ডার</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr><th>তারিখ</th><th>অর্ডার আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>
+                        </thead>
+                        <tbody id="orders-table"></tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Raw Materials Tab -->
             <div id="tab-raw-materials" class="tab-content">
                 <div class="section-header">
@@ -554,22 +550,6 @@
                             <tr><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr>
                         </thead>
                         <tbody id="products-table"></tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Orders Tab -->
-            <div id="tab-orders" class="tab-content">
-                <div class="section-header">
-                    <h2>অর্ডার ও বিক্রি</h2>
-                    <button class="btn" onclick="openModal('order-modal')">+ নতুন অর্ডার</button>
-                </div>
-                <div class="table-container">
-                    <table>
-                        <thead>
-                            <tr><th>অর্ডার আইডি</th><th>ক্রেতা</th><th>তারিখ</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr>
-                        </thead>
-                        <tbody id="orders-table"></tbody>
                     </table>
                 </div>
             </div>
@@ -676,38 +656,66 @@
         </div>
     </nav>
 
-    <!-- Modal 1: Raw Material Form (Category Removed, Custom Placeholders, TK Added & Beautiful Buttons) -->
-    <div id="raw-modal" class="modal">
+    <!-- Modal: Order Form (Customized Order Fields with Edit Feature) -->
+    <div id="order-modal" class="modal">
         <div class="modal-content">
-            <h3>কাঁচামাল কেনা</h3>
-            <form onsubmit="saveRawMaterial(event)">
+            <h3 id="order-modal-title">অর্ডার ও বিক্রি</h3>
+            <form onsubmit="saveOrder(event)">
+                <input type="hidden" id="ord-edit-id">
                 <div class="form-group">
-                    <label>তারিখ</label>
-                    <input type="date" id="raw-date" required>
+                    <label>অর্ডার নম্বর</label>
+                    <input type="text" id="ord-id" required placeholder="যেমন :- #ORD-001">
                 </div>
                 <div class="form-group">
-                    <label>পণ্যের নাম</label>
-                    <input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড, গাম, কার্টুন ইত্যাদি">
+                    <label>কাস্টমারের নাম</label>
+                    <input type="text" id="ord-customer" required placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক">
                 </div>
                 <div class="form-group">
-                    <label>পরিমাণ</label>
-                    <input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস / ৪০টি">
+                    <label>মোবাইল নাম্বার</label>
+                    <input type="text" id="ord-phone" required placeholder="যেমন :- 01603146149">
                 </div>
                 <div class="form-group">
-                    <label>খরচ (TK)</label>
+                    <label>ঠিকানা</label>
+                    <input type="text" id="ord-address" placeholder="যেমন :- পরশুরাম, ফেনী">
+                </div>
+                <div class="form-group">
+                    <label>টাকা (TK)</label>
                     <div class="input-tk-wrapper">
-                        <input type="number" id="raw-cost" required placeholder="যেমন :- 500">
+                        <input type="number" id="ord-amount" required placeholder="1150">
                         <span class="tk-suffix">TK</span>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>সাপ্লায়ার</label>
-                    <input type="text" id="raw-supplier" placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক">
+                    <label>স্ট্যাটাস</label>
+                    <select id="ord-status">
+                        <option value="Pending">Pending</option>
+                        <option value="Delivered">Delivered</option>
+                        <option value="Returned">Returned</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>মন্তব্য / নোট</label>
+                    <textarea id="ord-note" rows="2" placeholder="অর্ডার সংক্রান্ত কোনো মন্তব্য থাকলে লিখুন..."></textarea>
                 </div>
                 <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button>
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button>
                     <button type="submit" class="btn-modal-save">✓ সেভ</button>
                 </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Raw Material Modal -->
+    <div id="raw-modal" class="modal">
+        <div class="modal-content">
+            <h3>কাঁচামাল কেনা</h3>
+            <form onsubmit="saveRawMaterial(event)">
+                <div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div>
+                <div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড, গাম, কার্টুন ইত্যাদি"></div>
+                <div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস / ৪০টি"></div>
+                <div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="যেমন :- 500"><span class="tk-suffix">TK</span></div></div>
+                <div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="যেমন :- মোঃ সাইফুল ইসলাম তারেক"></div>
+                <div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div>
             </form>
         </div>
     </div>
@@ -717,28 +725,17 @@
         <div class="modal-content">
             <h3>⚙️ ব্যানার কাস্টমাইজ করুন</h3>
             <form onsubmit="saveBannerSettings(event)">
-                <div class="form-group">
-                    <label>ব্যবসার স্লোগান</label>
-                    <input type="text" id="input-slogan" required placeholder="আপনার স্লোগান লিখুন">
-                </div>
-                <div class="form-group">
-                    <label>গ্যালারি/প্রোফাইল থেকে ফুলের ছবি বেছে নিন</label>
-                    <input type="file" id="input-bg-file" accept="image/*" onchange="previewBannerImage(event)">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
-                    <button type="submit" class="btn-modal-save">✓ সেভ</button>
-                </div>
+                <div class="form-group"><label>ব্যবসার স্লোগান</label><input type="text" id="input-slogan" required placeholder="আপনার স্লোগান লিখুন"></div>
+                <div class="form-group"><label>গ্যালারি/প্রোফাইল থেকে ফুলের ছবি বেছে নিন</label><input type="file" id="input-bg-file" accept="image/*" onchange="previewBannerImage(event)"></div>
+                <div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div>
             </form>
         </div>
     </div>
 
-    <!-- Other Modals with updated buttons -->
+    <!-- Other Modals -->
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="যেমন :- ফুলের চিরুনি"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="যেমন :- FC-101"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য (TK)</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন এন্ট্রি</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="যেমন :- ফুলের চিরুনি টাইপ ১"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-
-    <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার ও বিক্রি</h3><form onsubmit="saveOrder(event)"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>ক্রেতা</label><input type="text" id="ord-customer" required placeholder="ক্রেতার নাম ও ফোন"></div><div class="form-group"><label>টাকা (TK)</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option>Delivered</option><option>Pending</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার এন্ট্রি</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-12345"></div><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ (TK)</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option>Pending</option><option>Delivered</option><option>Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
@@ -752,7 +749,7 @@
         let db;
         let selectedBannerImageData = null;
         let allOrders = [], allExpenses = [], allRaw = [];
-        const dbName = "MyBusinessHisabDB_FlowerFinalV2";
+        const dbName = "MyBusinessHisabDB_FlowerEditV3";
         const request = indexedDB.open(dbName, 1);
 
         request.onerror = (e) => console.error("DB Error", e);
@@ -837,6 +834,11 @@
             tx.objectStore(storeName).add(data);
             tx.oncomplete = () => { if(cb) cb(); loadAllData(); };
         }
+        function updateRecord(storeName, data, cb) {
+            let tx = db.transaction([storeName], "readwrite");
+            tx.objectStore(storeName).put(data);
+            tx.oncomplete = () => { if(cb) cb(); loadAllData(); };
+        }
         function getAllRecords(storeName, cb) {
             let tx = db.transaction([storeName], "readonly");
             let req = tx.objectStore(storeName).getAll();
@@ -846,6 +848,59 @@
             let tx = db.transaction([storeName], "readwrite");
             tx.objectStore(storeName).delete(id);
             tx.oncomplete = () => loadAllData();
+        }
+
+        /* Reset Order Form */
+        function resetOrderForm() {
+            document.getElementById('ord-edit-id').value = '';
+            document.getElementById('ord-id').value = '';
+            document.getElementById('ord-customer').value = '';
+            document.getElementById('ord-phone').value = '';
+            document.getElementById('ord-address').value = '';
+            document.getElementById('ord-amount').value = '';
+            document.getElementById('ord-status').value = 'Pending';
+            document.getElementById('ord-note').value = '';
+            document.getElementById('order-modal-title').innerText = 'অর্ডার ও বিক্রি এন্ট্রি';
+        }
+
+        /* Order Save or Edit Logic */
+        function saveOrder(e) {
+            e.preventDefault();
+            let editId = document.getElementById('ord-edit-id').value;
+            let data = {
+                orderId: document.getElementById('ord-id').value,
+                customer: document.getElementById('ord-customer').value,
+                phone: document.getElementById('ord-phone').value,
+                address: document.getElementById('ord-address').value,
+                amount: parseFloat(document.getElementById('ord-amount').value),
+                status: document.getElementById('ord-status').value,
+                note: document.getElementById('ord-note').value,
+                date: new Date().toISOString().split('T')[0]
+            };
+
+            if(editId) {
+                data.id = parseInt(editId);
+                updateRecord('orders', data, () => closeModal('order-modal'));
+            } else {
+                addRecord('orders', data, () => closeModal('order-modal'));
+            }
+        }
+
+        /* Edit Order Action */
+        function editOrder(id) {
+            let order = allOrders.find(o => o.id === id);
+            if(order) {
+                document.getElementById('ord-edit-id').value = order.id;
+                document.getElementById('ord-id').value = order.orderId;
+                document.getElementById('ord-customer').value = order.customer;
+                document.getElementById('ord-phone').value = order.phone || '';
+                document.getElementById('ord-address').value = order.address || '';
+                document.getElementById('ord-amount').value = order.amount;
+                document.getElementById('ord-status').value = order.status;
+                document.getElementById('ord-note').value = order.note || '';
+                document.getElementById('order-modal-title').innerText = 'অর্ডার এডিট করুন';
+                openModal('order-modal');
+            }
         }
 
         function saveRawMaterial(e) {
@@ -878,17 +933,6 @@
                 qty: parseInt(document.getElementById('p-qty').value),
                 cost: parseFloat(document.getElementById('p-cost').value)
             }, () => closeModal('prod-modal'));
-        }
-
-        function saveOrder(e) {
-            e.preventDefault();
-            addRecord('orders', {
-                orderId: document.getElementById('ord-id').value,
-                customer: document.getElementById('ord-customer').value,
-                amount: parseFloat(document.getElementById('ord-amount').value),
-                status: document.getElementById('ord-status').value,
-                date: new Date().toISOString().split('T')[0]
-            }, () => closeModal('order-modal'));
         }
 
         function saveCourier(e) {
@@ -993,10 +1037,32 @@
         }
 
         function loadAllData() {
+            getAllRecords('orders', (orders) => {
+                allOrders = orders;
+                let h = '';
+                orders.forEach(i => {
+                    h += `<tr>
+                        <td>${i.date}</td>
+                        <td>${i.orderId}</td>
+                        <td>${i.customer}</td>
+                        <td>${i.phone || '-'}</td>
+                        <td>${i.address || '-'}</td>
+                        <td>৳ ${i.amount} TK</td>
+                        <td>${i.status}</td>
+                        <td>
+                            <button class="btn-edit" onclick="editOrder(${i.id})">এডিট</button>
+                            <button class="btn-danger" onclick="deleteRecord('orders', ${i.id})">মুছুন</button>
+                        </td>
+                    </tr>`;
+                });
+                document.getElementById('orders-table').innerHTML = h || '<tr><td colspan="8" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
+                filterDashboardData();
+            });
+
             getAllRecords('rawMaterials', (data) => {
                 allRaw = data;
                 let h = '';
-                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost} TK</td><td>${i.supplier}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost} TK</td><td>${i.supplier}</td><td><button class="btn-danger" onclick="deleteRecord('rawMaterials', ${i.id})">মুছুন</button></td></tr>`);
                 document.getElementById('raw-materials-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
             });
 
@@ -1004,7 +1070,7 @@
                 let h = '', totalStk = 0;
                 data.forEach(i => {
                     totalStk += i.stock;
-                    h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost} TK</td><td>৳ ${i.price} TK</td><td>${i.stock} পিস</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost} TK</td><td>৳ ${i.price} TK</td><td>${i.stock} পিস</td><td><button class="btn-danger" onclick="deleteRecord('products', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('products-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-total-stock').innerText = `${totalStk} পিস`;
@@ -1012,18 +1078,8 @@
 
             getAllRecords('production', (data) => {
                 let h = '';
-                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${i.cost} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`);
+                data.forEach(i => h += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>উপকরণ ব্যবহার</td><td>৳ ${i.cost} TK</td><td><button class="btn-danger" onclick="deleteRecord('production', ${i.id})">মুছুন</button></td></tr>`);
                 document.getElementById('production-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-            });
-
-            getAllRecords('orders', (orders) => {
-                allOrders = orders;
-                let h = '';
-                orders.forEach(i => {
-                    h += `<tr><td>${i.orderId}</td><td>${i.customer}</td><td>${i.date}</td><td>৳ ${i.amount} TK</td><td>${i.status}</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('orders', ${i.id})">মুছুন</button></td></tr>`;
-                });
-                document.getElementById('orders-table').innerHTML = h || '<tr><td colspan="6" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
-                filterDashboardData();
             });
 
             getAllRecords('courier', (couriers) => {
@@ -1040,7 +1096,7 @@
                 allExpenses = expenses;
                 let h = '';
                 expenses.forEach(i => {
-                    h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn-danger" onclick="deleteRecord('expenses', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('expenses-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 filterDashboardData();
@@ -1051,7 +1107,7 @@
                 cashList.forEach(i => {
                     if(i.type === 'মূলধন যোগ') cashIn += i.amount;
                     else cashIn -= i.amount;
-                    h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn btn-danger" style="padding:4px 8px;font-size:11px;" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`;
+                    h += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount} TK</td><td><button class="btn-danger" onclick="deleteRecord('cash', ${i.id})">মুছুন</button></td></tr>`;
                 });
                 document.getElementById('cash-table').innerHTML = h || '<tr><td colspan="5" style="text-align:center;color:#9ca3af;">কোনো তথ্য নেই</td></tr>';
                 document.getElementById('dash-cash-in-hand').innerText = `৳ ${cashIn}`;
