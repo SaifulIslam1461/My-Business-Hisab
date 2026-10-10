@@ -6,15 +6,11 @@
     <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
     
     <!-- PWA Manifest & App Icon Meta Tags -->
-    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22My%20Business%20Hisab%22%2C%22short_name%22%3A%22Hisab%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fff1f2%22%2C%22theme_color%22%3A%22%23be185d%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww5.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27256%27%20fill%3D%27%23ec4899%27%2F%3E%3Cpath%20d%3D%27M256%20110c-50%200-90%2040-90%2090%200%2040%2030%2075%2070%2085-40%2010-70%2045-70%2085%200%2050%2040%2090%2090%2090s90-40%2090-90c0-40-30-75-70-85%2040-10%2070-45%2070-85%200-50-40-90-90-90z%27%20fill%3D%27%23ffffff%27%2F%3E%3C%2Fsvg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2svg+xml%22%7D%5D%7D">
+    <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22My%20Business%20Hisab%22%2C%22short_name%22%3A%22Hisab%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23fff1f2%22%2C%22theme_color%22%3A%22%23be185d%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Butf8%2C%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20512%20512%27%3E%3Ccircle%20cx%3D%27256%27%20cy%3D%27256%27%20r%3D%27256%27%20fill%3D%27%23ec4899%27%2F%3E%3Cpath%20d%3D%27M256%20110c-50%200-90%2040-90%2090%200%2040%2030%2075%2070%2085-40%2010-70%2045-70%2085%200%2050%2040%2090%2090%2090s90-40%2090-90c0-40-30-75-70-85%2040-10%2070-45%2070-85%200-50-40-90-90-90z%27%20fill%3D%27%23ffffff%27%2F%3E%3C%2Fsvg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg+xml%22%7D%5D%7D">
     <meta name="theme-color" content="#be185d">
 
     <!-- External Libraries for PDF Generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
-    <!-- Firebase SDK for Online Sync (Admin & Auth) -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
     <style>
         :root {
@@ -153,10 +149,10 @@
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
 
-        /* PWA Install Banner at Bottom */
+        /* PWA Install Banner Notice */
         #pwa-install-banner {
             position: fixed; bottom: 65px; left: 15px; right: 15px; background: #831843; color: white; padding: 12px 16px;
-            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 999; display: none; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
+            border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); z-index: 999; display: flex; align-items: center; justify-content: space-between; border: 1.5px solid #f472b6;
         }
         #pwa-install-banner p { font-size: 13px; color: #fbcfe8; }
         #pwa-install-banner button { background: #ec4899; color: white; border: none; padding: 8px 14px; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 13px; }
@@ -251,7 +247,7 @@
                     <h2 id="banner-title">My Business Hisab</h2>
                     <p id="banner-slogan">"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"</p>
                 </div>
-                <button class="banner-settings-btn" onclick="openModal('banner-modal')" title="পাসওয়ার্ড কাস্টমাইজ ও সেটিংস">⚙️</button>
+                <button class="banner-settings-btn" onclick="openModal('banner-modal')" title="সেটিংস ও কাস্টমাইজেশন">⚙️</button>
             </div>
 
             <!-- Dashboard Tab -->
@@ -306,11 +302,17 @@
             <div id="tab-products" class="tab-content"><div class="section-header"><h2>পণ্য তালিকা</h2><button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button></div><div class="table-container"><table><thead><tr><th>ছবি</th><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th></tr></thead><tbody id="products-table"></tbody></table></div></div>
             <div id="tab-production" class="tab-content"><div class="section-header"><h2>উৎপাদন ও স্টক</h2><button class="btn" onclick="openModal('prod-modal')">+ নতুন উৎপাদন</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>পণ্য</th><th>পরিমাণ</th><th>খরচ</th></tr></thead><tbody id="production-table"></tbody></table></div></div>
             <div id="tab-courier" class="tab-content"><div class="section-header"><h2>Steadfast কুরিয়ার</h2><button class="btn" onclick="openModal('courier-modal')">+ কুরিয়ার এন্ট্রি</button></div><div class="table-container"><table><thead><tr><th>পার্সেল আইডি</th><th>অর্ডার</th><th>COD</th><th>চার্জ</th><th>স্ট্যাটাস</th><th>পাওনা</th></tr></thead><tbody id="courier-table"></tbody></table></div></div>
-            <div id="tab-expenses" class="tab-content"><div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>ক্যাটাগরি</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead><tbody id="expenses-table"></tbody></table></div></div>
+            
+            <!-- Expenses Tab -->
+            <div id="tab-expenses" class="tab-content">
+                <div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>ক্যাটাগরি</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead><tbody id="expenses-table"></tbody></table></div>
+            </div>
+
             <div id="tab-cash" class="tab-content"><div class="section-header"><h2>নগদ ও মূলধন</h2><button class="btn" onclick="openModal('cash-modal')">+ এন্ট্রি যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>টাইপ</th><th>বিবরণ</th><th>পরিমাণ</th></tr></thead><tbody id="cash-table"></tbody></table></div></div>
             <div id="tab-dues" class="tab-content"><div class="section-header"><h2>পাওনা ও দেনা</h2><button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা</button></div><div class="table-container"><table><thead><tr><th>নাম</th><th>ধরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th></tr></thead><tbody id="dues-table"></tbody></table></div></div>
 
-            <!-- Reports Tab with Custom PDF Download Options -->
+            <!-- Reports Tab -->
             <div id="tab-reports" class="tab-content">
                 <div class="section-header">
                     <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2>
@@ -330,16 +332,10 @@
                     <button class="btn-outline" style="flex:1; padding: 14px; font-size:15px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
                 </div>
 
-                <!-- Printable Hidden Area for PDF Generation -->
                 <div id="pdf-report-container" style="background: white; padding: 25px; border-radius: var(--radius); border: 1px solid var(--border-color); display:none;">
                     <h2 style="color: #be185d; text-align: center; margin-bottom: 5px;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
                     <p id="pdf-report-subtitle" style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px;"></p>
                     <div id="pdf-report-content"></div>
-                </div>
-
-                <div style="background: white; padding: 20px; border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--border-color);">
-                    <h3 style="color: #831843; margin-bottom: 10px;">সার্বিক আর্থিক সারসংক্ষেপ</h3>
-                    <p style="color: var(--text-muted); font-size: 13px;">উপরের বাটনগুলোতে ক্লিক করে আপনার পছন্দমতো ফিন্যান্সিয়াল বা ইনভেন্টরি পিডিএফ সরাসরি ডাউনলোড করে নিতে পারবেন।</p>
                 </div>
             </div>
         </main>
@@ -382,14 +378,18 @@
         </div>
     </div>
 
-    <!-- Banner Settings Modal (User Password Customization & Slogan) -->
+    <!-- Banner Settings Modal (Customization & Password) -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
-            <h3>⚙️ অ্যাকাউন্ট ও ব্যানার সেটিংস</h3>
+            <h3>⚙️ ব্যানার, অ্যাকাউন্ট ও খরচ খাত সেটিংস</h3>
             <form onsubmit="saveBannerSettings(event)">
                 <div class="form-group">
-                    <label>ব্যবসার স্লোগান</label>
+                    <label>ব্যবসার স্লোগান (ব্যানার কাস্টমাইজ)</label>
                     <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
+                </div>
+                <div class="form-group">
+                    <label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে আলাদা করুন)</label>
+                    <input type="text" id="input-expense-categories" placeholder="যেমন: Facebook Boosting, যাতায়াত, বিদ্যুৎ বিল">
                 </div>
                 <hr style="margin:15px 0; border:0; border-top:1px solid #fce7f3;">
                 <h4 style="color:#be185d; margin-bottom:10px; font-size:15px;">🔑 নিজস্ব পাসওয়ার্ড পরিবর্তন করুন:</h4>
@@ -405,9 +405,9 @@
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Other Modals -->
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><select id="exp-cat"><option value="Facebook Boosting">Facebook Boosting</option><option value="যাতায়াত">যাতায়াত</option><option value="অন্যান্য">অন্যান্য</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার</h3><form onsubmit="saveOrder(event)"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="পণ্য"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
@@ -451,9 +451,20 @@
             if (devImg) document.getElementById('header-dev-img').src = devImg;
             document.getElementById('banner-slogan').innerText = slogan;
             document.getElementById('input-slogan').value = slogan;
-
+            
+            loadExpenseCategories();
             checkAuthSession();
             loadAllData();
+        }
+
+        function loadExpenseCategories() {
+            let cats = JSON.parse(localStorage.getItem('app_expense_categories') || '["Facebook Boosting", "যাতায়াত", "অন্যান্য"]');
+            document.getElementById('input-expense-categories').value = cats.join(', ');
+            let selectEl = document.getElementById('exp-cat');
+            selectEl.innerHTML = '';
+            cats.forEach(c => {
+                selectEl.innerHTML += `<option value="${c}">${c}</option>`;
+            });
         }
 
         function checkAuthSession() {
@@ -711,10 +722,16 @@
         function saveBannerSettings(e) {
             e.preventDefault();
             let newSlogan = document.getElementById('input-slogan').value.trim();
+            let newCats = document.getElementById('input-expense-categories').value.split(',').map(c => c.trim()).filter(c => c.length > 0);
             let newPass = document.getElementById('user-new-pass').value.trim();
 
             localStorage.setItem('banner_slogan', newSlogan);
             document.getElementById('banner-slogan').innerText = newSlogan;
+
+            if (newCats.length > 0) {
+                localStorage.setItem('app_expense_categories', JSON.stringify(newCats));
+                loadExpenseCategories();
+            }
 
             if (newPass.length > 0) {
                 let loggedUser = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
@@ -725,11 +742,9 @@
                     let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
                     usersList = usersList.map(u => u.phone === loggedUser.phone ? loggedUser : u);
                     localStorage.setItem('registered_app_users', JSON.stringify(usersList));
-                    alert("✅ আপনার স্লোগান ও নতুন পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!");
                 }
-            } else {
-                alert("✅ স্লোগান সফলভাবে আপডেট হয়েছে!");
             }
+            alert("✅ সেটিংস সফলভাবে আপডেট হয়েছে!");
             closeModal('banner-modal');
         }
 
