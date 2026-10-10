@@ -41,29 +41,6 @@
 
         body { display: flex; flex-direction: column; }
 
-        /* Floating Direct App Install Button */
-        #direct-app-install-btn {
-            position: fixed;
-            bottom: 75px;
-            right: 15px;
-            background: linear-gradient(135deg, #be185d, #ec4899);
-            color: white;
-            border: 2px solid #ffffff;
-            padding: 10px 16px;
-            border-radius: 30px;
-            box-shadow: 0 8px 20px rgba(190, 24, 93, 0.4);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
-        #direct-app-install-btn:active { transform: scale(0.95); }
-        #direct-app-install-btn svg { width: 18px; height: 18px; fill: white; }
-
         /* Auth Screen */
         #auth-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -98,28 +75,31 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 12px 20px;
+            background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 10px 16px;
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3); position: sticky; top: 0; z-index: 100;
         }
-        header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        header h1 { font-size: 17px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         .header-profile-group { display: flex; align-items: center; gap: 8px; }
         
         .admin-lock-btn, .logout-btn {
             background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fbcfe8;
-            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px;
+            transition: background 0.2s ease;
         }
-        .logout-btn:hover { background: rgba(220, 38, 38, 0.6); }
-        .developer-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
+        .logout-btn { background: rgba(220, 38, 38, 0.4); border-color: #f87171; }
+        .logout-btn:active { background: rgba(220, 38, 38, 0.8); }
+
+        .developer-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
         /* Banner */
         .flower-banner {
             position: relative; 
             background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
-            color: white; padding: 22px 18px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
+            color: white; padding: 20px 16px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
         }
-        .banner-text h2 { font-size: 20px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .banner-text p { font-size: 12px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
-        .banner-settings-btn { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.4); color: white; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; }
+        .banner-text h2 { font-size: 19px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .banner-text p { font-size: 11.5px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
+        .banner-settings-btn { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.4); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; }
 
         .app-container { display: flex; flex: 1; overflow: hidden; }
         sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
@@ -137,6 +117,89 @@
         
         .tab-content { display: none; }
         .tab-content.active { display: block; }
+
+        /* Mobile Extra Features Grid Layout */
+        .mobile-quick-features {
+            margin-top: 25px;
+            background: white;
+            padding: 18px 15px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+        .mobile-quick-features h3 {
+            font-size: 14px;
+            color: #831843;
+            margin-bottom: 12px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .feature-grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .feature-card-btn {
+            background: linear-gradient(135deg, #fff0f5, #fce7f3);
+            border: 1px solid #f472b6;
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.2s ease;
+        }
+        .feature-card-btn:active {
+            transform: scale(0.96);
+            background: #fbcfe8;
+        }
+        .feature-card-btn .feat-icon {
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .feature-card-btn .feat-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: #831843;
+        }
+
+        /* Mobile Direct Install App Card */
+        .mobile-install-app-card {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #be185d, #ec4899);
+            color: white;
+            padding: 15px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 8px 20px rgba(190, 24, 93, 0.3);
+            cursor: pointer;
+        }
+        .mobile-install-app-card:active { transform: scale(0.98); }
+        .install-card-left { display: flex; align-items: center; gap: 12px; }
+        .install-card-left .inst-icon { font-size: 26px; }
+        .install-card-left h4 { font-size: 14px; font-weight: 800; }
+        .install-card-left p { font-size: 10.5px; color: #fbcfe8; margin-top: 2px; }
+        .install-card-btn-badge {
+            background: white;
+            color: #be185d;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 800;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
 
         /* Dashboard */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
@@ -197,30 +260,14 @@
         .mobile-nav-item.active { color: var(--primary-rose); font-weight: 700; }
         .mobile-nav-item svg { width: 20px; height: 20px; display: block; margin: 0 auto 2px; }
 
-        /* Responsive Fixes for Mobile */
         @media (max-width: 768px) {
-            sidebar { 
-                position: fixed; 
-                left: -260px; 
-                top: 57px; 
-                height: calc(100% - 57px); 
-                z-index: 999; 
-                transition: left 0.3s ease; 
-                box-shadow: 5px 0 15px rgba(0,0,0,0.1);
-            }
-            sidebar.mobile-open { left: 0; }
+            sidebar { display: none; }
             .mobile-bottom-nav { display: flex; }
-            main { padding-bottom: 90px; }
+            main { padding-bottom: 85px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- Floating Direct App Install Button -->
-    <button id="direct-app-install-btn" onclick="executeAppInstall()">
-        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-        <span>ইনস্টল অ্যাপ</span>
-    </button>
 
     <!-- Auth Screen -->
     <div id="auth-screen">
@@ -255,10 +302,7 @@
 
     <!-- Header -->
     <header>
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <button class="admin-lock-btn" onclick="toggleMobileMenu()" title="মেনু" style="display:flex; md:display:none;">☰</button>
-            <h1 id="app-header-title">🌸 My Business Hisab</h1>
-        </div>
+        <h1 id="app-header-title">🌸 My Business Hisab</h1>
         <div class="header-profile-group">
             <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
@@ -268,7 +312,7 @@
 
     <!-- App Main Layout -->
     <div class="app-container">
-        <sidebar id="app-sidebar">
+        <sidebar>
             <ul class="nav-links">
                 <li class="active" onclick="switchTab('dashboard', this)">📊 ড্যাশবোর্ড</li>
                 <li onclick="switchTab('orders', this)">🛒 অর্ডার ও বিক্রি</li>
@@ -283,7 +327,7 @@
             </ul>
         </sidebar>
 
-        <main onclick="closeMobileMenuOnOutsideClick()">
+        <main>
             <div class="flower-banner" id="main-banner">
                 <div class="banner-text">
                     <h2 id="banner-title">My Business Hisab</h2>
@@ -369,28 +413,65 @@
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
-                    <button class="btn" style="flex:1; padding: 14px; font-size:15px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার টোটাল হিসাব (PDF)</button>
-                    <button class="btn-outline" style="flex:1; padding: 14px; font-size:15px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 15px;">
+                    <button class="btn" style="flex:1; padding: 12px; font-size:14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
+                    <button class="btn-outline" style="flex:1; padding: 12px; font-size:14px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
                 </div>
 
-                <div id="pdf-report-container" style="background: white; padding: 25px; border-radius: var(--radius); border: 1px solid var(--border-color); display:none;">
+                <div id="pdf-report-container" style="background: white; padding: 20px; border-radius: var(--radius); border: 1px solid var(--border-color); display:none;">
                     <h2 style="color: #be185d; text-align: center; margin-bottom: 5px;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
                     <p id="pdf-report-subtitle" style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px;"></p>
                     <div id="pdf-report-content"></div>
                 </div>
             </div>
+
+            <!-- 🌸 Mobile Extra Features & Install App Container 🌸 -->
+            <div class="mobile-quick-features">
+                <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
+                <div class="feature-grid-container">
+                    <div class="feature-card-btn" onclick="switchTab('production')">
+                        <div class="feat-icon">⚙️</div>
+                        <div class="feat-title">উৎপাদন ও স্টক</div>
+                    </div>
+                    <div class="feature-card-btn" onclick="switchTab('courier')">
+                        <div class="feat-icon">🚚</div>
+                        <div class="feat-title">কুরিয়ার (Steadfast)</div>
+                    </div>
+                    <div class="feature-card-btn" onclick="switchTab('cash')">
+                        <div class="feat-icon">💰</div>
+                        <div class="feat-title">নগদ ও মূলধন</div>
+                    </div>
+                    <div class="feature-card-btn" onclick="switchTab('dues')">
+                        <div class="feat-icon">📒</div>
+                        <div class="feat-title">পাওনা ও দেনা</div>
+                    </div>
+                    <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
+                        <div class="feat-icon">💸</div>
+                        <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
+                    </div>
+                </div>
+
+                <!-- Install App Direct Card -->
+                <div class="mobile-install-app-card" onclick="executeAppInstall()">
+                    <div class="install-card-left">
+                        <div class="inst-icon">📲</div>
+                        <div>
+                            <h4>অ্যাপ ইনস্টল করুন</h4>
+                            <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
+                        </div>
+                    </div>
+                    <div class="install-card-btn-badge">ইনস্টল</div>
+                </div>
+            </div>
         </main>
     </div>
 
-    <!-- Mobile Navigation Bar with All Options -->
+    <!-- Mobile Bottom Navigation -->
     <nav class="mobile-bottom-nav">
         <div class="mobile-nav-item active" onclick="switchTab('dashboard', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>ড্যাশবোর্ড</div>
         <div class="mobile-nav-item" onclick="switchTab('orders', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>অর্ডার</div>
-        <div class="mobile-nav-item" onclick="switchTab('production', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle></svg>উৎপাদন</div>
-        <div class="mobile-nav-item" onclick="switchTab('courier', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon></svg>কুরিয়ার</div>
-        <div class="mobile-nav-item" onclick="switchTab('cash', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>নগদ</div>
-        <div class="mobile-nav-item" onclick="switchTab('dues', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>পাওনা</div>
+        <div class="mobile-nav-item" onclick="switchTab('raw-materials', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>কাঁচামাল</div>
+        <div class="mobile-nav-item" onclick="switchTab('products', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"></path></svg>পণ্য</div>
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
@@ -465,7 +546,7 @@
         </div>
     </div>
 
-    <!-- Other Modals -->
+    <!-- Modals Form Inputs -->
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
@@ -482,18 +563,6 @@
             });
         }
 
-        function toggleMobileMenu() {
-            let sidebar = document.getElementById('app-sidebar');
-            sidebar.classList.toggle('mobile-open');
-        }
-
-        function closeMobileMenuOnOutsideClick() {
-            let sidebar = document.getElementById('app-sidebar');
-            if (window.innerWidth <= 768 && sidebar.classList.contains('mobile-open')) {
-                sidebar.classList.remove('mobile-open');
-            }
-        }
-
         function handleLogout() {
             if (confirm("আপনি কি অ্যাপ থেকে বের হতে চান? বের হলে পরবর্তীতে পাসওয়ার্ড দিয়ে লগইন করতে হবে।")) {
                 localStorage.removeItem('current_logged_user');
@@ -503,40 +572,20 @@
         }
 
         let deferredPrompt = null;
-        const installBtn = document.getElementById('direct-app-install-btn');
-
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPrompt = e;
-            checkAppModeAndToggleBtn();
         });
-
-        function checkAppModeAndToggleBtn() {
-            let isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-            if (isStandalone) {
-                if (installBtn) installBtn.style.display = 'none';
-            } else {
-                if (installBtn) installBtn.style.display = 'flex';
-            }
-        }
 
         async function executeAppInstall() {
             if (deferredPrompt) {
                 deferredPrompt.prompt();
                 let { outcome } = await deferredPrompt.userChoice;
-                if (outcome === 'accepted') {
-                    if (installBtn) installBtn.style.display = 'none';
-                }
                 deferredPrompt = null;
             } else {
-                alert("📲 সরাসরি ইনস্টল ডায়ালগ পেতে আপনার ক্রোম ব্রাউজারের উপরে ডান কোণায় থাকা ৩-ডটে (⋮) চাপ দিয়ে 'Install app' বা 'Add to Home screen' ক্লিক করুন।");
+                alert("📲 ব্রাউজারের ওপরের ৩-ডটে (⋮) ট্যাপ করে 'Install App' বা 'Add to Home screen' ক্লিক করুন।");
             }
         }
-
-        window.addEventListener('appinstalled', () => {
-            if (installBtn) installBtn.style.display = 'none';
-            deferredPrompt = null;
-        });
 
         function changeAppIcon(e) {
             let file = e.target.files[0];
@@ -572,7 +621,6 @@
             loadExpenseCategories();
             checkAuthSession();
             loadAllData();
-            checkAppModeAndToggleBtn();
         }
 
         function previewCustomBanner(e) {
@@ -592,9 +640,7 @@
             document.getElementById('input-expense-categories').value = cats.join(', ');
             let selectEl = document.getElementById('exp-cat');
             selectEl.innerHTML = '';
-            cats.forEach(c => {
-                selectEl.innerHTML += `<option value="${c}">${c}</option>`;
-            });
+            cats.forEach(c => { selectEl.innerHTML += `<option value="${c}">${c}</option>`; });
         }
 
         function checkAuthSession() {
@@ -732,8 +778,7 @@
                 document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
                 el.classList.add('active');
             }
-            let sidebar = document.getElementById('app-sidebar');
-            if(sidebar.classList.contains('mobile-open')) sidebar.classList.remove('mobile-open');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function openModal(id) {
