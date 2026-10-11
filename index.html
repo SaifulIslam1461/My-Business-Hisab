@@ -145,7 +145,7 @@
         .btn-delete-tbl { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
-        .modal-content { background: white; padding: 22px; border-radius: 20px; width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
+        .modal-content { background: white; padding: 22px; border-radius: 20px; width: 92%; max-width: 520px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
         .modal-content h3 { color: #831843; margin-bottom: 16px; font-size: 18px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
         .form-group { margin-bottom: 12px; position: relative; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 12.5px; color: #831843; }
@@ -156,6 +156,9 @@
         .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 10px; border-top: 1px solid #fce7f3; }
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
+
+        .admin-box-card { background: #fff5f8; border: 1px solid #fbcfe8; border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+        .admin-box-card h4 { color: #831843; font-size: 13.5px; margin-bottom: 8px; font-weight: 800; }
 
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .mobile-nav-item { text-align: center; font-size: 10px; color: var(--text-muted); cursor: pointer; }
@@ -207,9 +210,9 @@
 
     <!-- Header -->
     <header>
-        <h1>🌸 My Business Hisab</h1>
+        <h1 id="app-header-title">🌸 My Business Hisab</h1>
         <div class="header-profile-group">
-            <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
+            <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন সিকিউরিটি প্যানেল (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
             <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="User" class="developer-avatar">
         </div>
@@ -371,17 +374,66 @@
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
-    <!-- Admin Security Modal -->
+    <!-- FULLY FIXED ADMIN PANEL MODAL -->
     <div id="admin-modal" class="modal">
         <div class="modal-content">
-            <h3>🔐 এডমিন প্যানেল</h3>
-            <div class="form-group">
-                <label>পাসওয়ার্ড দিন</label>
-                <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
+            <h3>🔐 এডমিন সিকিউরিটি প্যানেল</h3>
+            
+            <!-- Admin Login View -->
+            <div id="admin-login-view">
+                <div class="form-group">
+                    <label>সিক্রেট পাসওয়ার্ড দিন</label>
+                    <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
+                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('admin-pass-input', this)">👁️</span>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button>
+                    <button type="button" class="btn-modal-save" onclick="verifyAdminPass()">আনলক করুন</button>
+                </div>
             </div>
-            <div class="modal-actions">
-                <button type="button" class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button>
-                <button type="button" class="btn-modal-save" onclick="verifyAdminPass()">আনলক</button>
+
+            <!-- Admin Dashboard View (Opens on correct password) -->
+            <div id="admin-dashboard-view" style="display:none;">
+                <div class="admin-box-card">
+                    <h4>👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
+                    <div style="max-height:130px; overflow-y:auto; background:#fff; border-radius:10px; padding:6px; border:1px solid #fbcfe8;">
+                        <table style="width:100%; font-size:12px;">
+                            <thead><tr style="background:#fff1f2;"><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead>
+                            <tbody id="user-list-table"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="admin-box-card">
+                    <h4>⚙️ কাস্টমাইজেশন সেটিংস:</h4>
+                    <div class="form-group">
+                        <label>অ্যাপের টাইটেল</label>
+                        <input type="text" id="admin-custom-title" placeholder="🌸 My Business Hisab">
+                    </div>
+                    <div class="form-group">
+                        <label>ব্যবসার স্লোগান</label>
+                        <input type="text" id="admin-custom-slogan" placeholder="স্লোগান লিখুন">
+                    </div>
+                    <button type="button" class="btn" style="width:100%; font-size:13px;" onclick="saveAdminCustomizations()">✓ সেটিংস আপডেট করুন</button>
+                </div>
+
+                <div class="admin-box-card">
+                    <h4>🔑 এডমিন সিকিউরিটি ও প্রোফাইল:</h4>
+                    <div class="form-group">
+                        <label>নতুন এডমিন পাসওয়ার্ড</label>
+                        <input type="password" id="new-admin-pass" placeholder="নতুন পাসওয়ার্ড দিন">
+                    </div>
+                    <button type="button" class="btn" style="width:100%; margin-bottom:10px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
+
+                    <div class="form-group">
+                        <label>এডমিন/ডেভেলপার ছবি</label>
+                        <input type="file" id="admin-dev-img-file" accept="image/*" onchange="changeDeveloperAvatar(event)" style="background:#fff; padding:6px;">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('admin-modal')">বন্ধ করুন</button>
+                </div>
             </div>
         </div>
     </div>
@@ -410,7 +462,7 @@
 
     <div id="production-modal" class="modal"><div class="modal-content"><h3 id="production-modal-title">উৎপাদন</h3><form onsubmit="saveProduction(event)"><input type="hidden" id="p-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('production-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <div id="courier-modal" class="modal"><div class="modal-content"><h3 id="courier-modal-title">কুরিয়ার</h3><form onsubmit="saveCourier(event)"><input type="hidden" id="courier-edit-id"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option value="Pending">Pending</option><option value="Delivered">Delivered</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    <div id="courier-modal" class="modal"><div class="modal-content"><h3 id="courier-modal-title">কুরিয়ার</h3><form onsubmit="saveCourier(event)"><input type="hidden" id="courier-edit-id"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <div id="expense-modal" class="modal"><div class="modal-content"><h3 id="expense-modal-title">অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><input type="hidden" id="exp-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><input type="text" id="exp-cat" placeholder="Facebook Boosting, যাতায়াত"></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2"></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
@@ -483,14 +535,72 @@
             }
         }
 
-        function openAdminModal() { openModal('admin-modal'); }
+        /* FIXED ADMIN PANEL FUNCTIONS */
+        function openAdminModal() {
+            document.getElementById('admin-login-view').style.display = 'block';
+            document.getElementById('admin-dashboard-view').style.display = 'none';
+            document.getElementById('admin-pass-input').value = '';
+            openModal('admin-modal');
+        }
+
         function verifyAdminPass() {
             let val = document.getElementById('admin-pass-input').value;
             let currentAdminPass = localStorage.getItem('app_admin_pass') || '1234';
             if (val === currentAdminPass) {
-                alert("✅ এডমিন প্যানেল আনলক হয়েছে!");
-                closeModal('admin-modal');
+                document.getElementById('admin-login-view').style.display = 'none';
+                document.getElementById('admin-dashboard-view').style.display = 'block';
+                loadAdminUserData();
+                document.getElementById('admin-custom-title').value = localStorage.getItem('app_custom_title') || '🌸 My Business Hisab';
+                document.getElementById('admin-custom-slogan').value = localStorage.getItem('app_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
             } else { alert("❌ ভুল পাসওয়ার্ড!"); }
+        }
+
+        function loadAdminUserData() {
+            let user = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
+            let tbody = document.getElementById('user-list-table');
+            if (user.name) {
+                tbody.innerHTML = `<tr><td>${user.name}</td><td>${user.phone}</td><td>${user.pass}</td></tr>`;
+            } else {
+                tbody.innerHTML = `<tr><td colspan="3">কোনো নিবন্ধিত ইউজার নেই</td></tr>`;
+            }
+        }
+
+        function saveAdminCustomizations() {
+            let title = document.getElementById('admin-custom-title').value.trim();
+            let slogan = document.getElementById('admin-custom-slogan').value.trim();
+            if (title) {
+                localStorage.setItem('app_custom_title', title);
+                document.getElementById('app-header-title').innerText = title;
+                document.getElementById('banner-title').innerText = title;
+            }
+            if (slogan) {
+                localStorage.setItem('app_slogan', slogan);
+                document.getElementById('banner-slogan').innerText = slogan;
+            }
+            alert("✅ কাস্টমাইজেশন আপডেট হয়েছে!");
+        }
+
+        function updateAdminPassword() {
+            let newPass = document.getElementById('new-admin-pass').value.trim();
+            if (newPass) {
+                localStorage.setItem('app_admin_pass', newPass);
+                alert("✅ এডমিন পাসওয়ার্ড আপডেট হয়েছে!");
+                document.getElementById('new-admin-pass').value = '';
+            } else alert("নতুন পাসওয়ার্ড লিখুন!");
+        }
+
+        function changeDeveloperAvatar(e) {
+            let file = e.target.files[0];
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function(evt) {
+                    let avatar = evt.target.result;
+                    document.getElementById('header-dev-img').src = avatar;
+                    localStorage.setItem('app_dev_avatar', avatar);
+                    alert("ছবি আপডেট হয়েছে!");
+                }
+                reader.readAsDataURL(file);
+            }
         }
 
         function openBannerModal() {
@@ -521,7 +631,14 @@
             checkAuthSession();
             renderAllLocalData();
             let slogan = localStorage.getItem('app_slogan');
+            let title = localStorage.getItem('app_custom_title');
+            let avatar = localStorage.getItem('app_dev_avatar');
             if(slogan) document.getElementById('banner-slogan').innerText = slogan;
+            if(title) {
+                document.getElementById('app-header-title').innerText = title;
+                document.getElementById('banner-title').innerText = title;
+            }
+            if(avatar) document.getElementById('header-dev-img').src = avatar;
         };
 
         function switchTab(tabId, el) {
