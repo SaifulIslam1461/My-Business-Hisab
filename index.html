@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌸 My Business Hisab — ফুলের চিরুনি ব্যবসা</title>
+    <title>🌸 My Business Hisab — কাস্টমাইজড এডমিন সিস্টেম</title>
     
     <link rel="manifest" href="manifest.json">
+    <link id="dynamic-favicon" rel="icon" type="image/png" href="https://via.placeholder.com/64/be185d/ffffff?text=App">
     <meta name="theme-color" content="#be185d">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,6 +22,7 @@
             --accent-green: #059669;
             --accent-red: #dc2626;
             --accent-orange: #d97706;
+            --header-bg: linear-gradient(135deg, #831843, #9d174d);
             --bg-gradient: linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #f3e8ff 100%);
             --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #1f2937;
@@ -77,10 +79,12 @@
 
         /* Header */
         header {
-            background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 10px 16px;
+            background: var(--header-bg); color: white; padding: 10px 16px;
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3); position: sticky; top: 0; z-index: 100;
+            transition: background 0.3s ease;
         }
         header h1 { font-size: 17px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
+        .header-app-icon { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; background: #fff; border: 1.5px solid #f472b6; }
         .header-profile-group { display: flex; align-items: center; gap: 8px; }
         
         .admin-lock-btn, .logout-btn {
@@ -98,7 +102,6 @@
         }
         .banner-text h2 { font-size: 19px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
         .banner-text p { font-size: 11.5px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
-        .banner-settings-btn { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.4); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; }
 
         .app-container { display: flex; flex: 1; overflow: hidden; }
         sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
@@ -110,27 +113,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Mobile Quick Features */
-        .mobile-quick-features {
-            margin-top: 20px; background: white; padding: 18px 15px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow);
-        }
-        .mobile-quick-features h3 { font-size: 14px; color: #831843; margin-bottom: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
-        .feature-grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
-        .feature-card-btn {
-            background: linear-gradient(135deg, #fff0f5, #fce7f3); border: 1px solid #f472b6; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer;
-        }
-        .feature-card-btn .feat-icon { font-size: 20px; width: 36px; height: 36px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-        .feature-card-btn .feat-title { font-size: 12px; font-weight: 700; color: #831843; }
-
-        .mobile-install-app-card {
-            margin-top: 15px; background: linear-gradient(135deg, #be185d, #ec4899); color: white; padding: 15px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
-        }
-        .install-card-left { display: flex; align-items: center; gap: 12px; }
-        .install-card-left h4 { font-size: 14px; font-weight: 800; }
-        .install-card-left p { font-size: 10.5px; color: #fbcfe8; }
-        .install-card-btn-badge { background: white; color: #be185d; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; }
-
-        /* Dashboard & UI Elements */
+        /* Dashboard Cards & Layout */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
@@ -172,7 +155,7 @@
         .btn-delete-tbl { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
-        .modal-content { background: white; padding: 25px; border-radius: 22px; width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
+        .modal-content { background: white; padding: 25px; border-radius: 22px; width: 92%; max-width: 520px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
         .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
         .form-group { margin-bottom: 14px; position: relative; }
         .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #831843; }
@@ -180,11 +163,14 @@
         .input-tk-wrapper { position: relative; display: flex; align-items: center; }
         .input-tk-wrapper input { padding-right: 42px; }
         .input-tk-wrapper .tk-suffix { position: absolute; right: 14px; font-weight: 800; color: #be185d; font-size: 13px; pointer-events: none; }
-        .img-preview-box { width: 100%; height: 100px; border: 2px dashed #ec4899; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-top: 8px; background: #fdf2f8; overflow: hidden; }
+        .img-preview-box { width: 100%; height: 90px; border: 2px dashed #ec4899; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-top: 8px; background: #fdf2f8; overflow: hidden; }
         .img-preview-box img { width: 100%; height: 100%; object-fit: cover; }
         .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 12px; border-top: 1px solid #fce7f3; }
         .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
         .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
+
+        .admin-section-box { background: #fff5f8; border: 1px solid #fbcfe8; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .admin-section-box h4 { color: #831843; font-size: 14px; margin-bottom: 10px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
 
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .mobile-nav-item { text-align: center; font-size: 10px; color: var(--text-muted); cursor: pointer; }
@@ -240,10 +226,13 @@
     </div>
 
     <!-- Header -->
-    <header>
-        <h1 id="app-header-title">🌸 My Business Hisab</h1>
+    <header id="main-header">
+        <h1 id="app-header-title">
+            <img id="header-app-logo" class="header-app-icon" src="https://via.placeholder.com/64/be185d/ffffff?text=App" alt="Icon">
+            <span id="header-title-text">🌸 My Business Hisab</span>
+        </h1>
         <div class="header-profile-group">
-            <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
+            <button class="admin-lock-btn" onclick="openAdminModal()" title="সেন্ট্রাল এডমিন সিকিউরিটি ও কাস্টমাইজেশন (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
             <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
         </div>
@@ -272,7 +261,6 @@
                     <h2 id="banner-title">My Business Hisab</h2>
                     <p id="banner-slogan">"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"</p>
                 </div>
-                <button class="banner-settings-btn" onclick="openModal('banner-modal')" title="সেটিংস ও কাস্টমাইজেশন">⚙️</button>
             </div>
 
             <!-- Dashboard Tab -->
@@ -297,43 +285,6 @@
                     <div class="card orange"><div class="card-header-box"><h3>কুরিয়ারে পাওনা</h3><div class="card-icon">🚚</div></div><div class="value" id="dash-courier-due">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
-
-                <div class="mobile-quick-features">
-                    <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
-                    <div class="feature-grid-container">
-                        <div class="feature-card-btn" onclick="switchTab('production')">
-                            <div class="feat-icon">⚙️</div>
-                            <div class="feat-title">উৎপাদন ও স্টক</div>
-                        </div>
-                        <div class="feature-card-btn" onclick="switchTab('courier')">
-                            <div class="feat-icon">🚚</div>
-                            <div class="feat-title">কুরিয়ার (Steadfast)</div>
-                        </div>
-                        <div class="feature-card-btn" onclick="switchTab('cash')">
-                            <div class="feat-icon">💰</div>
-                            <div class="feat-title">নগদ ও মূলধন</div>
-                        </div>
-                        <div class="feature-card-btn" onclick="switchTab('dues')">
-                            <div class="feat-icon">📒</div>
-                            <div class="feat-title">পাওনা ও দেনা</div>
-                        </div>
-                        <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
-                            <div class="feat-icon">💸</div>
-                            <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
-                        </div>
-                    </div>
-
-                    <div class="mobile-install-app-card" onclick="executeAppInstall()">
-                        <div class="install-card-left">
-                            <div style="font-size: 26px;">📲</div>
-                            <div>
-                                <h4>অ্যাপ ইনস্টল করুন</h4>
-                                <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
-                            </div>
-                        </div>
-                        <div class="install-card-btn-badge">ইনস্টল</div>
-                    </div>
-                </div>
             </div>
 
             <!-- Orders Tab -->
@@ -350,12 +301,7 @@
 
             <!-- Raw Materials Tab -->
             <div id="tab-raw-materials" class="tab-content">
-                <div class="section-header">
-                    <h2>কাঁচামাল কেনা</h2>
-                    <div class="action-btn-group">
-                        <button class="btn" onclick="openModal('raw-modal')">+ নতুন কেনা</button>
-                    </div>
-                </div>
+                <div class="section-header"><h2>কাঁচামাল কেনা</h2><button class="btn" onclick="openModal('raw-modal')">+ নতুন কেনা</button></div>
                 <div class="table-container"><table><thead><tr><th>ছবি</th><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ (TK)</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr></thead><tbody id="raw-materials-table"></tbody></table></div>
             </div>
 
@@ -377,7 +323,7 @@
             <div id="tab-reports" class="tab-content">
                 <div class="section-header">
                     <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট (অফলাইন)</h2>
-                    <div class="filter-controls" style="display:flex; gap:8px;">
+                    <div class="filter-controls">
                         <select id="report-time-filter" class="time-select">
                             <option value="all">সকল সময়</option>
                             <option value="today">আজ</option>
@@ -396,7 +342,7 @@
         </main>
     </div>
 
-    <!-- Mobile Bottom Navigation -->
+    <!-- Mobile Navigation -->
     <nav class="mobile-bottom-nav">
         <div class="mobile-nav-item active" onclick="switchTab('dashboard', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>ড্যাশবোর্ড</div>
         <div class="mobile-nav-item" onclick="switchTab('orders', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>অর্ডার</div>
@@ -405,87 +351,85 @@
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
-    <!-- Admin Panel Modal -->
+    <!-- Full Centralized Admin & Customization Panel Modal -->
     <div id="admin-modal" class="modal">
-        <div class="modal-content" style="max-width:550px;">
-            <h3>🔐 এডমিন সিকিউরিটি প্যানেল</h3>
+        <div class="modal-content" style="max-width:580px;">
+            <h3>🔐 সেন্ট্রাল এডমিন ও কাস্টমাইজেশন প্যানেল</h3>
+            
             <div id="admin-login-view">
                 <div class="form-group">
-                    <label>এডমিন পাসওয়ার্ড দিন</label>
+                    <label>এডমিন সিক্রেট পাসওয়ার্ড দিন</label>
                     <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('admin-pass-input', this)">👁️</span>
                 </div>
                 <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button><button class="btn-modal-save" onclick="verifyAdminPass()">আনলক করুন</button></div>
             </div>
+
             <div id="admin-dashboard-view" style="display:none;">
-                <h4 style="color:#be185d; margin-bottom:12px;">👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
-                <div class="table-container" style="max-height: 180px; overflow-y: auto; margin-bottom:15px;">
-                    <table><thead><tr><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead><tbody id="user-list-table"></tbody></table>
+                
+                <!-- 🌐 ALL DEVICES CUSTOMIZATION SECTION -->
+                <div class="admin-section-box">
+                    <h4>⚙️ অল-ডিভাইস অ্যাপ কাস্টমাইজেশন (সকল ইউজার দেখতে পাবে):</h4>
+                    <div class="form-group">
+                        <label>১. অ্যাপের নাম/টাইটেল</label>
+                        <input type="text" id="admin-custom-title" placeholder="যেমন: 🌸 My Business Hisab">
+                    </div>
+                    <div class="form-group">
+                        <label>২. ব্যবসার স্লোগান</label>
+                        <input type="text" id="admin-custom-slogan" placeholder="স্লোগান লিখুন">
+                    </div>
+                    <div class="form-group">
+                        <label>৩. অ্যাপ আইকন / লোগো আপলোড</label>
+                        <input type="file" id="admin-custom-icon-file" accept="image/*" onchange="previewAdminAppIcon(event)" style="padding: 6px; background: #fff;">
+                        <div class="img-preview-box" id="admin-icon-preview-box"><span style="font-size:12px; color:#9ca3af;">আইকন প্রিভিউ</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>৪. হেডার কালার</label>
+                        <input type="color" id="admin-custom-header-color" value="#831843" style="height:45px; cursor:pointer;">
+                    </div>
+                    <div class="form-group">
+                        <label>৫. ব্যানার ছবি আপলোড</label>
+                        <input type="file" id="admin-custom-banner-file" accept="image/*" onchange="previewAdminBanner(event)" style="padding: 6px; background: #fff;">
+                        <div class="img-preview-box" id="admin-banner-preview-box"><span style="font-size:12px; color:#9ca3af;">ব্যানার প্রিভিউ</span></div>
+                    </div>
+                    <div class="form-group">
+                        <label>৬. অন্যান্য খরচের খাতসমূহ (কমা দিয়ে লিখুন)</label>
+                        <input type="text" id="admin-custom-expenses" placeholder="যেমন: Facebook Boosting, যাতায়াত, দোকান ভাড়া">
+                    </div>
+                    <button class="btn-modal-save" style="width:100%; font-size:15px;" onclick="saveCentralAppCustomization()">✨ সব ডিভাইসে কাস্টমাইজেশন আপডেট করুন</button>
                 </div>
 
-                <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
-                <h4 style="color:#be185d; margin-bottom:8px;">🔑 এডমিন পাসওয়ার্ড পরিবর্তন করুন:</h4>
-                <div class="form-group">
-                    <input type="password" id="new-admin-pass" placeholder="নতুন এডমিন পাসওয়ার্ড দিন">
-                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('new-admin-pass', this)">👁️</span>
+                <!-- REGISTERED USERS SECTION -->
+                <div class="admin-section-box">
+                    <h4>👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
+                    <div class="table-container" style="max-height: 160px; overflow-y: auto;">
+                        <table><thead><tr><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead><tbody id="user-list-table"></tbody></table>
+                    </div>
                 </div>
-                <button class="btn" style="width:100%; margin-bottom:15px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
 
-                <hr style="margin:12px 0; border:0; border-top:1px solid #fce7f3;">
-                <h4 style="color:#be185d; margin-bottom:8px;">📸 ডেভেলপার/এডমিন ছবি পরিবর্তন করুন:</h4>
-                <div class="form-group"><input type="file" id="admin-dev-img-file" accept="image/*" onchange="changeDeveloperAvatar(event)"></div>
+                <!-- ADMIN SECURITY SECTION -->
+                <div class="admin-section-box">
+                    <h4>🔑 এডমিন সিকিউরিটি ও প্রোফাইল:</h4>
+                    <div class="form-group">
+                        <label>নতুন এডমিন পাসওয়ার্ড</label>
+                        <input type="password" id="new-admin-pass" placeholder="নতুন এডমিন পাসওয়ার্ড দিন">
+                        <span class="password-toggle-icon" onclick="togglePasswordVisibility('new-admin-pass', this)">👁️</span>
+                    </div>
+                    <button class="btn" style="width:100%; margin-bottom:12px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
+
+                    <div class="form-group">
+                        <label>এডমিন/ডেভেলপার ছবি</label>
+                        <input type="file" id="admin-dev-img-file" accept="image/*" onchange="changeDeveloperAvatar(event)">
+                    </div>
+                </div>
                 
                 <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">বন্ধ করুন</button></div>
             </div>
         </div>
     </div>
 
-    <!-- Banner Settings Modal -->
-    <div id="banner-modal" class="modal">
-        <div class="modal-content">
-            <h3>⚙️ ব্যানার ও খরচ সেটিংস</h3>
-            <form onsubmit="saveBannerSettings(event)">
-                <div class="form-group">
-                    <label>🖼️ ব্যানার ছবি পরিবর্তন</label>
-                    <input type="file" id="custom-banner-file" accept="image/*" onchange="previewCustomBanner(event)" style="padding: 8px; background: #fff;">
-                    <div class="img-preview-box" id="banner-preview-box" style="margin-top: 8px;">
-                        <span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label>ব্যবসার স্লোগান</label>
-                    <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
-                </div>
-                <div class="form-group">
-                    <label>💸 অন্যান্য খরচের খাতসমূহ (কমা দিয়ে আলাদা করুন)</label>
-                    <input type="text" id="input-expense-categories" placeholder="যেমন: Facebook Boosting, যাতায়াত, বিদ্যুৎ বিল">
-                </div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
-                    <button type="submit" class="btn-modal-save">✓ সেভ করুন</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Order Modal (Supports Add & Edit) -->
-    <div id="order-modal" class="modal">
-        <div class="modal-content">
-            <h3 id="order-modal-title">অর্ডার যোগ করুন</h3>
-            <form onsubmit="saveOrder(event)">
-                <input type="hidden" id="ord-edit-id">
-                <div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div>
-                <div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div>
-                <div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div>
-                <div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div>
-                <div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div>
-                <div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div>
-                <div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div>
-            </form>
-        </div>
-    </div>
-
     <!-- Modals Form Inputs -->
+    <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার যোগ করুন</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
@@ -499,45 +443,24 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        let deferredPrompt = null;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-        });
-
-        async function executeAppInstall() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                let { outcome } = await deferredPrompt.userChoice;
-                deferredPrompt = null;
-            } else {
-                alert("📲 ব্রাউজারের ওপরের ৩-ডটে (⋮) ট্যাপ করে 'Install App' বা 'Add to Home screen' ক্লিক করুন।");
-            }
-        }
+        let adminAppIconImg = null, adminBannerImg = null;
 
         function togglePasswordVisibility(inputId, iconEl) {
             let input = document.getElementById(inputId);
             if (input) {
-                if (input.type === 'password') {
-                    input.type = 'text';
-                    iconEl.innerText = '🙈';
-                } else {
-                    input.type = 'password';
-                    iconEl.innerText = '👁️';
-                }
+                if (input.type === 'password') { input.type = 'text'; iconEl.innerText = '🙈'; }
+                else { input.type = 'password'; iconEl.innerText = '👁️'; }
             }
         }
 
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
         function setLocalData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
-        let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null, selectedCustomBannerImg = null;
-
         window.onload = function() {
             checkAuthSession();
             renderAllLocalData();
-            loadSettings();
-            updateExpenseDropdown();
+            loadCentralAppSettings();
+            subscribeToLiveCentralSettings();
         };
 
         function checkAuthSession() {
@@ -559,18 +482,6 @@
             else { document.getElementById('register-card').style.display = 'block'; document.getElementById('login-card').style.display = 'none'; }
         }
 
-        function previewAuthProfileImage(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(evt) {
-                    selectedAuthProfileImg = evt.target.result;
-                    document.getElementById('reg-img-preview').innerHTML = `<img src="${selectedAuthProfileImg}">`;
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
         async function handleRegister(e) {
             e.preventDefault();
             let name = document.getElementById('reg-name').value.trim();
@@ -579,23 +490,19 @@
             let img = selectedAuthProfileImg || '';
 
             if (!navigator.onLine) {
-                alert("⚠️ নতুন একাউন্ট রেজিস্ট্রেশন করার জন্য ইন্টারনেট কানেকশন প্রয়োজন!");
+                alert("⚠️ রেজিস্ট্রেশন করতে ইন্টারনেট কানেকশন প্রয়োজন!");
                 return;
             }
 
             try {
                 let { error } = await _supabase.from('app_users').insert([{ name, phone, pass, img }]);
-                if (error) {
-                    alert("রেজিস্ট্রেশন ত্রুটি: " + error.message);
-                } else {
-                    let userObj = { name, phone, pass, img };
-                    localStorage.setItem('current_logged_user', JSON.stringify(userObj));
-                    alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে এবং ক্লাউডে সেভ হয়েছে!");
+                if (error) alert("রেজিস্ট্রেশন ত্রুটি: " + error.message);
+                else {
+                    localStorage.setItem('current_logged_user', JSON.stringify({ name, phone, pass, img }));
+                    alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!");
                     document.getElementById('auth-screen').style.display = 'none';
                 }
-            } catch(err) {
-                alert("নেটওয়ার্ক সমস্যা: " + err.message);
-            }
+            } catch(err) { alert("নেটওয়ার্ক সমস্যা: " + err.message); }
         }
 
         async function handleLogin(e) {
@@ -608,7 +515,7 @@
                     let { data } = await _supabase.from('app_users').select('*').eq('phone', phone).eq('pass', pass).single();
                     if (data) {
                         localStorage.setItem('current_logged_user', JSON.stringify(data));
-                        alert("স্বাগতম! সফলভাবে লগইন হয়েছে।");
+                        alert("স্বাগতম! লগইন সফল হয়েছে।");
                         document.getElementById('auth-screen').style.display = 'none';
                         return;
                     }
@@ -619,9 +526,7 @@
             if (savedUser && savedUser.phone === phone && savedUser.pass === pass) {
                 alert("স্বাগতম! অফলাইনে লগইন হয়েছে।");
                 document.getElementById('auth-screen').style.display = 'none';
-            } else {
-                alert("❌ ভুল নম্বর বা পাসওয়ার্ড!");
-            }
+            } else { alert("❌ ভুল নম্বর বা পাসওয়ার্ড!"); }
         }
 
         function openAdminModal() {
@@ -639,9 +544,8 @@
                 document.getElementById('admin-login-view').style.display = 'none';
                 document.getElementById('admin-dashboard-view').style.display = 'block';
                 await fetchCloudUsersForAdmin();
-            } else {
-                alert("❌ ভুল এডমিন পাসওয়ার্ড!");
-            }
+                populateAdminFormFields();
+            } else { alert("❌ ভুল এডমিন পাসওয়ার্ড!"); }
         }
 
         async function fetchCloudUsersForAdmin() {
@@ -658,18 +562,129 @@
                     return;
                 }
             }
-            table.innerHTML = '<tr><td colspan="4">অনলাইন ইউজার ডেটা পাওয়া যায়নি বা ইন্টারনেট বন্ধ</td></tr>';
+            table.innerHTML = '<tr><td colspan="4">অনলাইন ইউজার ডেটা পাওয়া যায়নি</td></tr>';
+        }
+
+        // ==========================================
+        // 🌐 CENTRAL CLOUD CUSTOMIZATION SYSTEM
+        // ==========================================
+        async function loadCentralAppSettings() {
+            try {
+                if (navigator.onLine) {
+                    let { data } = await _supabase.from('app_settings').select('*').eq('id', 'global').single();
+                    if (data) {
+                        applyAppSettingsToUI(data);
+                        localStorage.setItem('cached_app_settings', JSON.stringify(data));
+                        return;
+                    }
+                }
+            } catch(e){}
+
+            let cached = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
+            applyAppSettingsToUI(cached);
+        }
+
+        function subscribeToLiveCentralSettings() {
+            _supabase.channel('public:app_settings')
+            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'app_settings' }, payload => {
+                if (payload.new) {
+                    applyAppSettingsToUI(payload.new);
+                    localStorage.setItem('cached_app_settings', JSON.stringify(payload.new));
+                }
+            }).subscribe();
+        }
+
+        function applyAppSettingsToUI(s) {
+            if (s.title) {
+                document.getElementById('header-title-text').innerText = s.title;
+                document.getElementById('banner-title').innerText = s.title;
+                document.title = s.title;
+            }
+            if (s.slogan) document.getElementById('banner-slogan').innerText = s.slogan;
+            if (s.icon) {
+                document.getElementById('header-app-logo').src = s.icon;
+                document.getElementById('dynamic-favicon').href = s.icon;
+            }
+            if (s.header_color) {
+                document.getElementById('main-header').style.background = s.header_color;
+            }
+            if (s.banner_img) {
+                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${s.banner_img}')`;
+            }
+            if (s.expense_cats) {
+                localStorage.setItem('app_expense_cats', s.expense_cats);
+                updateExpenseDropdown();
+            }
+        }
+
+        function populateAdminFormFields() {
+            let s = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
+            document.getElementById('admin-custom-title').value = s.title || "🌸 My Business Hisab";
+            document.getElementById('admin-custom-slogan').value = s.slogan || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
+            document.getElementById('admin-custom-header-color').value = s.header_color || "#831843";
+            document.getElementById('admin-custom-expenses').value = s.expense_cats || "Facebook Boosting, যাতায়াত, অন্যান্য";
+        }
+
+        function previewAdminAppIcon(e) {
+            let file = e.target.files[0];
+            if (file) {
+                let r = new FileReader();
+                r.onload = (evt) => {
+                    adminAppIconImg = evt.target.result;
+                    document.getElementById('admin-icon-preview-box').innerHTML = `<img src="${adminAppIconImg}">`;
+                };
+                r.readAsDataURL(file);
+            }
+        }
+
+        function previewAdminBanner(e) {
+            let file = e.target.files[0];
+            if (file) {
+                let r = new FileReader();
+                r.onload = (evt) => {
+                    adminBannerImg = evt.target.result;
+                    document.getElementById('admin-banner-preview-box').innerHTML = `<img src="${adminBannerImg}">`;
+                };
+                r.readAsDataURL(file);
+            }
+        }
+
+        async function saveCentralAppCustomization() {
+            if (!navigator.onLine) {
+                alert("⚠️ অল-ডিভাইস আপডেট পাঠাতে ইন্টারনেট কানেকশন প্রয়োজন!");
+                return;
+            }
+
+            let title = document.getElementById('admin-custom-title').value.trim();
+            let slogan = document.getElementById('admin-custom-slogan').value.trim();
+            let header_color = document.getElementById('admin-custom-header-color').value;
+            let expense_cats = document.getElementById('admin-custom-expenses').value.trim();
+
+            let cached = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
+            let icon = adminAppIconImg || cached.icon || '';
+            let banner_img = adminBannerImg || cached.banner_img || '';
+
+            let updatePayload = { id: 'global', title, slogan, icon, header_color, banner_img, expense_cats };
+
+            try {
+                let { error } = await _supabase.from('app_settings').upsert([updatePayload]);
+                if (error) alert("আপডেট ত্রুটি: " + error.message);
+                else {
+                    alert("🎉 সফল হয়েছে! সকল ইউজারের ডিভাইসে এই আপডেটটি সাথে সাথে চলে গেছে!");
+                    applyAppSettingsToUI(updatePayload);
+                    localStorage.setItem('cached_app_settings', JSON.stringify(updatePayload));
+                    closeModal('admin-modal');
+                }
+            } catch(err) { alert("নেটওয়ার্ক ত্রুটি: " + err.message); }
         }
 
         function updateAdminPassword() {
             let newPass = document.getElementById('new-admin-pass').value.trim();
             if (newPass) {
                 localStorage.setItem('app_admin_pass', newPass);
-                alert("✅ এডমিন পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!");
+                alert("✅ এডমিন পাসওয়ার্ড আপডেট হয়েছে!");
                 document.getElementById('new-admin-pass').value = '';
-            } else {
-                alert("দয়া করে নতুন পাসওয়ার্ড লিখুন!");
-            }
+            } else alert("নতুন পাসওয়ার্ড লিখুন!");
         }
 
         function changeDeveloperAvatar(e) {
@@ -680,45 +695,10 @@
                     let avatar = evt.target.result;
                     document.getElementById('header-dev-img').src = avatar;
                     localStorage.setItem('app_dev_avatar', avatar);
-                    alert("ডেভেলপার ছবি আপডেট হয়েছে!");
+                    alert("ছবি আপডেট হয়েছে!");
                 }
                 reader.readAsDataURL(file);
             }
-        }
-
-        function loadSettings() {
-            let slogan = localStorage.getItem('app_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
-            let avatar = localStorage.getItem('app_dev_avatar');
-            let banner = localStorage.getItem('app_banner_img');
-            let expenseCats = localStorage.getItem('app_expense_cats') || "Facebook Boosting, যাতায়াত, অন্যান্য";
-
-            document.getElementById('banner-slogan').innerText = slogan;
-            document.getElementById('input-slogan').value = slogan;
-            document.getElementById('input-expense-categories').value = expenseCats;
-
-            if(avatar) document.getElementById('header-dev-img').src = avatar;
-            if(banner) document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${banner}')`;
-        }
-
-        function saveBannerSettings(e) {
-            e.preventDefault();
-            let slogan = document.getElementById('input-slogan').value.trim();
-            let expenseCats = document.getElementById('input-expense-categories').value.trim();
-
-            if (slogan) {
-                document.getElementById('banner-slogan').innerText = slogan;
-                localStorage.setItem('app_slogan', slogan);
-            }
-            if (expenseCats) {
-                localStorage.setItem('app_expense_cats', expenseCats);
-                updateExpenseDropdown();
-            }
-            if (selectedCustomBannerImg) {
-                localStorage.setItem('app_banner_img', selectedCustomBannerImg);
-                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${selectedCustomBannerImg}')`;
-            }
-            alert("✅ ব্যানার ও খরচ সেটিংস সফলভাবে আপডেট হয়েছে!");
-            closeModal('banner-modal');
         }
 
         function updateExpenseDropdown() {
@@ -727,9 +707,7 @@
             let expSelect = document.getElementById('exp-cat');
             if (expSelect) {
                 expSelect.innerHTML = '';
-                catsArr.forEach(c => {
-                    expSelect.innerHTML += `<option value="${c}">${c}</option>`;
-                });
+                catsArr.forEach(c => expSelect.innerHTML += `<option value="${c}">${c}</option>`);
             }
         }
 
@@ -780,9 +758,7 @@
         function editOrder(id) {
             let orders = getLocalData('app_orders');
             let item = orders.find(o => o.id === id);
-            if (item) {
-                openOrderModal(item);
-            }
+            if (item) openOrderModal(item);
         }
 
         function saveOrder(e) {
@@ -791,7 +767,6 @@
             let orders = getLocalData('app_orders');
 
             if (editId) {
-                // Update Existing Order
                 orders = orders.map(i => {
                     if (i.id == editId) {
                         return {
@@ -807,7 +782,6 @@
                     return i;
                 });
             } else {
-                // Add New Order
                 let item = {
                     id: Date.now(),
                     orderId: document.getElementById('ord-id').value,
@@ -838,7 +812,7 @@
                 supplier: document.getElementById('raw-supplier').value
             };
             let data = getLocalData('app_raw_materials'); data.push(item); setLocalData('app_raw_materials', data);
-            selectedRawImageData = null; closeModal('raw-modal'); renderAllLocalData();
+            closeModal('raw-modal'); renderAllLocalData();
         }
 
         function saveProduct(e) {
@@ -853,7 +827,7 @@
                 stock: parseInt(document.getElementById('prod-stock').value)
             };
             let data = getLocalData('app_products'); data.push(item); setLocalData('app_products', data);
-            selectedProductImageData = null; closeModal('product-modal'); renderAllLocalData();
+            closeModal('product-modal'); renderAllLocalData();
         }
 
         function saveProduction(e) {
@@ -930,10 +904,6 @@
             }
         }
 
-        function previewRawImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedRawImageData = evt.target.result; document.getElementById('raw-img-preview').innerHTML = `<img src="${selectedRawImageData}">`; }; r.readAsDataURL(f); } }
-        function previewProductImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedProductImageData = evt.target.result; document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`; }; r.readAsDataURL(f); } }
-        function previewCustomBanner(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedCustomBannerImg = evt.target.result; document.getElementById('banner-preview-box').innerHTML = `<img src="${selectedCustomBannerImg}">`; }; r.readAsDataURL(f); } }
-
         function renderAllLocalData() {
             let rawList = getLocalData('app_raw_materials');
             let rawH = ''; rawList.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></td></tr>`);
@@ -943,7 +913,6 @@
             let prodH = ''; prodList.forEach(i => prodH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="7">কোনো পণ্য নেই</td></tr>';
 
-            // Orders Table with Edit & Delete Options
             let ordList = getLocalData('app_orders');
             let ordH = '', p = 0, d = 0, r = 0;
             ordList.forEach(i => {
@@ -1043,48 +1012,13 @@
             document.getElementById('dash-total-stock').innerText = `${stock} পিস`;
         }
 
-        // Offline PDF Report Generators
-        function getFilteredDataByTime() {
-            let filterType = document.getElementById('report-time-filter').value;
-            let now = new Date();
-            let startDate = new Date(0), endDate = new Date(2099, 11, 31);
-
-            if(filterType === 'today') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-            } else if(filterType === 'week') {
-                let firstDay = now.getDate() - now.getDay();
-                startDate = new Date(now.setDate(firstDay)); endDate = new Date();
-            } else if(filterType === 'month') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-            } else if(filterType === 'year') {
-                startDate = new Date(now.getFullYear(), 0, 1);
-                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
-            }
-            return { startDate, endDate, filterType };
-        }
-
+        // Offline PDF Generator
         function downloadFinancialPDF() {
-            let { startDate, endDate, filterType } = getFilteredDataByTime();
             let totalSales = 0, rawCost = 0, prodCost = 0, otherExp = 0;
-
-            getLocalData('app_orders').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate && i.status === 'Delivered') totalSales += i.amount;
-            });
-            getLocalData('app_raw_materials').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) rawCost += i.cost;
-            });
-            getLocalData('app_production').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) prodCost += i.cost;
-            });
-            getLocalData('app_expenses').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) otherExp += i.amount;
-            });
+            getLocalData('app_orders').forEach(i => { if(i.status === 'Delivered') totalSales += i.amount; });
+            getLocalData('app_raw_materials').forEach(i => rawCost += i.cost);
+            getLocalData('app_production').forEach(i => prodCost += i.cost);
+            getLocalData('app_expenses').forEach(i => otherExp += i.amount);
 
             let totalExp = rawCost + prodCost + otherExp;
             let netProfit = totalSales - totalExp;
@@ -1094,36 +1028,22 @@
                 <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
                     <div style="text-align:center; margin-bottom:20px;">
                         <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
-                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">প্রতিবেদনের সময়সীমা: ${filterType.toUpperCase()} | প্রস্তুতের তারিখ: ${todayStr}</p>
+                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">প্রস্তুতের তারিখ: ${todayStr}</p>
                     </div>
-                    
                     <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
-                        <thead>
-                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
-                                <th style="padding:12px; text-align:left;">বিবরণ</th>
-                                <th style="padding:12px; text-align:right;">টাকা (TK)</th>
-                            </tr>
-                        </thead>
+                        <thead><tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;"><th style="padding:12px; text-align:left;">বিবরণ</th><th style="padding:12px; text-align:right;">টাকা (TK)</th></tr></thead>
                         <tbody>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি (Delivered Orders)</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
                             <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">কাঁচামাল কেনা খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${rawCost}</td></tr>
                             <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">উৎপাদন খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${prodCost}</td></tr>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">অন্যান্য খরচ (Boosting & Others)</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${otherExp}</td></tr>
-                            <tr style="background:#fff5f8; border-bottom:2px solid #fbcfe8; font-weight:bold;"><td style="padding:12px;">সর্বমোট খরচ</td><td style="padding:12px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">অন্যান্য খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${otherExp}</td></tr>
+                            <tr style="background:#fff5f8; font-weight:bold;"><td style="padding:12px;">সর্বমোট খরচ</td><td style="padding:12px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
                             <tr style="background:#f0fdf4; font-weight:bold; font-size:15px;"><td style="padding:14px; color:#059669;">নেট লাভ</td><td style="padding:14px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
                         </tbody>
                     </table>
                 </div>
             `;
-
-            let opt = {
-                margin: 10,
-                filename: 'Financial_Summary_Report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().from(html).set(opt).save();
+            html2pdf().from(html).set({ margin: 10, filename: 'Financial_Summary.pdf' }).save();
         }
 
         function downloadInventoryPDF() {
@@ -1131,63 +1051,20 @@
             let rawMaterials = getLocalData('app_raw_materials');
             let todayStr = new Date().toLocaleDateString('bn-BD');
 
-            let prodRows = '';
-            products.forEach(p => {
-                prodRows += `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${p.sku || '-'}</td><td style="padding:10px;">${p.name}</td><td style="padding:10px;">${p.stock} পিস</td><td style="padding:10px; text-align:right;">৳ ${p.price}</td></tr>`;
-            });
-
-            let rawRows = '';
-            rawMaterials.forEach(r => {
-                rawRows += `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${r.date}</td><td style="padding:10px;">${r.name}</td><td style="padding:10px;">${r.qty}</td><td style="padding:10px; text-align:right;">৳ ${r.cost}</td></tr>`;
-            });
+            let prodRows = products.map(p => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${p.sku || '-'}</td><td style="padding:10px;">${p.name}</td><td style="padding:10px;">${p.stock} পিস</td><td style="padding:10px; text-align:right;">৳ ${p.price}</td></tr>`).join('');
+            let rawRows = rawMaterials.map(r => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${r.date}</td><td style="padding:10px;">${r.name}</td><td style="padding:10px;">${r.qty}</td><td style="padding:10px; text-align:right;">৳ ${r.cost}</td></tr>`).join('');
 
             let html = `
-                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
-                    <div style="text-align:center; margin-bottom:20px;">
-                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
-                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">ইনভেন্টরি ও মাল-সামানা রিপোর্ট | প্রস্তুতের তারিখ: ${todayStr}</p>
-                    </div>
-
-                    <h3 style="color:#831843; font-size:15px; margin-bottom:8px; border-left:4px solid #ec4899; padding-left:8px;">📦 পণ্য স্টক তালিকা:</h3>
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:13px;">
-                        <thead>
-                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
-                                <th style="padding:10px; text-align:left;">SKU</th>
-                                <th style="padding:10px; text-align:left;">নাম</th>
-                                <th style="padding:10px; text-align:left;">স্টক</th>
-                                <th style="padding:10px; text-align:right;">মূল্য</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${prodRows || '<tr><td colspan="4" style="padding:10px; text-align:center;">কোনো পণ্য স্টক নেই</td></tr>'}
-                        </tbody>
-                    </table>
-
-                    <h3 style="color:#831843; font-size:15px; margin-bottom:8px; border-left:4px solid #ec4899; padding-left:8px;">🪵 কাঁচামাল তালিকা:</h3>
-                    <table style="width:100%; border-collapse:collapse; font-size:13px;">
-                        <thead>
-                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
-                                <th style="padding:10px; text-align:left;">তারিখ</th>
-                                <th style="padding:10px; text-align:left;">নাম</th>
-                                <th style="padding:10px; text-align:left;">পরিমাণ</th>
-                                <th style="padding:10px; text-align:right;">খরচ</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rawRows || '<tr><td colspan="4" style="padding:10px; text-align:center;">কোনো কাঁচামাল নেই</td></tr>'}
-                        </tbody>
-                    </table>
+                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; max-width:800px; margin:auto;">
+                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — ইনভেন্টরি রিপোর্ট</h2>
+                    <p style="text-align:center; font-size:12px; color:#6b7280;">তারিখ: ${todayStr}</p>
+                    <h3 style="color:#831843; margin-top:15px;">📦 পণ্য স্টক:</h3>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:15px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">SKU</th><th style="padding:8px;">নাম</th><th style="padding:8px;">স্টক</th><th style="padding:8px; text-align:right;">মূল্য</th></tr></thead><tbody>${prodRows || '<tr><td colspan="4">স্টক নেই</td></tr>'}</tbody></table>
+                    <h3 style="color:#831843;">🪵 কাঁচামাল:</h3>
+                    <table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">তারিখ</th><th style="padding:8px;">নাম</th><th style="padding:8px;">পরিমাণ</th><th style="padding:8px; text-align:right;">খরচ</th></tr></thead><tbody>${rawRows || '<tr><td colspan="4">কাঁচামাল নেই</td></tr>'}</tbody></table>
                 </div>
             `;
-
-            let opt = {
-                margin: 10,
-                filename: 'Inventory_Summary_Report.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-            html2pdf().from(html).set(opt).save();
+            html2pdf().from(html).set({ margin: 10, filename: 'Inventory_Summary.pdf' }).save();
         }
     </script>
 </body>
