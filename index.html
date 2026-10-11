@@ -50,10 +50,21 @@
         .auth-card .form-group { text-align: left; margin-bottom: 14px; position: relative; }
         .auth-card label { color: #fbcfe8; font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block; }
         
-        .auth-card input[type="text"], .auth-card input[type="password"], .auth-card input[type="file"] {
+        .auth-card input[type="text"], .auth-card input[type="password"] {
             width: 100%; padding: 13px 40px 13px 14px; border-radius: 12px; border: 2px solid #f472b6;
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
+
+        /* Fixed File Input Styling for Mobile */
+        .auth-card input[type="file"] {
+            width: 100%; padding: 10px; border-radius: 12px; border: 2px solid #f472b6;
+            background: #ffffff !important; color: #831843 !important; font-size: 14px; outline: none; cursor: pointer;
+        }
+        .auth-card input[type="file"]::file-selector-button {
+            background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 10px;
+        }
+
         .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; }
         
         .auth-card button.btn-submit {
@@ -189,10 +200,10 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
-                <!-- Required Image Input -->
+                <!-- Profile Image Input Fixed -->
                 <div class="form-group">
                     <label>আপনার প্রোফাইল ছবি *</label>
-                    <input type="file" id="reg-photo" accept="image/*" required style="padding:8px 12px; font-size:12px;">
+                    <input type="file" id="reg-photo" accept="image/*" required>
                 </div>
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
