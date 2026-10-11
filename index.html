@@ -359,7 +359,7 @@
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
 
-                <!-- 🌸 ড্যাশবোর্ডের ঠিক নিচের খালি জায়গায় ইউনিক ফিচার গ্রিড ও অ্যাপ ইনস্টল বাটন 🌸 -->
+                <!-- 🌸 মোবাইল ভিউতে ড্যাশবোর্ডের নিচেই সব অতিরিক্ত ফিচার ও ইনস্টল বাটন 🌸 -->
                 <div class="mobile-quick-features">
                     <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
                     <div class="feature-grid-container">
@@ -557,9 +557,19 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
+        // Automatic Service Worker Registration & Force Refresh
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js').catch(err => console.log('SW Registration Failed', err));
+                navigator.serviceWorker.register('/sw.js?v=2').then((reg) => {
+                    reg.onupdatefound = () => {
+                        const installingWorker = reg.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                window.location.reload();
+                            }
+                        };
+                    };
+                }).catch(err => console.log('SW Failed', err));
             });
         }
 
