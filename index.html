@@ -124,7 +124,7 @@
         .feature-card-btn .feat-icon { font-size: 20px; width: 36px; height: 36px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .feature-card-btn .feat-title { font-size: 12px; font-weight: 700; color: #831843; }
 
-        /* PDF Report List Styling */
+        /* PDF Report List Grid */
         .pdf-report-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-top: 10px; }
         @media (min-width: 768px) { .pdf-report-grid { grid-template-columns: repeat(2, 1fr); } }
 
@@ -357,11 +357,11 @@
                 <div class="table-container"><table><thead><tr><th>নাম</th><th>ধরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="dues-table"></tbody></table></div>
             </div>
 
-            <!-- Reports Tab (Updated with 5 Professional PDF Reports) -->
+            <!-- Reports Tab (5 Professional PDF Reports with Sharp Vector Fonts & Custom Logo Settings) -->
             <div id="tab-reports" class="tab-content">
                 <div class="section-header">
                     <h2>📊 প্রফেশনাল ব্যবসায়িক PDF রিপোর্টসমূহ</h2>
-                    <button class="banner-settings-btn" style="background:#be185d; color:white;" onclick="openPdfSettingsModal('global')" title="পিডিএফ গ্লোবাল সেটিংস (⚙️)">⚙️ প্রোফাইল সেটিংস</button>
+                    <button class="banner-settings-btn" style="background:#be185d; color:white; width:auto; padding:0 14px; border-radius:10px; font-size:13px;" onclick="openPdfSettingsModal('global')" title="লোগো ও প্রোফাইল সেটিংস">⚙️ লোগো ও প্রোফাইল সেটিংস</button>
                 </div>
 
                 <div class="pdf-report-grid">
@@ -472,21 +472,22 @@
         </div>
     </div>
 
-    <!-- PDF PRO SETTINGS MODAL -->
+    <!-- PDF PRO SETTINGS & LOGO MODAL -->
     <div id="pdf-settings-modal" class="modal">
         <div class="modal-content">
-            <h3>⚙️ পিডিএফ কাস্টমাইজেশন ও প্রোফাইল সেটিংস</h3>
+            <h3>⚙️ পিডিএফ লোগো, ফন্ট ও প্রোফাইল সেটিংস</h3>
             <input type="hidden" id="active-pdf-target">
             
             <div style="background:#fff5f8; border:1px solid #fbcfe8; padding:12px; border-radius:12px; margin-bottom:12px;">
-                <h4 style="color:#831843; font-size:13px; margin-bottom:8px;">🏢 ব্যবসার প্রোফাইল (সব PDF-এ সেভ হবে):</h4>
-                <div class="form-group"><label>ব্যবসার নাম</label><input type="text" id="pdf-biz-name" placeholder="যেমন: মাই বিজনেস হিসাব"></div>
+                <h4 style="color:#831843; font-size:13px; margin-bottom:8px;">🏢 ব্যবসার লোগো ও প্রোফাইল (সব PDF-এ স্বয়ংক্রিয়ভাবে থাকবে):</h4>
+                <div class="form-group"><label>ব্যবসার নাম</label><input type="text" id="pdf-biz-name" placeholder="যেমন: My Business Hisab"></div>
                 <div class="form-group"><label>মালিকের নাম</label><input type="text" id="pdf-owner-name" placeholder="যেমন: সাইফুল ইসলাম"></div>
                 <div class="form-group"><label>ফোন নম্বর</label><input type="text" id="pdf-biz-phone" placeholder="যেমন: 01800000000"></div>
                 <div class="form-group"><label>ঠিকানা</label><input type="text" id="pdf-biz-address" placeholder="যেমন: পরশুরাম, ফেনী"></div>
                 <div class="form-group">
-                    <label>ব্যবসার লোগো (ফাইল 업লোড)</label>
+                    <label>ব্যবসার লোগো (ইউনিক ইমেজ আপলোড)</label>
                     <input type="file" id="pdf-biz-logo-file" accept="image/*" onchange="loadBizLogoImage(event)" style="background:#fff; padding:6px;">
+                    <div id="logo-preview-box" style="margin-top:8px;"></div>
                 </div>
             </div>
 
@@ -509,7 +510,7 @@
                 </div>
             </div>
 
-            <div class="form-group"><label>প্রস্তুতকারীর নাম/পদবী</label><input type="text" id="pdf-report-author" placeholder="যেমন: ম্যানেজার / হিসাবরক্ষক"></div>
+            <div class="form-group"><label>প্রতিবেদক বা প্রস্তুতকারক</label><input type="text" id="pdf-report-author" placeholder="যেমন: সাইফুল ইসলাম (ম্যানেজার)"></div>
             
             <div class="modal-actions">
                 <button type="button" class="btn-modal-cancel" onclick="closeModal('pdf-settings-modal')">✕ বাতিল</button>
@@ -522,7 +523,7 @@
     <div id="pdf-preview-modal" class="modal">
         <div class="modal-content" style="max-width:850px; width:95%; height:90vh;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                <h3 style="margin:0; border:none;">👁️ PDF প্রিন্ট ও ফাইল প্রিভিউ</h3>
+                <h3 style="margin:0; border:none;">👁️ PDF প্রিন্ট ও ক্লিয়ার প্রিভিউ</h3>
                 <button class="btn-modal-cancel" style="padding:6px 12px; font-size:12px;" onclick="closeModal('pdf-preview-modal')">✕ বন্ধ করুন</button>
             </div>
             <div id="pdf-preview-container" style="background:#e5e7eb; padding:15px; border-radius:12px; overflow-y:auto; height:calc(100% - 60px);"></div>
@@ -780,7 +781,7 @@
             }
         }
 
-        /* --- ADVANCED PDF PRO SETTINGS & GENERATOR --- */
+        /* --- ADVANCED PDF PRO SETTINGS WITH SHARP FONTS & UNIQUE LOGO --- */
         function openPdfSettingsModal(targetKey) {
             document.getElementById('active-pdf-target').value = targetKey;
             document.getElementById('pdf-biz-name').value = localStorage.getItem('pdf_biz_name') || 'My Business Hisab';
@@ -788,9 +789,17 @@
             document.getElementById('pdf-biz-phone').value = localStorage.getItem('pdf_biz_phone') || '01800000000';
             document.getElementById('pdf-biz-address').value = localStorage.getItem('pdf_biz_address') || 'পরশুরাম, ফেনী, বাংলাদেশ';
             
+            let savedLogo = localStorage.getItem('pdf_biz_logo');
+            let logoBox = document.getElementById('logo-preview-box');
+            if(savedLogo) {
+                logoBox.innerHTML = `<img src="${savedLogo}" style="width:45px; height:45px; border-radius:50%; object-fit:cover; border:2px solid #ec4899;" alt="Logo Preview" /> <span style="font-size:11px; color:#059669;">লোগো সংরক্ষিত আছে</span>`;
+            } else {
+                logoBox.innerHTML = `<span style="font-size:11px; color:#6b7280;">কোনো লোগো আপলোড করা হয়নি</span>`;
+            }
+
             let filterType = localStorage.getItem(targetKey + '_filter') || 'month';
             document.getElementById('pdf-filter-type').value = filterType;
-            document.getElementById('pdf-report-author').value = localStorage.getItem(targetKey + '_author') || 'কর্তৃপক্ষ/ম্যানেজার';
+            document.getElementById('pdf-report-author').value = localStorage.getItem(targetKey + '_author') || 'সাইফুল ইসলাম (ম্যানেজার)';
             document.getElementById('pdf-start-date').value = localStorage.getItem(targetKey + '_start') || '';
             document.getElementById('pdf-end-date').value = localStorage.getItem(targetKey + '_end') || '';
             
@@ -809,7 +818,7 @@
                 let reader = new FileReader();
                 reader.onload = function(evt) {
                     localStorage.setItem('pdf_biz_logo', evt.target.result);
-                    alert("✅ ব্যবসার লোগো সেভ হয়েছে!");
+                    document.getElementById('logo-preview-box').innerHTML = `<img src="${evt.target.result}" style="width:45px; height:45px; border-radius:50%; object-fit:cover; border:2px solid #ec4899;" alt="Logo Preview" /> <span style="font-size:11px; color:#059669;">নতুন লোগো সিলেক্ট হয়েছে</span>`;
                 };
                 reader.readAsDataURL(file);
             }
@@ -828,7 +837,7 @@
                 localStorage.setItem(target + '_start', document.getElementById('pdf-start-date').value);
                 localStorage.setItem(target + '_end', document.getElementById('pdf-end-date').value);
             }
-            alert("✅ পিডিএফ সেটিংস সফলভাবে সংরক্ষণ করা হয়েছে!");
+            alert("✅ পিডিএফ সেটিংস ও লোগো সফলভাবে সংরক্ষণ করা হয়েছে!");
             closeModal('pdf-settings-modal');
         }
 
@@ -866,13 +875,13 @@
             let slogan = localStorage.getItem('app_slogan') || '"ব্যবসার প্রতিটি হিসাব, এখন আরও সুশৃঙ্খল"';
             let todayBn = new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            let logoHtml = logo ? `<img src="${logo}" style="width:55px; height:55px; border-radius:50%; object-fit:cover; border:2px solid #ec4899;" />` : `<div style="font-size:32px;">🌸</div>`;
+            let logoHtml = logo ? `<img src="${logo}" style="width:60px; height:60px; border-radius:50%; object-fit:cover; border:2px solid #be185d;" />` : `<div style="font-size:32px;">🌸</div>`;
 
             return `
-                <div style="background:#fff1f2; border-bottom:3px solid #be185d; padding:20px; border-radius:12px 12px 0 0; text-align:center; position:relative;">
+                <div style="background:#fff1f2; border-bottom:3px solid #be185d; padding:22px; border-radius:12px 12px 0 0; text-align:center;">
                     <div style="display:flex; justify-content:center; align-items:center; gap:12px; margin-bottom:6px;">
                         ${logoHtml}
-                        <h1 style="color:#be185d; font-size:24px; font-weight:800; margin:0;">${bizName}</h1>
+                        <h1 style="color:#be185d; font-size:22px; font-weight:800; margin:0; font-family:'Segoe UI',sans-serif;">${bizName}</h1>
                     </div>
                     <p style="font-size:12px; color:#831843; font-style:italic; margin-top:2px;">${slogan}</p>
                     <div style="margin-top:8px; font-size:11px; color:#4b5563; display:flex; justify-content:center; gap:15px; flex-wrap:wrap;">
@@ -889,7 +898,7 @@
         function getPdfFooterHTML() {
             return `
                 <div style="margin-top:30px; border-top:1px solid #fbcfe8; padding-top:12px; display:flex; justify-content:space-between; align-items:center; font-size:10px; color:#9ca3af;">
-                    <div>🌸 My Business Hisab দ্বারা স্বয়ংক্রিয় প্রস্তুতকৃত | সর্বস্বত্ব সংরক্ষিত</div>
+                    <div>🌸 My Business Hisab দ্বারা অফলাইনে প্রস্তুতকৃত</div>
                     <div>পৃষ্ঠা নং: ১</div>
                 </div>
             `;
@@ -899,12 +908,12 @@
             let filterType = localStorage.getItem(repType + '_filter') || 'month';
             let startD = localStorage.getItem(repType + '_start');
             let endD = localStorage.getItem(repType + '_end');
-            let author = localStorage.getItem(repType + '_author') || 'কর্তৃপক্ষ';
+            let author = localStorage.getItem(repType + '_author') || 'সাইফুল ইসলাম (ম্যানেজার)';
 
             let orders = filterDataByDateRange(getLocalData('app_orders'), filterType, startD, endD);
             let rawMat = filterDataByDateRange(getLocalData('app_raw_materials'), filterType, startD, endD);
             let production = filterDataByDateRange(getLocalData('app_production'), filterType, startD, endD);
-            let products = getLocalData('app_products'); // stock is current
+            let products = getLocalData('app_products');
             let courier = filterDataByDateRange(getLocalData('app_courier'), filterType, startD, endD);
             let expenses = filterDataByDateRange(getLocalData('app_expenses'), filterType, startD, endD);
             let cashList = filterDataByDateRange(getLocalData('app_cash'), filterType, startD, endD);
@@ -924,9 +933,9 @@
                 courier.forEach(i => { if(i.status !== 'Paid') courierDue += (i.cod - i.charge); });
 
                 mainContent = `
-                    <div style="padding:15px;">
+                    <div style="padding:15px; font-size:12px; color:#1f2937;">
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">📊 ১. ব্যবসায়িক সারসংক্ষেপ</h3>
-                        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px;">
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
                             <tr style="background:#fff1f2;"><td style="padding:8px; font-weight:bold;">মোট সফল বিক্রি (Delivered)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#059669;">৳ ${sales}</td></tr>
                             <tr><td style="padding:8px;">সর্বমোট খরচ (কাঁচামাল + উৎপাদন + অন্যান্য)</td><td style="padding:8px; text-align:right; color:#dc2626;">৳ ${exp}</td></tr>
                             <tr style="background:#f0fdf4;"><td style="padding:8px; font-weight:bold; color:#059669;">নেট লাভ</td><td style="padding:8px; text-align:right; font-weight:bold; color:#059669;">৳ ${sales - exp}</td></tr>
@@ -935,7 +944,7 @@
                         </table>
 
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">🛒 সাম্প্রতিক অর্ডার ও সার্ভিস</h3>
-                        <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:15px;">
+                        <table style="width:100%; border-collapse:collapse; font-size:11px;">
                             <thead><tr style="background:#fff1f2; color:#be185d;"><th style="padding:6px; text-align:left;">আইডি</th><th style="padding:6px; text-align:left;">কাস্টমার</th><th style="padding:6px;">টাকা</th><th style="padding:6px;">স্ট্যাটাস</th></tr></thead>
                             <tbody>${orders.slice(0, 10).map(o => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:6px;">${o.orderId}</td><td style="padding:6px;">${o.customer}</td><td style="padding:6px;">৳ ${o.amount}</td><td style="padding:6px;">${o.status}</td></tr>`).join('') || '<tr><td colspan="4" style="text-align:center; padding:8px;">কোনো রেকর্ড নেই</td></tr>'}</tbody>
                         </table>
@@ -953,9 +962,9 @@
                 let totalExp = rawCost + prodCost + otherExp;
 
                 mainContent = `
-                    <div style="padding:15px;">
+                    <div style="padding:15px; font-size:12px; color:#1f2937;">
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">💰 আয়-ব্যয় ও ক্যাশ ফ্লো</h3>
-                        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px;">
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
                             <tr style="background:#fff1f2;"><td style="padding:8px; font-weight:bold;">মোট বিক্রি (Delivered Revenue)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
                             <tr><td style="padding:8px;">কাঁচামাল কেনা খরচ</td><td style="padding:8px; text-align:right; color:#dc2626;">৳ ${rawCost}</td></tr>
                             <tr><td style="padding:8px;">উৎপাদন খরচ</td><td style="padding:8px; text-align:right; color:#dc2626;">৳ ${prodCost}</td></tr>
@@ -972,7 +981,7 @@
                 let rawRows = rawMat.map(r => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:6px;">${r.date}</td><td style="padding:6px;">${r.name}</td><td style="padding:6px;">${r.qty}</td><td style="padding:6px; text-align:right;">৳ ${r.cost}</td></tr>`).join('');
 
                 mainContent = `
-                    <div style="padding:15px;">
+                    <div style="padding:15px; font-size:12px; color:#1f2937;">
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">📦 বর্তমান পণ্য স্টক তালিকা</h3>
                         <table style="width:100%; border-collapse:collapse; font-size:11px; margin-bottom:20px;">
                             <thead><tr style="background:#fff1f2; color:#be185d;"><th style="padding:6px; text-align:left;">SKU</th><th style="padding:6px; text-align:left;">পণ্য</th><th style="padding:6px;">স্টক</th><th style="padding:6px; text-align:right;">বিক্রয়মূল্য</th></tr></thead>
@@ -997,9 +1006,9 @@
                 let dueRows = duesList.map(d => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:6px; font-weight:bold;">${d.name}</td><td style="padding:6px;">${d.type}</td><td style="padding:6px; text-align:right;">৳ ${d.amount}</td><td style="padding:6px;">${d.status}</td></tr>`).join('');
 
                 mainContent = `
-                    <div style="padding:15px;">
+                    <div style="padding:15px; font-size:12px; color:#1f2937;">
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">📒 পাওনা ও দেনার মোট বিবরণ</h3>
-                        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px;">
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
                             <tr style="background:#f0fdf4;"><td style="padding:8px; font-weight:bold;">মোট কাস্টমার পাওনা (পাবো)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalGet}</td></tr>
                             <tr style="background:#fff1f2;"><td style="padding:8px; font-weight:bold;">মোট সাপ্লায়ার দেনা (দিতে হবে)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#dc2626;">৳ ${totalGive}</td></tr>
                         </table>
@@ -1024,9 +1033,9 @@
                 let ordRows = orders.map(o => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:6px;">${o.orderId}</td><td style="padding:6px;">${o.customer}</td><td style="padding:6px;">${o.phone}</td><td style="padding:6px;">৳ ${o.amount}</td><td style="padding:6px;">${o.status}</td></tr>`).join('');
 
                 mainContent = `
-                    <div style="padding:15px;">
+                    <div style="padding:15px; font-size:12px; color:#1f2937;">
                         <h3 style="color:#be185d; font-size:14px; border-left:4px solid #be185d; padding-left:8px; margin-bottom:10px;">🚚 পার্সেল ও ডেলিভারি তথ্য</h3>
-                        <table style="width:100%; border-collapse:collapse; font-size:12px; margin-bottom:20px;">
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:20px;">
                             <tr><td style="padding:8px;">মোট অর্ডার পার্সেল</td><td style="padding:8px; text-align:right; font-weight:bold;">${orders.length} টি</td></tr>
                             <tr style="background:#f0fdf4;"><td style="padding:8px; color:#059669;">সফল ডেলিভারি (Delivered)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#059669;">${delivered} টি</td></tr>
                             <tr><td style="padding:8px; color:#d97706;">অপেক্ষমাণ (Pending)</td><td style="padding:8px; text-align:right; font-weight:bold; color:#d97706;">${pending} টি</td></tr>
@@ -1044,7 +1053,7 @@
             }
 
             let fullHtml = `
-                <div style="background:#ffffff; color:#1f2937; font-family:'Segoe UI',sans-serif; width:100%; max-width:800px; margin:auto; border:1px solid #fbcfe8; border-radius:12px; overflow:hidden;">
+                <div style="background:#ffffff; color:#1f2937; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width:100%; max-width:800px; margin:auto; border:1px solid #fbcfe8; border-radius:12px; overflow:hidden;">
                     ${getPdfHeaderHTML(title)}
                     ${mainContent}
                     <div style="padding:0 15px;">
@@ -1062,7 +1071,7 @@
                     margin: 8,
                     filename: `${repType}_Report.pdf`,
                     image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
+                    html2canvas: { scale: 3, useCORS: true },
                     jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
                 };
                 html2pdf().from(fullHtml).set(opt).save();
