@@ -77,6 +77,16 @@
         .logout-btn { background: rgba(220, 38, 38, 0.6); border-color: #f87171; color: white; }
         .developer-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
+        /* Banner */
+        .flower-banner {
+            position: relative; 
+            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
+            color: white; padding: 20px 16px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
+        }
+        .banner-text h2 { font-size: 19px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+        .banner-text p { font-size: 11.5px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
+        .banner-settings-btn { background: rgba(255, 255, 255, 0.25); border: 1px solid rgba(255,255,255,0.4); color: white; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 17px; }
+
         .app-container { display: flex; flex: 1; overflow: hidden; }
         sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
         .nav-links { list-style: none; padding: 15px 10px; }
@@ -223,6 +233,15 @@
         </sidebar>
 
         <main>
+            <!-- Banner Section -->
+            <div class="flower-banner" id="main-banner">
+                <div class="banner-text">
+                    <h2 id="banner-title">My Business Hisab</h2>
+                    <p id="banner-slogan">"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"</p>
+                </div>
+                <button class="banner-settings-btn" onclick="openBannerModal()" title="সেটিংস ও কাস্টমাইজেশন">⚙️</button>
+            </div>
+
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
                 <div class="dashboard-filter-header">
@@ -337,6 +356,7 @@
                 <div class="section-header"><h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2></div>
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <button class="btn" style="flex:1; padding: 14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
+                    <button class="btn" style="flex:1; padding: 14px; background: #059669;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
                 </div>
             </div>
         </main>
@@ -363,6 +383,21 @@
                 <button type="button" class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button>
                 <button type="button" class="btn-modal-save" onclick="verifyAdminPass()">আনলক</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Banner Settings Modal -->
+    <div id="banner-modal" class="modal">
+        <div class="modal-content">
+            <h3>⚙️ ব্যানার সেটিংস ও কাস্টমাইজেশন</h3>
+            <form onsubmit="saveBannerSettings(event)">
+                <div class="form-group"><label>ব্যবসার স্লোগান</label><input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন"></div>
+                <div class="form-group"><label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে লিখুন)</label><input type="text" id="input-expense-cats" placeholder="Facebook Boosting, যাতায়াত"></div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ সেভ করুন</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -458,12 +493,35 @@
             } else { alert("❌ ভুল পাসওয়ার্ড!"); }
         }
 
+        function openBannerModal() {
+            document.getElementById('input-slogan').value = localStorage.getItem('app_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
+            document.getElementById('input-expense-cats').value = localStorage.getItem('app_expense_cats') || 'Facebook Boosting, যাতায়াত';
+            openModal('banner-modal');
+        }
+
+        function saveBannerSettings(e) {
+            e.preventDefault();
+            let slogan = document.getElementById('input-slogan').value.trim();
+            let cats = document.getElementById('input-expense-cats').value.trim();
+            if(slogan) {
+                localStorage.setItem('app_slogan', slogan);
+                document.getElementById('banner-slogan').innerText = slogan;
+            }
+            if(cats) {
+                localStorage.setItem('app_expense_cats', cats);
+            }
+            alert("✅ ব্যানার সেটিংস সেভ হয়েছে!");
+            closeModal('banner-modal');
+        }
+
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
         function setLocalData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
         window.onload = function() {
             checkAuthSession();
             renderAllLocalData();
+            let slogan = localStorage.getItem('app_slogan');
+            if(slogan) document.getElementById('banner-slogan').innerText = slogan;
         };
 
         function switchTab(tabId, el) {
@@ -716,42 +774,34 @@
 
         /* RENDER TABLES WITH EDIT & DELETE BUTTONS */
         function renderAllLocalData() {
-            // Orders
             let ords = getLocalData('app_orders'), ordH = '';
             ords.forEach(i => ordH += `<tr><td>${i.date}</td><td>${i.orderId}</td><td>${i.customer}</td><td>${i.phone}</td><td>${i.address}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openOrderModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_orders', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="8">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Raw Materials
             let raws = getLocalData('app_raw_materials'), rawH = '';
             raws.forEach(i => rawH += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openRawModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="6">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Products
             let prods = getLocalData('app_products'), prodH = '';
             prods.forEach(i => prodH += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openProductModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="6">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Production
             let prodns = getLocalData('app_production'), prodnH = '';
             prodns.forEach(i => prodnH += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openProductionModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_production', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('production-table').innerHTML = prodnH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Courier
             let cour = getLocalData('app_courier'), courH = '';
             cour.forEach(i => courH += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openCourierModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_courier', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('courier-table').innerHTML = courH || '<tr><td colspan="7">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Expenses
             let exps = getLocalData('app_expenses'), expH = '';
             exps.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openExpenseModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_expenses', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Cash
             let cashes = getLocalData('app_cash'), cashH = '';
             cashes.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openCashModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_cash', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            // Dues
             let dues = getLocalData('app_dues'), dueH = '';
             dues.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openDueModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_dues', ${i.id})">মুছুন</button></div></td></tr>`);
             document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
@@ -803,6 +853,24 @@
                 </div>
             `;
             html2pdf().from(html).set({ margin: 10, filename: 'Financial_Summary.pdf' }).save();
+        }
+
+        function downloadInventoryPDF() {
+            let products = getLocalData('app_products');
+            let rawMaterials = getLocalData('app_raw_materials');
+            let prodRows = products.map(p => `<tr><td>${p.sku}</td><td>${p.name}</td><td>${p.stock} পিস</td><td>৳ ${p.price}</td></tr>`).join('');
+            let rawRows = rawMaterials.map(r => `<tr><td>${r.date}</td><td>${r.name}</td><td>${r.qty}</td><td>৳ ${r.cost}</td></tr>`).join('');
+
+            let html = `
+                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; max-width:800px; margin:auto;">
+                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — ইনভেন্টরি রিপোর্ট</h2>
+                    <h3 style="color:#831843; margin-top:15px;">📦 পণ্য স্টক:</h3>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:15px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">SKU</th><th style="padding:8px;">নাম</th><th style="padding:8px;">স্টক</th><th style="padding:8px; text-align:right;">মূল্য</th></tr></thead><tbody>${prodRows || '<tr><td colspan="4">স্টক নেই</td></tr>'}</tbody></table>
+                    <h3 style="color:#831843;">🪵 কাঁচামাল:</h3>
+                    <table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">তারিখ</th><th style="padding:8px;">নাম</th><th style="padding:8px;">পরিমাণ</th><th style="padding:8px; text-align:right;">খরচ</th></tr></thead><tbody>${rawRows || '<tr><td colspan="4">কাঁচামাল নেই</td></tr>'}</tbody></table>
+                </div>
+            `;
+            html2pdf().from(html).set({ margin: 10, filename: 'Inventory_Summary.pdf' }).save();
         }
     </script>
 </body>
