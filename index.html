@@ -356,7 +356,10 @@
 
             <!-- Reports Tab -->
             <div id="tab-reports" class="tab-content">
-                <div class="section-header"><h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2></div>
+                <div class="section-header">
+                    <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2>
+                    <button class="banner-settings-btn" style="background:#be185d; color:white;" onclick="openPdfSettingsModal()" title="পিডিএফ সেটিংস (⚙️)">⚙️</button>
+                </div>
                 <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                     <button class="btn" style="flex:1; padding: 14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
                     <button class="btn" style="flex:1; padding: 14px; background: #059669;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
@@ -373,6 +376,43 @@
         <div class="mobile-nav-item" onclick="switchTab('products', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0"></path></svg>পণ্য</div>
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
+
+    <!-- PDF CUSTOMIZATION SETTINGS MODAL -->
+    <div id="pdf-settings-modal" class="modal">
+        <div class="modal-content">
+            <h3>⚙️ পিডিএফ কাস্টমাইজেশন সেটিংস</h3>
+            <div class="form-group">
+                <label>রিপোর্টের টাইম-ফ্রেম (সময়সীমা)</label>
+                <select id="pdf-time-range">
+                    <option value="তারিখ অনুযায়ী (Date)">তারিখ অনুযায়ী (Date)</option>
+                    <option value="বার অনুযায়ী (Day)">বার অনুযায়ী (Day)</option>
+                    <option value="সপ্তাহ (Weekly)">সপ্তাহ (Weekly)</option>
+                    <option value="মাস (Monthly)" selected>মাস (Monthly)</option>
+                    <option value="বাৎসরিক (Yearly)">বাৎসরিক (Yearly)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>প্রতিবেদক বা প্রতিষ্ঠানের নাম</label>
+                <input type="text" id="pdf-report-author" placeholder="যেমন: সাইফুল ইসলাম (ম্যানেজার)">
+            </div>
+            <div class="form-group">
+                <label>ওয়াটারমার্ক ছবি (ফাইল আপলোড)</label>
+                <input type="file" id="pdf-watermark-file" accept="image/*" onchange="loadWatermarkImage(event)" style="background:#fff; padding:6px;">
+            </div>
+            <div class="form-group">
+                <label>ছবির অপাসিটি / ঝাপসা ভাব (০.০৫ থেকে ০.৫)</label>
+                <input type="number" id="pdf-watermark-opacity" step="0.05" min="0.05" max="0.8" value="0.15">
+            </div>
+            <div class="form-group">
+                <label>ছবির সাইজ (পিক্সেল বা % যেমন: 300px)</label>
+                <input type="text" id="pdf-watermark-size" value="280px">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('pdf-settings-modal')">বন্ধ করুন</button>
+                <button type="button" class="btn-modal-save" onclick="savePdfSettings()">✓ সেভ করুন</button>
+            </div>
+        </div>
+    </div>
 
     <!-- ADMIN PANEL MODAL -->
     <div id="admin-modal" class="modal">
@@ -632,6 +672,36 @@
             }
             alert("✅ ব্যানার সেটিংস সেভ হয়েছে!");
             closeModal('banner-modal');
+        }
+
+        // PDF Customization Settings Functions
+        function openPdfSettingsModal() {
+            document.getElementById('pdf-time-range').value = localStorage.getItem('pdf_time_range') || 'মাস (Monthly)';
+            document.getElementById('pdf-report-author').value = localStorage.getItem('pdf_report_author') || '';
+            document.getElementById('pdf-watermark-opacity').value = localStorage.getItem('pdf_wm_opacity') || '0.15';
+            document.getElementById('pdf-watermark-size').value = localStorage.getItem('pdf_wm_size') || '280px';
+            openModal('pdf-settings-modal');
+        }
+
+        function loadWatermarkImage(e) {
+            let file = e.target.files[0];
+            if(file) {
+                let reader = new FileReader();
+                reader.onload = function(evt) {
+                    localStorage.setItem('pdf_wm_image', evt.target.result);
+                    alert("ওয়াটারমার্ক ছবি সংরক্ষিত হয়েছে!");
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function savePdfSettings() {
+            localStorage.setItem('pdf_time_range', document.getElementById('pdf-time-range').value);
+            localStorage.setItem('pdf_report_author', document.getElementById('pdf-report-author').value.trim());
+            localStorage.setItem('pdf_wm_opacity', document.getElementById('pdf-watermark-opacity').value);
+            localStorage.setItem('pdf_wm_size', document.getElementById('pdf-watermark-size').value);
+            alert("✅ পিডিএফ সেটিংস সফলভাবে সেভ হয়েছে!");
+            closeModal('pdf-settings-modal');
         }
 
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
@@ -964,19 +1034,35 @@
             let totalExp = rawCost + prodCost + otherExp;
             let netProfit = totalSales - totalExp;
 
+            let timeRange = localStorage.getItem('pdf_time_range') || 'মাস (Monthly)';
+            let author = localStorage.getItem('pdf_report_author') || 'কর্তৃপক্ষ';
+            let wmImg = localStorage.getItem('pdf_wm_image') || '';
+            let wmOpacity = localStorage.getItem('pdf_wm_opacity') || '0.15';
+            let wmSize = localStorage.getItem('pdf_wm_size') || '280px';
+            let prepDate = new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' });
+
+            let wmHtml = wmImg ? `<div style="position:absolute; top:45%; left:50%; transform:translate(-50%, -50%); opacity:${wmOpacity}; z-index:0; pointer-events:none;"><img src="${wmImg}" style="width:${wmSize}; height:auto;" /></div>` : '';
+
             let html = `
-                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
-                    <div style="text-align:center; margin-bottom:20px;">
-                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                <div style="position:relative; background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto; overflow:hidden;">
+                    ${wmHtml}
+                    <div style="position:relative; z-index:1;">
+                        <div style="text-align:center; margin-bottom:15px;">
+                            <h2 style="color:#be185d; font-size:20px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                            <p style="font-size:11.5px; color:#6b7280; margin-top:3px;">সময়সীমা: <b>${timeRange}</b> | প্রস্তুতকারী: <b>${author}</b> | প্রস্তুতের তারিখ ও সময়: <b>${prepDate}</b></p>
+                        </div>
+                        <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
+                            <thead><tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;"><th style="padding:10px; text-align:left;">বিবরণ</th><th style="padding:10px; text-align:right;">টাকা (TK)</th></tr></thead>
+                            <tbody>
+                                <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:9px;">মোট সফল বিক্রি (Delivered Orders)</td><td style="padding:9px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
+                                <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:9px;">কাঁচামাল কেনা খরচ</td><td style="padding:9px; text-align:right; color:#dc2626;">৳ ${rawCost}</td></tr>
+                                <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:9px;">উৎপাদন খরচ</td><td style="padding:9px; text-align:right; color:#dc2626;">৳ ${prodCost}</td></tr>
+                                <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:9px;">অন্যান্য খরচ (Boosting & Others)</td><td style="padding:9px; text-align:right; color:#dc2626;">৳ ${otherExp}</td></tr>
+                                <tr style="background:#fff5f8; font-weight:bold;"><td style="padding:10px; color:#831843;">সর্বমোট খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
+                                <tr style="background:#f0fdf4; font-weight:bold; font-size:14px;"><td style="padding:12px; color:#059669;">নেট লাভ</td><td style="padding:12px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
-                        <thead><tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;"><th style="padding:12px; text-align:left;">বিবরণ</th><th style="padding:12px; text-align:right;">টাকা (TK)</th></tr></thead>
-                        <tbody>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">সর্বমোট খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
-                            <tr style="background:#f0fdf4; font-weight:bold; font-size:15px;"><td style="padding:14px; color:#059669;">নেট লাভ</td><td style="padding:14px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
-                        </tbody>
-                    </table>
                 </div>
             `;
             html2pdf().from(html).set({ margin: 10, filename: 'Financial_Summary.pdf' }).save();
@@ -988,13 +1074,26 @@
             let prodRows = products.map(p => `<tr><td>${p.sku}</td><td>${p.name}</td><td>${p.stock} পিস</td><td>৳ ${p.price}</td></tr>`).join('');
             let rawRows = rawMaterials.map(r => `<tr><td>${r.date}</td><td>${r.name}</td><td>${r.qty}</td><td>৳ ${r.cost}</td></tr>`).join('');
 
+            let timeRange = localStorage.getItem('pdf_time_range') || 'মাস (Monthly)';
+            let author = localStorage.getItem('pdf_report_author') || 'কর্তৃপক্ষ';
+            let wmImg = localStorage.getItem('pdf_wm_image') || '';
+            let wmOpacity = localStorage.getItem('pdf_wm_opacity') || '0.15';
+            let wmSize = localStorage.getItem('pdf_wm_size') || '280px';
+            let prepDate = new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' });
+
+            let wmHtml = wmImg ? `<div style="position:absolute; top:45%; left:50%; transform:translate(-50%, -50%); opacity:${wmOpacity}; z-index:0; pointer-events:none;"><img src="${wmImg}" style="width:${wmSize}; height:auto;" /></div>` : '';
+
             let html = `
-                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; max-width:800px; margin:auto;">
-                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — ইনভেন্টরি রিপোর্ট</h2>
-                    <h3 style="color:#831843; margin-top:15px;">📦 পণ্য স্টক:</h3>
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:15px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">SKU</th><th style="padding:8px;">নাম</th><th style="padding:8px;">স্টক</th><th style="padding:8px; text-align:right;">মূল্য</th></tr></thead><tbody>${prodRows || '<tr><td colspan="4">স্টক নেই</td></tr>'}</tbody></table>
-                    <h3 style="color:#831843;">🪵 কাঁচামাল:</h3>
-                    <table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">তারিখ</th><th style="padding:8px;">নাম</th><th style="padding:8px;">পরিমাণ</th><th style="padding:8px; text-align:right;">খরচ</th></tr></thead><tbody>${rawRows || '<tr><td colspan="4">কাঁচামাল নেই</td></tr>'}</tbody></table>
+                <div style="position:relative; background:white; padding:25px; font-family:'Segoe UI',sans-serif; max-width:800px; margin:auto; overflow:hidden;">
+                    ${wmHtml}
+                    <div style="position:relative; z-index:1;">
+                        <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — ইনভেন্টরি রিপোর্ট</h2>
+                        <p style="font-size:11.5px; color:#6b7280; text-align:center; margin-bottom:12px;">সময়সীমা: <b>${timeRange}</b> | প্রস্তুতকারী: <b>${author}</b> | তারিখ: <b>${prepDate}</b></p>
+                        <h3 style="color:#831843; margin-top:15px; font-size:14px;">📦 পণ্য স্টক তালিকা:</h3>
+                        <table style="width:100%; border-collapse:collapse; margin-bottom:15px; font-size:12px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">SKU</th><th style="padding:8px;">নাম</th><th style="padding:8px;">স্টক</th><th style="padding:8px; text-align:right;">মূল্য</th></tr></thead><tbody>${prodRows || '<tr><td colspan="4">স্টক নেই</td></tr>'}</tbody></table>
+                        <h3 style="color:#831843; font-size:14px;">🪵 কাঁচামাল তালিকা:</h3>
+                        <table style="width:100%; border-collapse:collapse; font-size:12px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">তারিখ</th><th style="padding:8px;">নাম</th><th style="padding:8px;">পরিমাণ</th><th style="padding:8px; text-align:right;">খরচ</th></tr></thead><tbody>${rawRows || '<tr><td colspan="4">কাঁচামাল নেই</td></tr>'}</tbody></table>
+                    </div>
                 </div>
             `;
             html2pdf().from(html).set({ margin: 10, filename: 'Inventory_Summary.pdf' }).save();
