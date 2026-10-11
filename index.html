@@ -178,7 +178,7 @@
     <div id="auth-screen">
         <div class="auth-card" id="register-card">
             <h2>🌸 রেজিস্ট্রেশন করুন</h2>
-            <p>নতুন একাউন্ট খুলুন</p>
+            <p>নতুন একাউন্ট খুলুন (অনলাইন প্রয়োজন)</p>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group"><label>আপনার নাম *</label><input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম"></div>
                 <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000"></div>
@@ -469,6 +469,30 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3 id="due-modal-title">পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><input type="hidden" id="due-edit-id"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
+        // Offline Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'app-cache-v1';
+                    self.addEventListener('install', e => {
+                        e.waitUntil(
+                            caches.open(CACHE_NAME).then(cache => {
+                                return cache.addAll(['./', 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js']);
+                            })
+                        );
+                    });
+                    self.addEventListener('fetch', e => {
+                        e.respondWith(
+                            caches.match(e.request).then(response => response || fetch(e.request))
+                        );
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'text/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).catch(err => console.log('SW Reg Error:', err));
+            });
+        }
+
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -506,6 +530,10 @@
 
         function handleRegister(e) {
             e.preventDefault();
+            if (!navigator.onLine) {
+                alert("⚠️ একাউন্ট তৈরি বা রেজিস্ট্রেশন করার জন্য ইন্টারনেট সংযোগ প্রয়োজন!");
+                return;
+            }
             let name = document.getElementById('reg-name').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-pass').value.trim();
