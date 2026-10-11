@@ -110,7 +110,7 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Mobile Quick Features & Install Card */
+        /* Mobile Quick Features */
         .mobile-quick-features {
             margin-top: 20px; background: white; padding: 18px 15px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow);
         }
@@ -130,7 +130,7 @@
         .install-card-left p { font-size: 10.5px; color: #fbcfe8; }
         .install-card-btn-badge { background: white; color: #be185d; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; }
 
-        /* Dashboard & UI */
+        /* Dashboard & UI Elements */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
@@ -166,6 +166,10 @@
         th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; }
         th { background: #fff1f2; color: #831843; font-weight: 600; }
         .tbl-thumb { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 1.5px solid #f472b6; vertical-align: middle; }
+
+        .tbl-action-group { display: flex; gap: 6px; }
+        .btn-edit-tbl { background: #3b82f6; color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .btn-delete-tbl { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
         .modal-content { background: white; padding: 25px; border-radius: 22px; width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
@@ -294,7 +298,6 @@
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
 
-                <!-- Mobile Quick Features & Install App Card -->
                 <div class="mobile-quick-features">
                     <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
                     <div class="feature-grid-container">
@@ -341,7 +344,7 @@
                     <div class="summary-mini-card"><span>Delivered অর্ডার</span><h4 id="sum-delivered" style="color: #059669;">0 টি</h4></div>
                     <div class="summary-mini-card"><span>Returned অর্ডার</span><h4 id="sum-returned" style="color: #dc2626;">0 টি</h4></div>
                 </div>
-                <div class="section-header"><h2>অর্ডার ও বিক্রি</h2><button class="btn" onclick="openModal('order-modal');">+ নতুন অর্ডার</button></div>
+                <div class="section-header"><h2>অর্ডার ও বিক্রি</h2><button class="btn" onclick="openOrderModal()">+ নতুন অর্ডার</button></div>
                 <div class="table-container"><table><thead><tr><th>তারিখ</th><th>অর্ডার আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="orders-table"></tbody></table></div>
             </div>
 
@@ -440,7 +443,7 @@
     <!-- Banner Settings Modal -->
     <div id="banner-modal" class="modal">
         <div class="modal-content">
-            <h3>⚙️ ব্যানার সেটিংস</h3>
+            <h3>⚙️ ব্যানার ও খরচ সেটিংস</h3>
             <form onsubmit="saveBannerSettings(event)">
                 <div class="form-group">
                     <label>🖼️ ব্যানার ছবি পরিবর্তন</label>
@@ -453,6 +456,10 @@
                     <label>ব্যবসার স্লোগান</label>
                     <input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন">
                 </div>
+                <div class="form-group">
+                    <label>💸 অন্যান্য খরচের খাতসমূহ (কমা দিয়ে আলাদা করুন)</label>
+                    <input type="text" id="input-expense-categories" placeholder="যেমন: Facebook Boosting, যাতায়াত, বিদ্যুৎ বিল">
+                </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
                     <button type="submit" class="btn-modal-save">✓ সেভ করুন</button>
@@ -461,11 +468,27 @@
         </div>
     </div>
 
+    <!-- Order Modal (Supports Add & Edit) -->
+    <div id="order-modal" class="modal">
+        <div class="modal-content">
+            <h3 id="order-modal-title">অর্ডার যোগ করুন</h3>
+            <form onsubmit="saveOrder(event)">
+                <input type="hidden" id="ord-edit-id">
+                <div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div>
+                <div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div>
+                <div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div>
+                <div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div>
+                <div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div>
+                <div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div>
+                <div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div>
+            </form>
+        </div>
+    </div>
+
     <!-- Modals Form Inputs -->
     <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"><option value="Facebook Boosting">Facebook Boosting</option><option value="যাতায়াত">যাতায়াত</option><option value="অন্যান্য">অন্যান্য</option></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="order-modal" class="modal"><div class="modal-content"><h3>অর্ডার</h3><form onsubmit="saveOrder(event)"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="পণ্য"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-123"></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option value="Pending">Pending</option><option value="Delivered">Delivered</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ</h3><form onsubmit="saveCash(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option value="মূলধন যোগ">মূলধন যোগ</option><option value="ব্যক্তিগত উত্তোলন">ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required placeholder="5000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc" placeholder="বিবরণ"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
@@ -476,7 +499,6 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // PWA Install Prompt Setup
         let deferredPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
@@ -515,6 +537,7 @@
             checkAuthSession();
             renderAllLocalData();
             loadSettings();
+            updateExpenseDropdown();
         };
 
         function checkAuthSession() {
@@ -667,8 +690,12 @@
             let slogan = localStorage.getItem('app_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
             let avatar = localStorage.getItem('app_dev_avatar');
             let banner = localStorage.getItem('app_banner_img');
+            let expenseCats = localStorage.getItem('app_expense_cats') || "Facebook Boosting, যাতায়াত, অন্যান্য";
 
             document.getElementById('banner-slogan').innerText = slogan;
+            document.getElementById('input-slogan').value = slogan;
+            document.getElementById('input-expense-categories').value = expenseCats;
+
             if(avatar) document.getElementById('header-dev-img').src = avatar;
             if(banner) document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${banner}')`;
         }
@@ -676,16 +703,34 @@
         function saveBannerSettings(e) {
             e.preventDefault();
             let slogan = document.getElementById('input-slogan').value.trim();
+            let expenseCats = document.getElementById('input-expense-categories').value.trim();
+
             if (slogan) {
                 document.getElementById('banner-slogan').innerText = slogan;
                 localStorage.setItem('app_slogan', slogan);
+            }
+            if (expenseCats) {
+                localStorage.setItem('app_expense_cats', expenseCats);
+                updateExpenseDropdown();
             }
             if (selectedCustomBannerImg) {
                 localStorage.setItem('app_banner_img', selectedCustomBannerImg);
                 document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${selectedCustomBannerImg}')`;
             }
-            alert("✅ ব্যানার সেটিংস আপডেট হয়েছে!");
+            alert("✅ ব্যানার ও খরচ সেটিংস সফলভাবে আপডেট হয়েছে!");
             closeModal('banner-modal');
+        }
+
+        function updateExpenseDropdown() {
+            let rawCats = localStorage.getItem('app_expense_cats') || "Facebook Boosting, যাতায়াত, অন্যান্য";
+            let catsArr = rawCats.split(',').map(c => c.trim()).filter(c => c !== '');
+            let expSelect = document.getElementById('exp-cat');
+            if (expSelect) {
+                expSelect.innerHTML = '';
+                catsArr.forEach(c => {
+                    expSelect.innerHTML += `<option value="${c}">${c}</option>`;
+                });
+            }
         }
 
         function switchTab(tabId, el) {
@@ -707,6 +752,79 @@
             });
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Order Modal Functions (Add & Edit)
+        function openOrderModal(editObj = null) {
+            if (editObj) {
+                document.getElementById('order-modal-title').innerText = "অর্ডার এডিট করুন";
+                document.getElementById('ord-edit-id').value = editObj.id;
+                document.getElementById('ord-id').value = editObj.orderId;
+                document.getElementById('ord-customer').value = editObj.customer;
+                document.getElementById('ord-phone').value = editObj.phone;
+                document.getElementById('ord-address').value = editObj.address;
+                document.getElementById('ord-amount').value = editObj.amount;
+                document.getElementById('ord-status').value = editObj.status;
+            } else {
+                document.getElementById('order-modal-title').innerText = "নতুন অর্ডার যোগ করুন";
+                document.getElementById('ord-edit-id').value = "";
+                document.getElementById('ord-id').value = "";
+                document.getElementById('ord-customer').value = "";
+                document.getElementById('ord-phone').value = "";
+                document.getElementById('ord-address').value = "";
+                document.getElementById('ord-amount').value = "";
+                document.getElementById('ord-status').value = "Pending";
+            }
+            openModal('order-modal');
+        }
+
+        function editOrder(id) {
+            let orders = getLocalData('app_orders');
+            let item = orders.find(o => o.id === id);
+            if (item) {
+                openOrderModal(item);
+            }
+        }
+
+        function saveOrder(e) {
+            e.preventDefault();
+            let editId = document.getElementById('ord-edit-id').value;
+            let orders = getLocalData('app_orders');
+
+            if (editId) {
+                // Update Existing Order
+                orders = orders.map(i => {
+                    if (i.id == editId) {
+                        return {
+                            ...i,
+                            orderId: document.getElementById('ord-id').value,
+                            customer: document.getElementById('ord-customer').value,
+                            phone: document.getElementById('ord-phone').value,
+                            address: document.getElementById('ord-address').value,
+                            amount: parseFloat(document.getElementById('ord-amount').value),
+                            status: document.getElementById('ord-status').value
+                        };
+                    }
+                    return i;
+                });
+            } else {
+                // Add New Order
+                let item = {
+                    id: Date.now(),
+                    orderId: document.getElementById('ord-id').value,
+                    customer: document.getElementById('ord-customer').value,
+                    phone: document.getElementById('ord-phone').value,
+                    address: document.getElementById('ord-address').value,
+                    amount: parseFloat(document.getElementById('ord-amount').value),
+                    status: document.getElementById('ord-status').value,
+                    date: new Date().toISOString().split('T')[0]
+                };
+                orders.push(item);
+            }
+
+            setLocalData('app_orders', orders);
+            closeModal('order-modal');
+            renderAllLocalData();
+        }
 
         function saveRawMaterial(e) {
             e.preventDefault();
@@ -736,22 +854,6 @@
             };
             let data = getLocalData('app_products'); data.push(item); setLocalData('app_products', data);
             selectedProductImageData = null; closeModal('product-modal'); renderAllLocalData();
-        }
-
-        function saveOrder(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                orderId: document.getElementById('ord-id').value,
-                customer: document.getElementById('ord-customer').value,
-                phone: document.getElementById('ord-phone').value,
-                address: document.getElementById('ord-address').value,
-                amount: parseFloat(document.getElementById('ord-amount').value),
-                status: document.getElementById('ord-status').value,
-                date: new Date().toISOString().split('T')[0]
-            };
-            let data = getLocalData('app_orders'); data.push(item); setLocalData('app_orders', data);
-            closeModal('order-modal'); renderAllLocalData();
         }
 
         function saveProduction(e) {
@@ -834,18 +936,33 @@
 
         function renderAllLocalData() {
             let rawList = getLocalData('app_raw_materials');
-            let rawH = ''; rawList.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></td></tr>`);
+            let rawH = ''; rawList.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="7">কোনো কাঁচামাল নেই</td></tr>';
 
             let prodList = getLocalData('app_products');
-            let prodH = ''; prodList.forEach(i => prodH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></td></tr>`);
+            let prodH = ''; prodList.forEach(i => prodH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="7">কোনো পণ্য নেই</td></tr>';
 
+            // Orders Table with Edit & Delete Options
             let ordList = getLocalData('app_orders');
             let ordH = '', p = 0, d = 0, r = 0;
             ordList.forEach(i => {
                 if(i.status === 'Pending') p++; if(i.status === 'Delivered') d++; if(i.status === 'Returned') r++;
-                ordH += `<tr><td>${i.date}</td><td>${i.orderId}</td><td>${i.customer}</td><td>${i.phone}</td><td>${i.address}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_orders', ${i.id})">মুছুন</button></td></tr>`;
+                ordH += `<tr>
+                    <td>${i.date}</td>
+                    <td>${i.orderId}</td>
+                    <td>${i.customer}</td>
+                    <td>${i.phone}</td>
+                    <td>${i.address}</td>
+                    <td>৳ ${i.amount}</td>
+                    <td><b>${i.status}</b></td>
+                    <td>
+                        <div class="tbl-action-group">
+                            <button class="btn-edit-tbl" onclick="editOrder(${i.id})">✏️ এডিট</button>
+                            <button class="btn-delete-tbl" onclick="deleteItem('app_orders', ${i.id})">মুছুন</button>
+                        </div>
+                    </td>
+                </tr>`;
             });
             document.getElementById('sum-total').innerText = `${ordList.length} টি`;
             document.getElementById('sum-pending').innerText = `${p} টি`;
@@ -854,23 +971,23 @@
             document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="8">কোনো অর্ডার নেই</td></tr>';
 
             let pList = getLocalData('app_production');
-            let prodnTbl = ''; pList.forEach(i => prodnTbl += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_production', ${i.id})">মুছুন</button></td></tr>`);
+            let prodnTbl = ''; pList.forEach(i => prodnTbl += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_production', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('production-table').innerHTML = prodnTbl || '<tr><td colspan="5">কোনো উৎপাদন নেই</td></tr>';
 
             let cList = getLocalData('app_courier');
-            let courTbl = ''; cList.forEach(i => courTbl += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_courier', ${i.id})">মুছুন</button></td></tr>`);
+            let courTbl = ''; cList.forEach(i => courTbl += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_courier', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('courier-table').innerHTML = courTbl || '<tr><td colspan="7">কোনো কুরিয়ার নেই</td></tr>';
 
             let expList = getLocalData('app_expenses');
-            let expH = ''; expList.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_expenses', ${i.id})">মুছুন</button></td></tr>`);
+            let expH = ''; expList.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_expenses', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>';
 
             let cashList = getLocalData('app_cash');
-            let cashH = ''; cashList.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_cash', ${i.id})">মুছুন</button></td></tr>`);
+            let cashH = ''; cashList.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_cash', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="5">কোনো লেনদেন নেই</td></tr>';
 
             let dueList = getLocalData('app_dues');
-            let dueH = ''; dueList.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_dues', ${i.id})">মুছুন</button></td></tr>`);
+            let dueH = ''; dueList.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_dues', ${i.id})">মুছুন</button></td></tr>`);
             document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="5">কোনো পাওনা নেই</td></tr>';
 
             renderDashboard();
@@ -926,9 +1043,7 @@
             document.getElementById('dash-total-stock').innerText = `${stock} পিস`;
         }
 
-        // ==========================================
-        // 📥 Exact Original PDF Calculations & Design
-        // ==========================================
+        // Offline PDF Report Generators
         function getFilteredDataByTime() {
             let filterType = document.getElementById('report-time-filter').value;
             let now = new Date();
