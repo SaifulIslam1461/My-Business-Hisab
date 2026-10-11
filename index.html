@@ -781,7 +781,7 @@
             }
         }
 
-        /* --- INSTANT LOGO UPLOAD & SAVING FIX --- */
+        /* --- LOGO UPLOADING AND DISPLAY SYSTEM FIXED --- */
         function openPdfSettingsModal(targetKey) {
             document.getElementById('active-pdf-target').value = targetKey;
             document.getElementById('pdf-biz-name').value = localStorage.getItem('pdf_biz_name') || 'My Business Hisab';
@@ -806,15 +806,15 @@
             let logoBox = document.getElementById('logo-preview-box');
             if(savedLogo) {
                 logoBox.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:10px; margin-top:6px; background:#fff; padding:6px 10px; border-radius:10px; border:1px solid #f472b6;">
-                        <img src="${savedLogo}" style="width:45px; height:45px; border-radius:50%; object-fit:cover; border:2px solid #be185d;" alt="Logo Preview" /> 
+                    <div style="display:flex; align-items:center; gap:10px; margin-top:8px; background:#fff; padding:8px 12px; border-radius:12px; border:1px solid #f472b6;">
+                        <img src="${savedLogo}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #be185d;" alt="Logo Preview" /> 
                         <div>
-                            <span style="font-size:12px; font-weight:bold; color:#059669; display:block;">✓ লোগো সফলভাবে আপলোড হয়েছে</span>
-                            <span style="font-size:10px; color:#6b7280;">এটি PDF-এর হেডার ও উপরে অনন্যভাবে দেখানো হবে</span>
+                            <span style="font-size:12px; font-weight:bold; color:#059669; display:block;">✓ লোগো সফলভাবে যুক্ত করা হয়েছে</span>
+                            <span style="font-size:10px; color:#6b7280;">এটি সকল PDF রিপোর্টে ব্যবসার নামের পাশে থাকবে</span>
                         </div>
                     </div>`;
             } else {
-                logoBox.innerHTML = `<span style="font-size:11px; color:#6b7280;">কোনো লোগো আপলোড করা হয়নি</span>`;
+                logoBox.innerHTML = `<span style="font-size:11px; color:#6b7280;">কোনো লোগো সিলেক্ট করা হয়নি (লোগো না দিলে ফুল আইকন দেখাবে)</span>`;
             }
         }
 
@@ -823,14 +823,35 @@
             document.getElementById('pdf-custom-date-group').style.display = (val === 'custom') ? 'flex' : 'none';
         }
 
+        // Resizing & compressing logo image to safely store in localStorage
         function loadBizLogoImage(e) {
             let file = e.target.files[0];
             if(file) {
                 let reader = new FileReader();
                 reader.onload = function(evt) {
-                    let base64Img = evt.target.result;
-                    localStorage.setItem('pdf_biz_logo', base64Img);
-                    updateLogoPreviewUI();
+                    let img = new Image();
+                    img.onload = function() {
+                        let canvas = document.createElement('canvas');
+                        let ctx = canvas.getContext('2d');
+                        let maxDim = 250;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > height) {
+                            if (width > maxDim) { height *= maxDim / width; width = maxDim; }
+                        } else {
+                            if (height > maxDim) { width *= maxDim / height; height = maxDim; }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        let compressedBase64 = canvas.toDataURL('image/png', 0.9);
+                        localStorage.setItem('pdf_biz_logo', compressedBase64);
+                        updateLogoPreviewUI();
+                    };
+                    img.src = evt.target.result;
                 };
                 reader.readAsDataURL(file);
             }
@@ -849,7 +870,7 @@
                 localStorage.setItem(target + '_start', document.getElementById('pdf-start-date').value);
                 localStorage.setItem(target + '_end', document.getElementById('pdf-end-date').value);
             }
-            alert("✅ পিডিএফ সেটিংস ও লোগো সফলভাবে সংরক্ষণ করা হয়েছে!");
+            alert("✅ পিডিএফ সেটিংস ও লোগো তথ্য সফলভাবে সেভ হয়েছে!");
             closeModal('pdf-settings-modal');
         }
 
@@ -878,7 +899,7 @@
             });
         }
 
-        /* --- ELEGANT TOP HEADER LOGO SYSTEM --- */
+        /* --- PDF HEADER WITH SIDE-BY-SIDE FLOWER/LOGO AND BOLD TEXT --- */
         function getPdfHeaderHTML(reportTitle) {
             let bizName = localStorage.getItem('pdf_biz_name') || 'My Business Hisab';
             let owner = localStorage.getItem('pdf_owner_name') || 'সাইফুল ইসলাম';
@@ -888,16 +909,18 @@
             let slogan = localStorage.getItem('app_slogan') || '"ব্যবসার প্রতিটি হিসাব, এখন আরও সুশৃঙ্খল"';
             let todayBn = new Date().toLocaleDateString('bn-BD', { year: 'numeric', month: 'long', day: 'numeric' });
 
-            // Unique, clean and sharp logo display at the top center of PDF
-            let logoHtml = logo 
-                ? `<div style="margin-bottom:8px;"><img src="${logo}" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:3px solid #be185d; box-shadow:0 4px 10px rgba(190,24,93,0.25);" /></div>` 
-                : `<div style="font-size:36px; margin-bottom:4px;">🌸</div>`;
+            // If custom logo is present, render uniquely on the left side of the title. If not, show the flower on the left side.
+            let brandElement = logo 
+                ? `<img src="${logo}" style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #be185d; box-shadow:0 3px 6px rgba(0,0,0,0.15);" />` 
+                : `<span style="font-size:26px; line-height:1;">🌸</span>`;
 
             return `
-                <div style="background:#fff1f2; border-bottom:3px solid #be185d; padding:22px; border-radius:12px 12px 0 0; text-align:center;">
-                    ${logoHtml}
-                    <h1 style="color:#be185d; font-size:22px; font-weight:800; margin:0; font-family:'Segoe UI',sans-serif;">${bizName}</h1>
-                    <p style="font-size:12px; color:#831843; font-style:italic; margin-top:3px;">${slogan}</p>
+                <div style="background:#fff1f2; border-bottom:3px solid #be185d; padding:20px; border-radius:12px 12px 0 0; text-align:center;">
+                    <div style="display:flex; justify-content:center; align-items:center; gap:10px; margin-bottom:4px;">
+                        ${brandElement}
+                        <h1 style="color:#be185d; font-size:22px; font-weight:800; margin:0; font-family:'Segoe UI',sans-serif;">${bizName}</h1>
+                    </div>
+                    <p style="font-size:12px; color:#831843; font-style:italic; margin-top:2px;">${slogan}</p>
                     <div style="margin-top:10px; font-size:11px; color:#111827; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; font-weight:700;">
                         <span>👤 মালিক: <b>${owner}</b></span> | <span>📞 ফোন: <b>${phone}</b></span> | <span>📍 ঠিকানা: <b>${address}</b></span>
                     </div>
