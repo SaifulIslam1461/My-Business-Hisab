@@ -55,15 +55,21 @@
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
 
-        /* 100% Clickable File Input Fix */
+        /* Hidden Real File Input & Custom Clickable Label Box */
         .auth-card input[type="file"] {
-            width: 100%; padding: 8px; border-radius: 12px; border: 2px solid #f472b6;
-            background: #ffffff !important; color: #831843 !important; font-size: 13px; outline: none;
-            cursor: pointer; position: relative; z-index: 5; pointer-events: auto;
+            display: none;
         }
-        .auth-card input[type="file"]::file-selector-button {
+        .custom-file-upload-box {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid #f472b6;
+            background: #ffffff !important; color: #831843 !important; font-size: 14px; cursor: pointer;
+        }
+        .custom-file-btn {
             background: linear-gradient(135deg, #ec4899, #be185d);
-            color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 10px;
+            color: white; border: none; padding: 7px 12px; border-radius: 8px; font-weight: bold; font-size: 12px;
+        }
+        .custom-file-text {
+            font-size: 13px; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px;
         }
 
         .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; z-index: 10; }
@@ -201,10 +207,14 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
-                <!-- Profile Image Input Clickable Fixed -->
+                <!-- Foolproof Clickable File Upload Box -->
                 <div class="form-group">
                     <label>আপনার প্রোফাইল ছবি *</label>
-                    <input type="file" id="reg-photo" accept="image/*" required>
+                    <label for="reg-photo" class="custom-file-upload-box">
+                        <span class="custom-file-btn">Choose File</span>
+                        <span class="custom-file-text" id="file-chosen-text">No file chosen</span>
+                    </label>
+                    <input type="file" id="reg-photo" accept="image/*" required onchange="updateFileName(this)">
                 </div>
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
@@ -561,6 +571,15 @@
                 deferredPrompt = null;
             } else {
                 alert("📲 ব্রাউজারের ওপরের ৩-ডটে ট্যাপ করে 'Install App' ক্লিক করুন।");
+            }
+        }
+
+        function updateFileName(input) {
+            let textSpan = document.getElementById('file-chosen-text');
+            if (input.files && input.files[0]) {
+                textSpan.innerText = input.files[0].name;
+            } else {
+                textSpan.innerText = 'No file chosen';
             }
         }
 
