@@ -1,4 +1,4 @@
-const CACHE_NAME = 'my-business-hisab-v5';
+const CACHE_NAME = 'my-business-hisab-v3';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
