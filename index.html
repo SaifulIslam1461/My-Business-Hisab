@@ -10,6 +10,8 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
 
+    <!-- Supabase JS Client -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <style>
@@ -118,7 +120,6 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Mobile Extra Features Grid Layout */
         .mobile-quick-features {
             margin-top: 20px;
             background: white;
@@ -173,7 +174,6 @@
             color: #831843;
         }
 
-        /* Mobile Direct Install App Card */
         .mobile-install-app-card {
             margin-top: 15px;
             background: linear-gradient(135deg, #be185d, #ec4899);
@@ -359,7 +359,6 @@
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
 
-                <!-- 🌸 মোবাইল ভিউতে ড্যাশবোর্ডের নিচেই সব অতিরিক্ত ফিচার ও ইনস্টল বাটন 🌸 -->
                 <div class="mobile-quick-features">
                     <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
                     <div class="feature-grid-container">
@@ -385,7 +384,6 @@
                         </div>
                     </div>
 
-                    <!-- Install App Direct Card -->
                     <div class="mobile-install-app-card" onclick="executeAppInstall()">
                         <div class="install-card-left">
                             <div class="inst-icon">📲</div>
@@ -557,24 +555,13 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option>পাবো</option><option>দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // Automatic Service Worker Registration & Force Refresh
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js?v=2').then((reg) => {
-                    reg.onupdatefound = () => {
-                        const installingWorker = reg.installing;
-                        installingWorker.onstatechange = () => {
-                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                                window.location.reload();
-                            }
-                        };
-                    };
-                }).catch(err => console.log('SW Failed', err));
-            });
-        }
+        // Supabase Configuration
+        const SUPABASE_URL = 'https://zwpoxufpeluqtdooeekr.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         function handleLogout() {
-            if (confirm("আপনি কি অ্যাপ থেকে বের হতে চান? বের হলে পরবর্তীতে পাসওয়ার্ড দিয়ে লগইন করতে হবে।")) {
+            if (confirm("আপনি কি অ্যাপ থেকে বের হতে চান?")) {
                 localStorage.removeItem('current_logged_user');
                 document.getElementById('auth-screen').style.display = 'flex';
                 toggleAuthMode('login');
@@ -597,57 +584,60 @@
             }
         }
 
-        function changeAppIcon(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(evt) {
-                    let imgData = evt.target.result;
-                    localStorage.setItem('app_custom_icon', imgData);
-                    document.getElementById('app-icon-preview-box').innerHTML = `<img src="${imgData}" style="max-height:80px;">`;
-                    alert("✅ নতুন মোবাইল অ্যাপ আইকন সেভ করা হয়েছে!");
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
         let selectedAuthProfileImg = null, selectedRawImageData = null, selectedProductImageData = null, selectedCustomBannerImg = null;
         let allOrders = [], allExpenses = [], allRaw = [], allProducts = [], allProduction = [], allCourier = [], allCash = [], allDues = [];
 
-        window.onload = function() {
-            let slogan = localStorage.getItem('banner_slogan') || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
-            let devImg = localStorage.getItem('app_dev_avatar');
-            let customBanner = localStorage.getItem('app_custom_banner');
-
-            if (devImg) document.getElementById('header-dev-img').src = devImg;
-            if (customBanner) {
-                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${customBanner}')`;
-                document.getElementById('banner-preview-box').innerHTML = `<img src="${customBanner}">`;
-            }
-            
-            document.getElementById('banner-slogan').innerText = slogan;
-            document.getElementById('input-slogan').value = slogan;
-            
-            loadExpenseCategories();
+        window.onload = async function() {
+            await syncOldLocalStorageUsers(); // 🌸 পুরোনো সব ইউজারকে স্বয়ংক্রিয়ভাবে ক্লাউডে আপলোড করার ফাংশন
+            await syncGlobalSettings();
             checkAuthSession();
-            loadAllData();
+            await loadAllDataFromCloud();
         }
 
-        function previewCustomBanner(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(evt) {
-                    selectedCustomBannerImg = evt.target.result;
-                    document.getElementById('banner-preview-box').innerHTML = `<img src="${selectedCustomBannerImg}">`;
+        // 🌸 পুরোনো লোকাল মেমোরির ইউজারদের স্বয়ংক্রিয়ভাবে Supabase-এ নিয়ে আসার ফাংশন 🌸
+        async function syncOldLocalStorageUsers() {
+            try {
+                let oldUsers = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
+                let currentLogged = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
+                
+                if (currentLogged && currentLogged.phone) {
+                    let exists = oldUsers.some(u => u.phone === currentLogged.phone);
+                    if (!exists) oldUsers.push(currentLogged);
                 }
-                reader.readAsDataURL(file);
+
+                if (oldUsers.length > 0) {
+                    for (let user of oldUsers) {
+                        if (user.phone) {
+                            let { data } = await _supabase.from('app_users').select('phone').eq('phone', user.phone);
+                            if (!data || data.length === 0) {
+                                await _supabase.from('app_users').insert([{
+                                    name: user.name || 'Unknown',
+                                    phone: user.phone,
+                                    pass: user.pass || '1234',
+                                    img: user.img || ''
+                                }]);
+                            }
+                        }
+                    }
+                }
+            } catch(err) {
+                console.log('Syncing error:', err);
             }
+        }
+
+        async function syncGlobalSettings() {
+            let { data, error } = await _supabase.from('app_settings').select('*').single();
+            if (data) {
+                document.getElementById('banner-slogan').innerText = data.slogan || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
+                document.getElementById('input-slogan').value = data.slogan || '';
+                if (data.dev_avatar) document.getElementById('header-dev-img').src = data.dev_avatar;
+                if (data.banner_img) document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${data.banner_img}')`;
+            }
+            loadExpenseCategories();
         }
 
         function loadExpenseCategories() {
-            let cats = JSON.parse(localStorage.getItem('app_expense_categories') || '["Facebook Boosting", "যাতায়াত", "অন্যান্য"]');
-            document.getElementById('input-expense-categories').value = cats.join(', ');
+            let cats = ["Facebook Boosting", "যাতায়াত", "অন্যান্য"];
             let selectEl = document.getElementById('exp-cat');
             selectEl.innerHTML = '';
             cats.forEach(c => { selectEl.innerHTML += `<option value="${c}">${c}</option>`; });
@@ -684,32 +674,33 @@
             }
         }
 
-        function handleRegister(e) {
+        async function handleRegister(e) {
             e.preventDefault();
             let name = document.getElementById('reg-name').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-pass').value.trim();
             let defaultAvatar = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>";
+            let img = selectedAuthProfileImg || defaultAvatar;
 
-            let newUser = { name, phone, pass, img: selectedAuthProfileImg || defaultAvatar };
-            let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
-            usersList.push(newUser);
-            localStorage.setItem('registered_app_users', JSON.stringify(usersList));
-            localStorage.setItem('current_logged_user', JSON.stringify(newUser));
-
-            alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!");
-            document.getElementById('auth-screen').style.display = 'none';
+            let { error } = await _supabase.from('app_users').insert([{ name, phone, pass, img }]);
+            if (error) {
+                alert("রেজিস্ট্রেশন ত্রুটি: " + error.message);
+            } else {
+                let newUser = { name, phone, pass, img };
+                localStorage.setItem('current_logged_user', JSON.stringify(newUser));
+                alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে এবং ক্লাউডে সংরক্ষিত হয়েছে!");
+                document.getElementById('auth-screen').style.display = 'none';
+            }
         }
 
-        function handleLogin(e) {
+        async function handleLogin(e) {
             e.preventDefault();
             let phone = document.getElementById('login-phone').value.trim();
             let pass = document.getElementById('login-pass').value.trim();
-            let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
-            let found = usersList.find(u => u.phone === phone && u.pass === pass);
 
-            if (found) {
-                localStorage.setItem('current_logged_user', JSON.stringify(found));
+            let { data, error } = await _supabase.from('app_users').select('*').eq('phone', phone).eq('pass', pass).single();
+            if (data) {
+                localStorage.setItem('current_logged_user', JSON.stringify(data));
                 alert("স্বাগতম! সফলভাবে লগইন হয়েছে।");
                 document.getElementById('auth-screen').style.display = 'none';
             } else {
@@ -724,60 +715,55 @@
             openModal('admin-modal');
         }
 
-        function verifyAdminPass() {
+        async function verifyAdminPass() {
             let val = document.getElementById('admin-pass-input').value;
-            let currentAdminPass = localStorage.getItem('app_admin_secret_pass') || '1234';
-
-            if (val === currentAdminPass) {
+            if (val === '1234') {
                 document.getElementById('admin-login-view').style.display = 'none';
                 document.getElementById('admin-dashboard-view').style.display = 'block';
-                loadUsersForAdmin();
+                await loadUsersForAdmin();
             } else {
                 alert("ভুল এডমিন পাসওয়ার্ড!");
             }
         }
 
-        function updateAdminPassword() {
-            let newPass = document.getElementById('new-admin-pass').value.trim();
-            if(newPass.length >= 3) {
-                localStorage.setItem('app_admin_secret_pass', newPass);
-                alert("এডমিন পাসওয়ার্ড সফলভাবে পরিবর্তিত হয়েছে!");
-                document.getElementById('new-admin-pass').value = '';
-            } else {
-                alert("কমপক্ষে ৩ অক্ষরের পাসওয়ার্ড দিন।");
-            }
-        }
-
-        function loadUsersForAdmin() {
-            let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
+        async function loadUsersForAdmin() {
+            let { data: usersList, error } = await _supabase.from('app_users').select('*');
             let h = '';
-            usersList.forEach(u => {
-                h += `<tr><td><img src="${u.img}" class="tbl-thumb"></td><td>${u.name}</td><td>${u.phone}</td><td style="color:#be185d; font-weight:bold;">${u.pass}</td></tr>`;
-            });
+            if (usersList) {
+                usersList.forEach(u => {
+                    h += `<tr><td><img src="${u.img}" class="tbl-thumb"></td><td>${u.name}</td><td>${u.phone}</td><td style="color:#be185d; font-weight:bold;">${u.pass}</td></tr>`;
+                });
+            }
             document.getElementById('user-list-table').innerHTML = h || '<tr><td colspan="4">কোনো ইউজার নেই</td></tr>';
         }
 
-        function changeDeveloperAvatar(e) {
+        async function changeDeveloperAvatar(e) {
             let file = e.target.files[0];
             if (file) {
                 let reader = new FileReader();
-                reader.onload = function(evt) {
-                    let img = new Image();
-                    img.src = evt.target.result;
-                    img.onload = function() {
-                        let canvas = document.createElement('canvas');
-                        let ctx = canvas.getContext('2d');
-                        canvas.width = 150; canvas.height = 150;
-                        ctx.drawImage(img, 0, 0, 150, 150);
-                        let devImg = canvas.toDataURL('image/jpeg', 0.8);
-                        
-                        localStorage.setItem('app_dev_avatar', devImg);
-                        document.getElementById('header-dev-img').src = devImg;
-                        alert("ডেভেলপার ছবি সফলভাবে আপডেট হয়েছে!");
-                    }
+                reader.onload = async function(evt) {
+                    let devImg = evt.target.result;
+                    document.getElementById('header-dev-img').src = devImg;
+                    await _supabase.from('app_settings').upsert({ id: 1, dev_avatar: devImg });
+                    alert("ডেভেলপার ছবি ক্লাউডে আপডেট হয়েছে!");
                 }
                 reader.readAsDataURL(file);
             }
+        }
+
+        async function saveBannerSettings(e) {
+            e.preventDefault();
+            let newSlogan = document.getElementById('input-slogan').value.trim();
+            document.getElementById('banner-slogan').innerText = newSlogan;
+
+            let updateData = { id: 1, slogan: newSlogan };
+            if (selectedCustomBannerImg) {
+                updateData.banner_img = selectedCustomBannerImg;
+                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${selectedCustomBannerImg}')`;
+            }
+            await _supabase.from('app_settings').upsert(updateData);
+            alert("✅ ব্যানার ও সেটিংস ক্লাউডে সেভ হয়েছে!");
+            closeModal('banner-modal');
         }
 
         function switchTab(tabId, el) {
@@ -800,38 +786,37 @@
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function saveRawMaterial(e) {
+        async function saveRawMaterial(e) {
             e.preventDefault();
             let data = {
-                img: selectedRawImageData || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>',
+                img: selectedRawImageData || '',
                 date: document.getElementById('raw-date').value,
                 name: document.getElementById('raw-name').value,
                 qty: document.getElementById('raw-qty').value,
                 cost: parseFloat(document.getElementById('raw-cost').value),
                 supplier: document.getElementById('raw-supplier').value
             };
-            allRaw.push(data);
-            localStorage.setItem('app_raw_materials', JSON.stringify(allRaw));
-            selectedRawImageData = null; closeModal('raw-modal'); loadAllData();
+            await _supabase.from('app_raw_materials').insert([data]);
+            selectedRawImageData = null; closeModal('raw-modal'); await loadAllDataFromCloud();
         }
 
-        function saveProduct(e) {
+        async function saveProduct(e) {
             e.preventDefault();
-            allProducts.push({
-                img: selectedProductImageData || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="%23ec4899" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>',
+            let data = {
+                img: selectedProductImageData || '',
                 name: document.getElementById('prod-name').value,
                 sku: document.getElementById('prod-sku').value,
                 cost: parseFloat(document.getElementById('prod-cost').value),
                 price: parseFloat(document.getElementById('prod-price').value),
                 stock: parseInt(document.getElementById('prod-stock').value)
-            });
-            localStorage.setItem('app_products', JSON.stringify(allProducts));
-            selectedProductImageData = null; closeModal('product-modal'); loadAllData();
+            };
+            await _supabase.from('app_products').insert([data]);
+            selectedProductImageData = null; closeModal('product-modal'); await loadAllDataFromCloud();
         }
 
-        function saveOrder(e) {
+        async function saveOrder(e) {
             e.preventDefault();
-            allOrders.push({
+            let data = {
                 orderId: document.getElementById('ord-id').value,
                 customer: document.getElementById('ord-customer').value,
                 phone: document.getElementById('ord-phone').value,
@@ -839,108 +824,75 @@
                 amount: parseFloat(document.getElementById('ord-amount').value),
                 status: document.getElementById('ord-status').value,
                 date: new Date().toISOString().split('T')[0]
-            });
-            localStorage.setItem('app_orders', JSON.stringify(allOrders));
-            closeModal('order-modal'); loadAllData();
+            };
+            await _supabase.from('app_orders').insert([data]);
+            closeModal('order-modal'); await loadAllDataFromCloud();
         }
 
-        function saveProduction(e) {
+        async function saveProduction(e) {
             e.preventDefault();
-            allProduction.push({
+            let data = {
                 date: document.getElementById('p-date').value,
                 item: document.getElementById('p-item').value,
                 qty: parseInt(document.getElementById('p-qty').value),
                 cost: parseFloat(document.getElementById('p-cost').value)
-            });
-            localStorage.setItem('app_production', JSON.stringify(allProduction));
-            closeModal('prod-modal'); loadAllData();
+            };
+            await _supabase.from('app_production').insert([data]);
+            closeModal('prod-modal'); await loadAllDataFromCloud();
         }
 
-        function saveCourier(e) {
+        async function saveCourier(e) {
             e.preventDefault();
-            allCourier.push({
+            let data = {
                 parcelId: document.getElementById('courier-parcel').value,
                 orderNo: document.getElementById('courier-ord').value,
                 cod: parseFloat(document.getElementById('courier-cod').value),
                 charge: parseFloat(document.getElementById('courier-charge').value),
                 status: document.getElementById('courier-status').value
-            });
-            localStorage.setItem('app_courier', JSON.stringify(allCourier));
-            closeModal('courier-modal'); loadAllData();
+            };
+            await _supabase.from('app_courier').insert([data]);
+            closeModal('courier-modal'); await loadAllDataFromCloud();
         }
 
-        function saveExpense(e) {
+        async function saveExpense(e) {
             e.preventDefault();
-            allExpenses.push({
+            let data = {
                 date: document.getElementById('exp-date').value,
                 category: document.getElementById('exp-cat').value,
                 amount: parseFloat(document.getElementById('exp-amt').value),
                 desc: document.getElementById('exp-desc').value
-            });
-            localStorage.setItem('app_expenses', JSON.stringify(allExpenses));
-            closeModal('expense-modal'); loadAllData();
+            };
+            await _supabase.from('app_expenses').insert([data]);
+            closeModal('expense-modal'); await loadAllDataFromCloud();
         }
 
-        function saveCash(e) {
+        async function saveCash(e) {
             e.preventDefault();
-            allCash.push({
+            let data = {
                 date: document.getElementById('cash-date').value,
                 type: document.getElementById('cash-type').value,
                 amount: parseFloat(document.getElementById('cash-amt').value),
                 desc: document.getElementById('cash-desc').value
-            });
-            localStorage.setItem('app_cash', JSON.stringify(allCash));
-            closeModal('cash-modal'); loadAllData();
+            };
+            await _supabase.from('app_cash').insert([data]);
+            closeModal('cash-modal'); await loadAllDataFromCloud();
         }
 
-        function saveDue(e) {
+        async function saveDue(e) {
             e.preventDefault();
-            allDues.push({
+            let data = {
                 name: document.getElementById('due-name').value,
                 type: document.getElementById('due-type').value,
                 amount: parseFloat(document.getElementById('due-amt').value),
                 status: document.getElementById('due-status').value
-            });
-            localStorage.setItem('app_dues', JSON.stringify(allDues));
-            closeModal('due-modal'); loadAllData();
-        }
-
-        function saveBannerSettings(e) {
-            e.preventDefault();
-            let newSlogan = document.getElementById('input-slogan').value.trim();
-            let newCats = document.getElementById('input-expense-categories').value.split(',').map(c => c.trim()).filter(c => c.length > 0);
-            let newPass = document.getElementById('user-new-pass').value.trim();
-
-            localStorage.setItem('banner_slogan', newSlogan);
-            document.getElementById('banner-slogan').innerText = newSlogan;
-
-            if (selectedCustomBannerImg) {
-                localStorage.setItem('app_custom_banner', selectedCustomBannerImg);
-                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${selectedCustomBannerImg}')`;
-            }
-
-            if (newCats.length > 0) {
-                localStorage.setItem('app_expense_categories', JSON.stringify(newCats));
-                loadExpenseCategories();
-            }
-
-            if (newPass.length > 0) {
-                let loggedUser = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
-                if (loggedUser && loggedUser.phone) {
-                    loggedUser.pass = newPass;
-                    localStorage.setItem('current_logged_user', JSON.stringify(loggedUser));
-
-                    let usersList = JSON.parse(localStorage.getItem('registered_app_users') || '[]');
-                    usersList = usersList.map(u => u.phone === loggedUser.phone ? loggedUser : u);
-                    localStorage.setItem('registered_app_users', JSON.stringify(usersList));
-                }
-            }
-            alert("✅ ব্যানার ও সেটিংস সফলভাবে আপডেট হয়েছে!");
-            closeModal('banner-modal');
+            };
+            await _supabase.from('app_dues').insert([data]);
+            closeModal('due-modal'); await loadAllDataFromCloud();
         }
 
         function previewRawImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedRawImageData = evt.target.result; document.getElementById('raw-img-preview').innerHTML = `<img src="${selectedRawImageData}">`; }; r.readAsDataURL(f); } }
         function previewProductImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedProductImageData = evt.target.result; document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`; }; r.readAsDataURL(f); } }
+        function previewCustomBanner(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedCustomBannerImg = evt.target.result; document.getElementById('banner-preview-box').innerHTML = `<img src="${selectedCustomBannerImg}">`; }; r.readAsDataURL(f); } }
 
         function filterDashboardData() {
             let filterType = document.getElementById('time-filter').value;
@@ -967,31 +919,25 @@
                 let d = new Date(i.date);
                 if(d >= startDate && d <= endDate && i.status === 'Delivered') totalSales += i.amount;
             });
-
             allRaw.forEach(i => {
                 let d = new Date(i.date);
                 if(d >= startDate && d <= endDate) totalExp += i.cost;
             });
-
             allExpenses.forEach(i => {
                 let d = new Date(i.date);
                 if(d >= startDate && d <= endDate) totalExp += i.amount;
             });
-
             allProduction.forEach(i => {
                 let d = new Date(i.date);
                 if(d >= startDate && d <= endDate) totalExp += i.cost;
             });
-
             allCash.forEach(i => {
                 if(i.type === 'মূলধন যোগ') cashInHand += i.amount;
                 else cashInHand -= i.amount;
             });
-
             allCourier.forEach(i => {
                 if(i.status !== 'Paid') courierDue += (i.cod - i.charge);
             });
-
             allProducts.forEach(i => { totalStockCount += i.stock; });
 
             document.getElementById('dash-total-sales').innerText = `৳ ${totalSales}`;
@@ -1002,69 +948,19 @@
             document.getElementById('dash-total-stock').innerText = `${totalStockCount} পিস`;
         }
 
-        function downloadFinancialPDF() {
-            let filter = document.getElementById('report-time-filter').value;
-            let subtitle = `প্রতিবেদনের সময়সীমা: ${filter.toUpperCase()} | প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}`;
-            document.getElementById('pdf-report-subtitle').innerText = subtitle;
-
-            let totalSales = 0, totalExp = 0;
-            allOrders.forEach(o => { if(o.status === 'Delivered') totalSales += o.amount; });
-            allRaw.forEach(r => totalExp += r.cost);
-            allExpenses.forEach(e => totalExp += e.amount);
-            allProduction.forEach(p => totalExp += p.cost);
-
-            let htmlContent = `
-                <table style="width:100%; border-collapse:collapse; margin-top:10px;">
-                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:8px;">বিবরণ</th><th style="border:1px solid #fbcfe8; padding:8px;">টাকা (TK)</th></tr>
-                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">মোট সফল বিক্রি (Delivered Orders)</td><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
-                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">কাঁচামাল কেনা খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allRaw.reduce((sum,i)=>sum+i.cost,0)}</td></tr>
-                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">উৎপাদন খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allProduction.reduce((sum,i)=>sum+i.cost,0)}</td></tr>
-                    <tr><td style="border:1px solid #fbcfe8; padding:8px;">অন্যান্য খরচ (Boosting & Others)</td><td style="border:1px solid #fbcfe8; padding:8px; color:#dc2626;">৳ ${allExpenses.reduce((sum,i)=>sum+i.amount,0)}</td></tr>
-                    <tr style="background:#fff1f2;"><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold;">সর্বমোট খরচ</td><td style="border:1px solid #fbcfe8; padding:8px; font-weight:bold; color:#dc2626;">৳ ${totalExp}</td></tr>
-                    <tr style="background:#ecfdf5;"><td style="border:1px solid #fbcfe8; padding:10px; font-weight:bold; font-size:15px;">নেট লাভ</td><td style="border:1px solid #fbcfe8; padding:10px; font-weight:bold; font-size:15px; color:#059669;">৳ ${totalSales - totalExp}</td></tr>
-                </table>
-            `;
-            document.getElementById('pdf-report-content').innerHTML = htmlContent;
-            
-            let element = document.getElementById('pdf-report-container');
-            element.style.display = 'block';
-            html2pdf().from(element).save('Financial_Summary_Report.pdf').then(() => { element.style.display = 'none'; });
-        }
-
-        function downloadInventoryPDF() {
-            let subtitle = `ইনভেন্টরি ও মাল-সামানা রিপোর্ট | প্রস্তুতের তারিখ: ${new Date().toLocaleDateString('bn-BD')}`;
-            document.getElementById('pdf-report-subtitle').innerText = subtitle;
-
-            let htmlContent = `
-                <h4 style="color:#831843; margin-bottom:6px;">📦 পণ্য স্টক তালিকা:</h4>
-                <table style="width:100%; border-collapse:collapse; margin-bottom:15px;">
-                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:6px;">SKU</th><th style="border:1px solid #fbcfe8; padding:6px;">নাম</th><th style="border:1px solid #fbcfe8; padding:6px;">স্টক</th><th style="border:1px solid #fbcfe8; padding:6px;">মূল্য</th></tr>
-                    ${allProducts.map(p => `<tr><td style="border:1px solid #fbcfe8; padding:6px;">${p.sku}</td><td style="border:1px solid #fbcfe8; padding:6px;">${p.name}</td><td style="border:1px solid #fbcfe8; padding:6px;">${p.stock} পিস</td><td style="border:1px solid #fbcfe8; padding:6px;">৳ ${p.price}</td></tr>`).join('')}
-                </table>
-
-                <h4 style="color:#831843; margin-bottom:6px;">🪵 কাঁচামাল তালিকা:</h4>
-                <table style="width:100%; border-collapse:collapse;">
-                    <tr style="background:#fdf2f8;"><th style="border:1px solid #fbcfe8; padding:6px;">তারিখ</th><th style="border:1px solid #fbcfe8; padding:6px;">নাম</th><th style="border:1px solid #fbcfe8; padding:6px;">পরিমাণ</th><th style="border:1px solid #fbcfe8; padding:6px;">খরচ</th></tr>
-                    ${allRaw.map(r => `<tr><td style="border:1px solid #fbcfe8; padding:6px;">${r.date}</td><td style="border:1px solid #fbcfe8; padding:6px;">${r.name}</td><td style="border:1px solid #fbcfe8; padding:6px;">${r.qty}</td><td style="border:1px solid #fbcfe8; padding:6px;">৳ ${r.cost}</td></tr>`).join('')}
-                </table>
-            `;
-            document.getElementById('pdf-report-content').innerHTML = htmlContent;
-
-            let element = document.getElementById('pdf-report-container');
-            element.style.display = 'block';
-            html2pdf().from(element).save('Inventory_Stock_Report.pdf').then(() => { element.style.display = 'none'; });
-        }
-
-        function loadAllData() {
-            allRaw = JSON.parse(localStorage.getItem('app_raw_materials') || '[]');
-            let rawH = ''; allRaw.forEach(i => rawH += `<tr><td><img src="${i.img}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td></tr>`);
+        async function loadAllDataFromCloud() {
+            let resRaw = await _supabase.from('app_raw_materials').select('*');
+            allRaw = resRaw.data || [];
+            let rawH = ''; allRaw.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td></tr>`);
             document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="6">কোনো তথ্য নেই</td></tr>';
 
-            allProducts = JSON.parse(localStorage.getItem('app_products') || '[]');
-            let prodH = ''; allProducts.forEach(i => prodH += `<tr><td><img src="${i.img}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td></tr>`);
+            let resProd = await _supabase.from('app_products').select('*');
+            allProducts = resProd.data || [];
+            let prodH = ''; allProducts.forEach(i => prodH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td></tr>`);
             document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="6">কোনো পণ্য নেই</td></tr>';
 
-            allOrders = JSON.parse(localStorage.getItem('app_orders') || '[]');
+            let resOrd = await _supabase.from('app_orders').select('*');
+            allOrders = resOrd.data || [];
             let ordH = '', p = 0, d = 0, r = 0;
             allOrders.forEach(i => {
                 if(i.status === 'Pending') p++; if(i.status === 'Delivered') d++; if(i.status === 'Returned') r++;
@@ -1076,23 +972,28 @@
             document.getElementById('sum-returned').innerText = `${r} টি`;
             document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="7">কোনো অর্ডার নেই</td></tr>';
 
-            allProduction = JSON.parse(localStorage.getItem('app_production') || '[]');
+            let resP = await _supabase.from('app_production').select('*');
+            allProduction = resP.data || [];
             let prodnTbl = ''; allProduction.forEach(i => prodnTbl += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td></tr>`);
             document.getElementById('production-table').innerHTML = prodnTbl || '<tr><td colspan="4">কোনো উৎপাদন নেই</td></tr>';
 
-            allCourier = JSON.parse(localStorage.getItem('app_courier') || '[]');
+            let resC = await _supabase.from('app_courier').select('*');
+            allCourier = resC.data || [];
             let courTbl = ''; allCourier.forEach(i => courTbl += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td></tr>`);
             document.getElementById('courier-table').innerHTML = courTbl || '<tr><td colspan="6">কোনো কুরিয়ার নেই</td></tr>';
 
-            allExpenses = JSON.parse(localStorage.getItem('app_expenses') || '[]');
+            let resExp = await _supabase.from('app_expenses').select('*');
+            allExpenses = resExp.data || [];
             let expH = ''; allExpenses.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td></tr>`);
             document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="4">কোনো খরচ নেই</td></tr>';
 
-            allCash = JSON.parse(localStorage.getItem('app_cash') || '[]');
+            let resCash = await _supabase.from('app_cash').select('*');
+            allCash = resCash.data || [];
             let cashH = ''; allCash.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td></tr>`);
             document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="4">কোনো লেনদেন নেই</td></tr>';
 
-            allDues = JSON.parse(localStorage.getItem('app_dues') || '[]');
+            let resDue = await _supabase.from('app_dues').select('*');
+            allDues = resDue.data || [];
             let dueH = ''; allDues.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td></tr>`);
             document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="4">কোনো পাওনা নেই</td></tr>';
 
