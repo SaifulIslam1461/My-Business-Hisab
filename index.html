@@ -3,15 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌸 My Business Hisab — কাস্টমাইজড এডমিন সিস্টেম</title>
+    <title>🌸 My Business Hisab</title>
     
     <link rel="manifest" href="manifest.json">
-    <link id="dynamic-favicon" rel="icon" type="image/png" href="https://via.placeholder.com/64/be185d/ffffff?text=App">
     <meta name="theme-color" content="#be185d">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <!-- Supabase JS Client & PDF Generator -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
@@ -19,17 +15,13 @@
         :root {
             --primary-rose: #be185d;
             --primary-pink: #ec4899;
-            --accent-green: #059669;
-            --accent-red: #dc2626;
-            --accent-orange: #d97706;
-            --header-bg: linear-gradient(135deg, #831843, #9d174d);
             --bg-gradient: linear-gradient(135deg, #fff1f2 0%, #fce7f3 50%, #f3e8ff 100%);
             --card-bg: rgba(255, 255, 255, 0.95);
             --text-main: #1f2937;
             --text-muted: #6b7280;
             --border-color: #fbcfe8;
             --radius: 18px;
-            --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.15), 0 8px 10px -6px rgba(236, 72, 153, 0.1);
+            --shadow: 0 10px 25px -5px rgba(236, 72, 153, 0.15);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -39,8 +31,6 @@
             overflow-x: hidden;
             background: var(--bg-gradient);
             color: var(--text-main);
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
         }
 
         body { display: flex; flex-direction: column; }
@@ -53,7 +43,7 @@
         }
         .auth-card {
             background: rgba(255, 255, 255, 0.18); backdrop-filter: blur(20px); padding: 30px;
-            border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 24px; text-align: center; width: 100%; max-width: 400px; border: 1px solid rgba(255,255,255,0.3);
         }
         .auth-card h2 { margin-bottom: 8px; color: #f472b6; font-size: 22px; }
         .auth-card p { font-size: 13px; color: #fbcfe8; margin-bottom: 18px; }
@@ -62,13 +52,13 @@
         
         .auth-card input[type="text"], .auth-card input[type="password"] {
             width: 100%; padding: 13px 40px 13px 14px; border-radius: 12px; border: 2px solid #f472b6;
-            background: #ffffff !important; color: #111827 !important; font-size: 15px; font-weight: 600; outline: none;
+            background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
         .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; }
         
         .auth-img-frame {
             width: 80px; height: 80px; margin: 10px auto 0; border-radius: 50%;
-            border: 3px solid #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.5); overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center;
+            border: 3px solid #ec4899; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center;
         }
         .auth-img-frame img { width: 100%; height: 100%; object-fit: cover; }
         .auth-card button.btn-submit {
@@ -79,29 +69,18 @@
 
         /* Header */
         header {
-            background: var(--header-bg); color: white; padding: 10px 16px;
+            background: linear-gradient(135deg, #831843, #9d174d); color: white; padding: 12px 16px;
             display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 15px rgba(131, 24, 67, 0.3); position: sticky; top: 0; z-index: 100;
-            transition: background 0.3s ease;
         }
-        header h1 { font-size: 17px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
-        .header-app-icon { width: 32px; height: 32px; border-radius: 8px; object-fit: cover; background: #fff; border: 1.5px solid #f472b6; }
+        header h1 { font-size: 18px; display: flex; align-items: center; gap: 8px; font-weight: 700; }
         .header-profile-group { display: flex; align-items: center; gap: 8px; }
         
         .admin-lock-btn, .logout-btn {
             background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fbcfe8;
-            width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
+            width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 16px;
         }
         .logout-btn { background: rgba(220, 38, 38, 0.6); border-color: #f87171; color: white; }
-        .developer-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
-
-        /* Banner */
-        .flower-banner {
-            position: relative; 
-            background: linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1000&q=80') center/cover no-repeat;
-            color: white; padding: 20px 16px; border-radius: 0 0 var(--radius) var(--radius); margin-bottom: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center;
-        }
-        .banner-text h2 { font-size: 19px; font-weight: 800; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
-        .banner-text p { font-size: 11.5px; color: #fbcfe8; margin-top: 4px; font-style: italic; }
+        .developer-avatar { width: 38px; height: 38px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
         .app-container { display: flex; flex: 1; overflow: hidden; }
         sidebar { width: 250px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; overflow-y: auto; flex-shrink: 0; }
@@ -113,36 +92,43 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Dashboard Cards & Layout */
-        .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
-        .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
+        /* Dashboard & Features */
+        .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
+        .dashboard-filter-header h2 { font-size: 15px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
 
-        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-bottom: 15px; }
-        @media (min-width: 768px) { .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; } }
+        .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
+        @media (min-width: 768px) { .dashboard-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; } }
 
-        .card { background: var(--card-bg); padding: 18px 16px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(251, 207, 232, 0.7); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
+        .card { background: var(--card-bg); padding: 16px; border-radius: 20px; box-shadow: var(--shadow); border: 1px solid rgba(251, 207, 232, 0.7); position: relative; overflow: hidden; }
         .card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: linear-gradient(90deg, #ec4899, #be185d); }
         .card.green::before { background: linear-gradient(90deg, #34d399, #059669); }
         .card.red::before { background: linear-gradient(90deg, #f87171, #dc2626); }
         .card.orange::before { background: linear-gradient(90deg, #fbbf24, #d97706); }
-        .card-header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-        .card-icon { width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 20px; background: #fdf2f8; }
-        .card h3 { font-size: 13px; color: #4b5563; font-weight: 600; }
-        .card .value { font-size: 20px; font-weight: 800; color: #111827; margin-top: 2px; }
+        .card-header-box { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .card-icon { width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 18px; background: #fdf2f8; }
+        .card h3 { font-size: 12px; color: #4b5563; font-weight: 600; }
+        .card .value { font-size: 18px; font-weight: 800; color: #111827; margin-top: 2px; }
 
-        .order-summary-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 15px; }
-        @media (min-width: 768px) { .order-summary-grid { grid-template-columns: repeat(4, 1fr); } }
-        .summary-mini-card { background: white; padding: 12px 15px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between; }
-        .summary-mini-card span { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-        .summary-mini-card h4 { font-size: 18px; font-weight: 800; color: #831843; margin-top: 4px; }
+        /* Quick Features Card Box */
+        .mobile-quick-features { background: white; padding: 18px 15px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow); margin-bottom: 15px; }
+        .mobile-quick-features h3 { font-size: 14px; color: #831843; margin-bottom: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .feature-grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .feature-card-btn { background: linear-gradient(135deg, #fff0f5, #fce7f3); border: 1px solid #f472b6; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .feature-card-btn .feat-icon { font-size: 20px; width: 36px; height: 36px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .feature-card-btn .feat-title { font-size: 12px; font-weight: 700; color: #831843; }
+
+        /* App Install Card */
+        .mobile-install-app-card { background: linear-gradient(135deg, #be185d, #ec4899); color: white; padding: 16px; border-radius: 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 6px 15px rgba(190, 24, 93, 0.3); }
+        .install-card-left { display: flex; align-items: center; gap: 12px; }
+        .install-card-left h4 { font-size: 15px; font-weight: 800; }
+        .install-card-left p { font-size: 11px; color: #fbcfe8; }
+        .install-card-btn-badge { background: white; color: #be185d; padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 800; }
 
         .section-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 15px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid var(--border-color); }
         .section-header h2 { font-size: 16px; color: #831843; }
-        .action-btn-group { display: flex; gap: 8px; }
 
         .btn { background: linear-gradient(135deg, #ec4899, #db2777); color: white; border: none; padding: 9px 15px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; }
-        .btn-outline { background: #fff0f5; color: #be185d; border: 1.5px solid #f472b6; padding: 8px 14px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
         
         .table-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
@@ -151,26 +137,21 @@
         .tbl-thumb { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 1.5px solid #f472b6; vertical-align: middle; }
 
         .tbl-action-group { display: flex; gap: 6px; }
-        .btn-edit-tbl { background: #3b82f6; color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .btn-delete-tbl { background: #ef4444; color: white; border: none; padding: 4px 8px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .btn-edit-tbl { background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
+        .btn-delete-tbl { background: #ef4444; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
 
         .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(131, 24, 67, 0.45); backdrop-filter: blur(6px); display: flex; justify-content: center; align-items: center; z-index: 1000; display: none; }
-        .modal-content { background: white; padding: 25px; border-radius: 22px; width: 92%; max-width: 520px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
-        .modal-content h3 { color: #831843; margin-bottom: 18px; font-size: 20px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
-        .form-group { margin-bottom: 14px; position: relative; }
-        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 13px; color: #831843; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px 14px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13.5px; outline: none; background: #fffdfd; color: #111827; }
+        .modal-content { background: white; padding: 22px; border-radius: 20px; width: 92%; max-width: 480px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
+        .modal-content h3 { color: #831843; margin-bottom: 16px; font-size: 18px; font-weight: 800; border-bottom: 2px solid #fce7f3; padding-bottom: 8px; }
+        .form-group { margin-bottom: 12px; position: relative; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: 700; font-size: 12.5px; color: #831843; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 11px 13px; border: 1.5px solid #f472b6; border-radius: 12px; font-size: 13px; outline: none; background: #fffdfd; color: #111827; }
         .input-tk-wrapper { position: relative; display: flex; align-items: center; }
         .input-tk-wrapper input { padding-right: 42px; }
         .input-tk-wrapper .tk-suffix { position: absolute; right: 14px; font-weight: 800; color: #be185d; font-size: 13px; pointer-events: none; }
-        .img-preview-box { width: 100%; height: 90px; border: 2px dashed #ec4899; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-top: 8px; background: #fdf2f8; overflow: hidden; }
-        .img-preview-box img { width: 100%; height: 100%; object-fit: cover; }
-        .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 22px; padding-top: 12px; border-top: 1px solid #fce7f3; }
-        .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 11px 22px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
-        .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 11px 26px; border-radius: 12px; cursor: pointer; font-weight: 700; font-size: 14px; }
-
-        .admin-section-box { background: #fff5f8; border: 1px solid #fbcfe8; border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .admin-section-box h4 { color: #831843; font-size: 14px; margin-bottom: 10px; font-weight: 800; display: flex; align-items: center; gap: 6px; }
+        .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; padding-top: 10px; border-top: 1px solid #fce7f3; }
+        .btn-modal-cancel { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; border: none; padding: 10px 20px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
+        .btn-modal-save { background: linear-gradient(135deg, #ec4899, #be185d); color: white; border: none; padding: 10px 24px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 13px; }
 
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .mobile-nav-item { text-align: center; font-size: 10px; color: var(--text-muted); cursor: pointer; }
@@ -226,13 +207,10 @@
     </div>
 
     <!-- Header -->
-    <header id="main-header">
-        <h1 id="app-header-title">
-            <img id="header-app-logo" class="header-app-icon" src="https://via.placeholder.com/64/be185d/ffffff?text=App" alt="Icon">
-            <span id="header-title-text">🌸 My Business Hisab</span>
-        </h1>
+    <header>
+        <h1>🌸 My Business Hisab</h1>
         <div class="header-profile-group">
-            <button class="admin-lock-btn" onclick="openAdminModal()" title="সেন্ট্রাল এডমিন সিকিউরিটি ও কাস্টমাইজেশন (🔒)">🔒</button>
+            <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
             <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
         </div>
@@ -256,26 +234,17 @@
         </sidebar>
 
         <main>
-            <div class="flower-banner" id="main-banner">
-                <div class="banner-text">
-                    <h2 id="banner-title">My Business Hisab</h2>
-                    <p id="banner-slogan">"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"</p>
-                </div>
-            </div>
-
             <!-- Dashboard Tab -->
             <div id="tab-dashboard" class="tab-content active">
                 <div class="dashboard-filter-header">
                     <h2>ব্যবসার ড্যাশবোর্ড (সামগ্রিক হিসাব)</h2>
-                    <div class="filter-controls">
-                        <select id="time-filter" class="time-select" onchange="renderDashboard()">
-                            <option value="all">সব সময় (টোটাল)</option>
-                            <option value="today">আজ</option>
-                            <option value="week">এই সপ্তাহ</option>
-                            <option value="month" selected>এই মাস</option>
-                            <option value="year">এই বছর</option>
-                        </select>
-                    </div>
+                    <select id="time-filter" class="time-select" onchange="renderDashboard()">
+                        <option value="all">সব সময় (টোটাল)</option>
+                        <option value="today">আজ</option>
+                        <option value="week">এই সপ্তাহ</option>
+                        <option value="month" selected>এই মাস</option>
+                        <option value="year">এই বছর</option>
+                    </select>
                 </div>
                 <div class="dashboard-grid">
                     <div class="card green"><div class="card-header-box"><h3>মোট বিক্রি</h3><div class="card-icon">🛍️</div></div><div class="value" id="dash-total-sales">৳ 0</div></div>
@@ -285,58 +254,100 @@
                     <div class="card orange"><div class="card-header-box"><h3>কুরিয়ারে পাওনা</h3><div class="card-icon">🚚</div></div><div class="value" id="dash-courier-due">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
+
+                <!-- Quick Features -->
+                <div class="mobile-quick-features">
+                    <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
+                    <div class="feature-grid-container">
+                        <div class="feature-card-btn" onclick="switchTab('production')">
+                            <div class="feat-icon">⚙️</div>
+                            <div class="feat-title">উৎপাদন ও স্টক</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('courier')">
+                            <div class="feat-icon">🚚</div>
+                            <div class="feat-title">কুরিয়ার (Steadfast)</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('cash')">
+                            <div class="feat-icon">💰</div>
+                            <div class="feat-title">নগদ ও মূলধন</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('dues')">
+                            <div class="feat-icon">📒</div>
+                            <div class="feat-title">পাওনা ও দেনা</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
+                            <div class="feat-icon">💸</div>
+                            <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Install App Button Box -->
+                <div class="mobile-install-app-card" onclick="executeAppInstall()">
+                    <div class="install-card-left">
+                        <div style="font-size: 26px;">📲</div>
+                        <div>
+                            <h4>অ্যাপ ইনস্টল করুন</h4>
+                            <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
+                        </div>
+                    </div>
+                    <div class="install-card-btn-badge">ইনস্টল</div>
+                </div>
             </div>
 
             <!-- Orders Tab -->
             <div id="tab-orders" class="tab-content">
-                <div class="order-summary-grid">
-                    <div class="summary-mini-card"><span>মোট অর্ডার</span><h4 id="sum-total">0 টি</h4></div>
-                    <div class="summary-mini-card"><span>Pending অর্ডার</span><h4 id="sum-pending" style="color: #d97706;">0 টি</h4></div>
-                    <div class="summary-mini-card"><span>Delivered অর্ডার</span><h4 id="sum-delivered" style="color: #059669;">0 টি</h4></div>
-                    <div class="summary-mini-card"><span>Returned অর্ডার</span><h4 id="sum-returned" style="color: #dc2626;">0 টি</h4></div>
-                </div>
                 <div class="section-header"><h2>অর্ডার ও বিক্রি</h2><button class="btn" onclick="openOrderModal()">+ নতুন অর্ডার</button></div>
-                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>অর্ডার আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="orders-table"></tbody></table></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>আইডি</th><th>কাস্টমার</th><th>মোবাইল</th><th>ঠিকানা</th><th>টাকা</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="orders-table"></tbody></table></div>
             </div>
 
             <!-- Raw Materials Tab -->
             <div id="tab-raw-materials" class="tab-content">
-                <div class="section-header"><h2>কাঁচামাল কেনা</h2><button class="btn" onclick="openModal('raw-modal')">+ নতুন কেনা</button></div>
-                <div class="table-container"><table><thead><tr><th>ছবি</th><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ (TK)</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr></thead><tbody id="raw-materials-table"></tbody></table></div>
+                <div class="section-header"><h2>কাঁচামাল কেনা</h2><button class="btn" onclick="openRawModal()">+ নতুন কেনা</button></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>নাম</th><th>পরিমাণ</th><th>খরচ</th><th>সাপ্লায়ার</th><th>অ্যাকশন</th></tr></thead><tbody id="raw-materials-table"></tbody></table></div>
+            </div>
+
+            <!-- Production Tab -->
+            <div id="tab-production" class="tab-content">
+                <div class="section-header"><h2>উৎপাদন ও স্টক</h2><button class="btn" onclick="openProductionModal()">+ নতুন উৎপাদন</button></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>পণ্য</th><th>পরিমাণ</th><th>খরচ</th><th>অ্যাকশন</th></tr></thead><tbody id="production-table"></tbody></table></div>
             </div>
 
             <!-- Products Tab -->
-            <div id="tab-products" class="tab-content"><div class="section-header"><h2>পণ্য তালিকা</h2><button class="btn" onclick="openModal('product-modal')">+ পণ্য যোগ</button></div><div class="table-container"><table><thead><tr><th>ছবি</th><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr></thead><tbody id="products-table"></tbody></table></div></div>
-            <div id="tab-production" class="tab-content"><div class="section-header"><h2>উৎপাদন ও স্টক</h2><button class="btn" onclick="openModal('prod-modal')">+ নতুন উৎপাদন</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>পণ্য</th><th>পরিমাণ</th><th>খরচ</th><th>অ্যাকশন</th></tr></thead><tbody id="production-table"></tbody></table></div></div>
-            <div id="tab-courier" class="tab-content"><div class="section-header"><h2>Steadfast কুরিয়ার</h2><button class="btn" onclick="openModal('courier-modal')">+ কুরিয়ার এন্ট্রি</button></div><div class="table-container"><table><thead><tr><th>পার্সেল আইডি</th><th>অর্ডার</th><th>COD</th><th>চার্জ</th><th>স্ট্যাটাস</th><th>পাওনা</th><th>অ্যাকশন</th></tr></thead><tbody id="courier-table"></tbody></table></div></div>
-            
+            <div id="tab-products" class="tab-content">
+                <div class="section-header"><h2>পণ্য তালিকা</h2><button class="btn" onclick="openProductModal()">+ পণ্য যোগ</button></div>
+                <div class="table-container"><table><thead><tr><th>SKU</th><th>নাম</th><th>খরচ</th><th>বিক্রয়মূল্য</th><th>স্টক</th><th>অ্যাকশন</th></tr></thead><tbody id="products-table"></tbody></table></div>
+            </div>
+
+            <!-- Courier Tab -->
+            <div id="tab-courier" class="tab-content">
+                <div class="section-header"><h2>Steadfast কুরিয়ার</h2><button class="btn" onclick="openCourierModal()">+ কুরিয়ার এন্ট্রি</button></div>
+                <div class="table-container"><table><thead><tr><th>পার্সেল আইডি</th><th>অর্ডার</th><th>COD</th><th>চার্জ</th><th>স্ট্যাটাস</th><th>পাওনা</th><th>অ্যাকশন</th></tr></thead><tbody id="courier-table"></tbody></table></div>
+            </div>
+
             <!-- Expenses Tab -->
             <div id="tab-expenses" class="tab-content">
-                <div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openModal('expense-modal')">+ খরচ যোগ</button></div>
+                <div class="section-header"><h2>অন্যান্য খরচ</h2><button class="btn" onclick="openExpenseModal()">+ খরচ যোগ</button></div>
                 <div class="table-container"><table><thead><tr><th>তারিখ</th><th>ক্যাটাগরি</th><th>বিবরণ</th><th>পরিমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="expenses-table"></tbody></table></div>
             </div>
 
-            <div id="tab-cash" class="tab-content"><div class="section-header"><h2>নগদ ও মূলধন</h2><button class="btn" onclick="openModal('cash-modal')">+ এন্ট্রি যোগ</button></div><div class="table-container"><table><thead><tr><th>তারিখ</th><th>টাইপ</th><th>বিবরণ</th><th>পরিমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="cash-table"></tbody></table></div></div>
-            <div id="tab-dues" class="tab-content"><div class="section-header"><h2>পাওনা ও দেনা</h2><button class="btn" onclick="openModal('due-modal')">+ পাওনা/দেনা</button></div><div class="table-container"><table><thead><tr><th>নাম</th><th>ধরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="dues-table"></tbody></table></div></div>
+            <!-- Cash Tab -->
+            <div id="tab-cash" class="tab-content">
+                <div class="section-header"><h2>নগদ ও মূলধন</h2><button class="btn" onclick="openCashModal()">+ এন্ট্রি যোগ</button></div>
+                <div class="table-container"><table><thead><tr><th>তারিখ</th><th>টাইপ</th><th>বিবরণ</th><th>পরিমাণ</th><th>অ্যাকশন</th></tr></thead><tbody id="cash-table"></tbody></table></div>
+            </div>
+
+            <!-- Dues Tab -->
+            <div id="tab-dues" class="tab-content">
+                <div class="section-header"><h2>পাওনা ও দেনা</h2><button class="btn" onclick="openDueModal()">+ পাওনা/দেনা</button></div>
+                <div class="table-container"><table><thead><tr><th>নাম</th><th>ধরণ</th><th>পরিমাণ</th><th>স্ট্যাটাস</th><th>অ্যাকশন</th></tr></thead><tbody id="dues-table"></tbody></table></div>
+            </div>
 
             <!-- Reports Tab -->
             <div id="tab-reports" class="tab-content">
-                <div class="section-header">
-                    <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট (অফলাইন)</h2>
-                    <div class="filter-controls">
-                        <select id="report-time-filter" class="time-select">
-                            <option value="all">সকল সময়</option>
-                            <option value="today">আজ</option>
-                            <option value="week">এই সপ্তাহ</option>
-                            <option value="month" selected>এই মাস</option>
-                            <option value="year">এই বছর</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 15px;">
-                    <button class="btn" style="flex:1; padding: 14px; font-size:14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
-                    <button class="btn-outline" style="flex:1; padding: 14px; font-size:14px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
+                <div class="section-header"><h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট</h2></div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                    <button class="btn" style="flex:1; padding: 14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
                 </div>
             </div>
         </main>
@@ -351,365 +362,32 @@
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
-    <!-- Full Centralized Admin & Customization Panel Modal -->
-    <div id="admin-modal" class="modal">
-        <div class="modal-content" style="max-width:580px;">
-            <h3>🔐 সেন্ট্রাল এডমিন ও কাস্টমাইজেশন প্যানেল</h3>
-            
-            <div id="admin-login-view">
-                <div class="form-group">
-                    <label>এডমিন সিক্রেট পাসওয়ার্ড দিন</label>
-                    <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
-                    <span class="password-toggle-icon" onclick="togglePasswordVisibility('admin-pass-input', this)">👁️</span>
-                </div>
-                <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button><button class="btn-modal-save" onclick="verifyAdminPass()">আনলক করুন</button></div>
-            </div>
+    <!-- Modals Form Inputs WITH EDIT SUPPORTS -->
+    <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    
+    <div id="raw-modal" class="modal"><div class="modal-content"><h3 id="raw-modal-title">কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><input type="hidden" id="raw-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-            <div id="admin-dashboard-view" style="display:none;">
-                
-                <!-- 🌐 ALL DEVICES CUSTOMIZATION SECTION -->
-                <div class="admin-section-box">
-                    <h4>⚙️ অল-ডিভাইস অ্যাপ কাস্টমাইজেশন (সকল ইউজার দেখতে পাবে):</h4>
-                    <div class="form-group">
-                        <label>১. অ্যাপের নাম/টাইটেল</label>
-                        <input type="text" id="admin-custom-title" placeholder="যেমন: 🌸 My Business Hisab">
-                    </div>
-                    <div class="form-group">
-                        <label>২. ব্যবসার স্লোগান</label>
-                        <input type="text" id="admin-custom-slogan" placeholder="স্লোগান লিখুন">
-                    </div>
-                    <div class="form-group">
-                        <label>৩. অ্যাপ আইকন / লোগো আপলোড</label>
-                        <input type="file" id="admin-custom-icon-file" accept="image/*" onchange="previewAdminAppIcon(event)" style="padding: 6px; background: #fff;">
-                        <div class="img-preview-box" id="admin-icon-preview-box"><span style="font-size:12px; color:#9ca3af;">আইকন প্রিভিউ</span></div>
-                    </div>
-                    <div class="form-group">
-                        <label>৪. হেডার কালার</label>
-                        <input type="color" id="admin-custom-header-color" value="#831843" style="height:45px; cursor:pointer;">
-                    </div>
-                    <div class="form-group">
-                        <label>৫. ব্যানার ছবি আপলোড</label>
-                        <input type="file" id="admin-custom-banner-file" accept="image/*" onchange="previewAdminBanner(event)" style="padding: 6px; background: #fff;">
-                        <div class="img-preview-box" id="admin-banner-preview-box"><span style="font-size:12px; color:#9ca3af;">ব্যানার প্রিভিউ</span></div>
-                    </div>
-                    <div class="form-group">
-                        <label>৬. অন্যান্য খরচের খাতসমূহ (কমা দিয়ে লিখুন)</label>
-                        <input type="text" id="admin-custom-expenses" placeholder="যেমন: Facebook Boosting, যাতায়াত, দোকান ভাড়া">
-                    </div>
-                    <button class="btn-modal-save" style="width:100%; font-size:15px;" onclick="saveCentralAppCustomization()">✨ সব ডিভাইসে কাস্টমাইজেশন আপডেট করুন</button>
-                </div>
+    <div id="product-modal" class="modal"><div class="modal-content"><h3 id="prod-modal-title">পণ্য</h3><form onsubmit="saveProduct(event)"><input type="hidden" id="prod-edit-id"><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-                <!-- REGISTERED USERS SECTION -->
-                <div class="admin-section-box">
-                    <h4>👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
-                    <div class="table-container" style="max-height: 160px; overflow-y: auto;">
-                        <table><thead><tr><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead><tbody id="user-list-table"></tbody></table>
-                    </div>
-                </div>
+    <div id="production-modal" class="modal"><div class="modal-content"><h3 id="production-modal-title">উৎপাদন</h3><form onsubmit="saveProduction(event)"><input type="hidden" id="p-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('production-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-                <!-- ADMIN SECURITY SECTION -->
-                <div class="admin-section-box">
-                    <h4>🔑 এডমিন সিকিউরিটি ও প্রোফাইল:</h4>
-                    <div class="form-group">
-                        <label>নতুন এডমিন পাসওয়ার্ড</label>
-                        <input type="password" id="new-admin-pass" placeholder="নতুন এডমিন পাসওয়ার্ড দিন">
-                        <span class="password-toggle-icon" onclick="togglePasswordVisibility('new-admin-pass', this)">👁️</span>
-                    </div>
-                    <button class="btn" style="width:100%; margin-bottom:12px;" onclick="updateAdminPassword()">পাসওয়ার্ড সেভ করুন</button>
+    <div id="courier-modal" class="modal"><div class="modal-content"><h3 id="courier-modal-title">কুরিয়ার</h3><form onsubmit="saveCourier(event)"><input type="hidden" id="courier-edit-id"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option value="Pending">Pending</option><option value="Delivered">Delivered</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-                    <div class="form-group">
-                        <label>এডমিন/ডেভেলপার ছবি</label>
-                        <input type="file" id="admin-dev-img-file" accept="image/*" onchange="changeDeveloperAvatar(event)">
-                    </div>
-                </div>
-                
-                <div class="modal-actions"><button class="btn-modal-cancel" onclick="closeModal('admin-modal')">বন্ধ করুন</button></div>
-            </div>
-        </div>
-    </div>
+    <div id="expense-modal" class="modal"><div class="modal-content"><h3 id="expense-modal-title">অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><input type="hidden" id="exp-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>ক্যাটাগরি</label><input type="text" id="exp-cat" placeholder="Facebook Boosting, যাতায়াত"></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2"></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
-    <!-- Modals Form Inputs -->
-    <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার যোগ করুন</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required placeholder="#ORD-001"></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required placeholder="নাম"></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required placeholder="মোবাইল"></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address" placeholder="ঠিকানা"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required placeholder="1150"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="raw-modal" class="modal"><div class="modal-content"><h3>কাঁচামাল কেনা</h3><form onsubmit="saveRawMaterial(event)"><div class="form-group"><label>কাঁচামালের ছবি</label><input type="file" id="raw-img-file" accept="image/*" onchange="previewRawImage(event)"><div class="img-preview-box" id="raw-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>তারিখ</label><input type="date" id="raw-date" required></div><div class="form-group"><label>পণ্যের নাম</label><input type="text" id="raw-name" required placeholder="যেমন :- ফুল, PVC বোর্ড"></div><div class="form-group"><label>পরিমাণ</label><input type="text" id="raw-qty" required placeholder="যেমন :- ৪৮ পিস"></div><div class="form-group"><label>খরচ (TK)</label><div class="input-tk-wrapper"><input type="number" id="raw-cost" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>সাপ্লায়ার</label><input type="text" id="raw-supplier" placeholder="সাপ্লায়ারের নাম"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('raw-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="expense-modal" class="modal"><div class="modal-content"><h3>অন্যান্য খরচ</h3><form onsubmit="saveExpense(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="exp-date" required></div><div class="form-group"><label>খরচের খাত (ক্যাটাগরি)</label><select id="exp-cat"></select></div><div class="form-group"><label>পরিমাণ (TK)</label><div class="input-tk-wrapper"><input type="number" id="exp-amt" required placeholder="500"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><textarea id="exp-desc" rows="2" placeholder="বিবরণ লিখুন..."></textarea></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('expense-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="product-modal" class="modal"><div class="modal-content"><h3>পণ্য যোগ</h3><form onsubmit="saveProduct(event)"><div class="form-group"><label>ছবি</label><input type="file" id="prod-img-input" accept="image/*" onchange="previewProductImage(event)"><div class="img-preview-box" id="prod-img-preview"><span style="font-size:12px; color:#9ca3af;">ছবি সিলেক্ট করুন</span></div></div><div class="form-group"><label>নাম</label><input type="text" id="prod-name" required placeholder="নাম"></div><div class="form-group"><label>SKU</label><input type="text" id="prod-sku" required placeholder="SKU"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="prod-cost" required placeholder="120"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিক্রয়মূল্য</label><div class="input-tk-wrapper"><input type="number" id="prod-price" required placeholder="250"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্টক</label><input type="number" id="prod-stock" value="0"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('product-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="prod-modal" class="modal"><div class="modal-content"><h3>উৎপাদন</h3><form onsubmit="saveProduction(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="p-date" required></div><div class="form-group"><label>পণ্য</label><input type="text" id="p-item" required placeholder="পণ্য"></div><div class="form-group"><label>পরিমাণ</label><input type="number" id="p-qty" required placeholder="50"></div><div class="form-group"><label>খরচ</label><div class="input-tk-wrapper"><input type="number" id="p-cost" required placeholder="1500"><span class="tk-suffix">TK</span></div></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('prod-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="courier-modal" class="modal"><div class="modal-content"><h3>কুরিয়ার</h3><form onsubmit="saveCourier(event)"><div class="form-group"><label>পার্সেল আইডি</label><input type="text" id="courier-parcel" required placeholder="SF-123"></div><div class="form-group"><label>অর্ডার</label><input type="text" id="courier-ord" required placeholder="#ORD-001"></div><div class="form-group"><label>COD</label><div class="input-tk-wrapper"><input type="number" id="courier-cod" required placeholder="1200"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>চার্জ</label><div class="input-tk-wrapper"><input type="number" id="courier-charge" required placeholder="100"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="courier-status"><option value="Pending">Pending</option><option value="Delivered">Delivered</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('courier-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="cash-modal" class="modal"><div class="modal-content"><h3>নগদ</h3><form onsubmit="saveCash(event)"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option value="মূলধন যোগ">মূলধন যোগ</option><option value="ব্যক্তিগত উত্তোলন">ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required placeholder="5000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc" placeholder="বিবরণ"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
-    <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+    <div id="cash-modal" class="modal"><div class="modal-content"><h3 id="cash-modal-title">নগদ</h3><form onsubmit="saveCash(event)"><input type="hidden" id="cash-edit-id"><div class="form-group"><label>তারিখ</label><input type="date" id="cash-date" required></div><div class="form-group"><label>টাইপ</label><select id="cash-type"><option value="মূলধন যোগ">মূলধন যোগ</option><option value="ব্যক্তিগত উত্তোলন">ব্যক্তিগত উত্তোলন</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="cash-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>বিবরণ</label><input type="text" id="cash-desc"></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('cash-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
+
+    <div id="due-modal" class="modal"><div class="modal-content"><h3 id="due-modal-title">পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><input type="hidden" id="due-edit-id"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        const SUPABASE_URL = 'https://zwpoxufpeluqtdooeekr.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
-        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        let adminAppIconImg = null, adminBannerImg = null;
-
-        function togglePasswordVisibility(inputId, iconEl) {
-            let input = document.getElementById(inputId);
-            if (input) {
-                if (input.type === 'password') { input.type = 'text'; iconEl.innerText = '🙈'; }
-                else { input.type = 'password'; iconEl.innerText = '👁️'; }
-            }
-        }
-
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
         function setLocalData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
         window.onload = function() {
-            checkAuthSession();
             renderAllLocalData();
-            loadCentralAppSettings();
-            subscribeToLiveCentralSettings();
+            let avatar = localStorage.getItem('app_dev_avatar');
+            if(avatar) document.getElementById('header-dev-img').src = avatar;
         };
-
-        function checkAuthSession() {
-            let user = localStorage.getItem('current_logged_user');
-            if (user) { document.getElementById('auth-screen').style.display = 'none'; }
-            else { document.getElementById('auth-screen').style.display = 'flex'; }
-        }
-
-        function handleLogout() {
-            if (confirm("আপনি কি অ্যাপ থেকে লগআউট করতে চান?")) {
-                localStorage.removeItem('current_logged_user');
-                document.getElementById('auth-screen').style.display = 'flex';
-                toggleAuthMode('login');
-            }
-        }
-
-        function toggleAuthMode(mode) {
-            if (mode === 'login') { document.getElementById('register-card').style.display = 'none'; document.getElementById('login-card').style.display = 'block'; }
-            else { document.getElementById('register-card').style.display = 'block'; document.getElementById('login-card').style.display = 'none'; }
-        }
-
-        async function handleRegister(e) {
-            e.preventDefault();
-            let name = document.getElementById('reg-name').value.trim();
-            let phone = document.getElementById('reg-phone').value.trim();
-            let pass = document.getElementById('reg-pass').value.trim();
-            let img = selectedAuthProfileImg || '';
-
-            if (!navigator.onLine) {
-                alert("⚠️ রেজিস্ট্রেশন করতে ইন্টারনেট কানেকশন প্রয়োজন!");
-                return;
-            }
-
-            try {
-                let { error } = await _supabase.from('app_users').insert([{ name, phone, pass, img }]);
-                if (error) alert("রেজিস্ট্রেশন ত্রুটি: " + error.message);
-                else {
-                    localStorage.setItem('current_logged_user', JSON.stringify({ name, phone, pass, img }));
-                    alert("🎉 একাউন্ট সফলভাবে তৈরি হয়েছে!");
-                    document.getElementById('auth-screen').style.display = 'none';
-                }
-            } catch(err) { alert("নেটওয়ার্ক সমস্যা: " + err.message); }
-        }
-
-        async function handleLogin(e) {
-            e.preventDefault();
-            let phone = document.getElementById('login-phone').value.trim();
-            let pass = document.getElementById('login-pass').value.trim();
-
-            if (navigator.onLine) {
-                try {
-                    let { data } = await _supabase.from('app_users').select('*').eq('phone', phone).eq('pass', pass).single();
-                    if (data) {
-                        localStorage.setItem('current_logged_user', JSON.stringify(data));
-                        alert("স্বাগতম! লগইন সফল হয়েছে।");
-                        document.getElementById('auth-screen').style.display = 'none';
-                        return;
-                    }
-                } catch(e){}
-            }
-
-            let savedUser = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
-            if (savedUser && savedUser.phone === phone && savedUser.pass === pass) {
-                alert("স্বাগতম! অফলাইনে লগইন হয়েছে।");
-                document.getElementById('auth-screen').style.display = 'none';
-            } else { alert("❌ ভুল নম্বর বা পাসওয়ার্ড!"); }
-        }
-
-        function openAdminModal() {
-            document.getElementById('admin-login-view').style.display = 'block';
-            document.getElementById('admin-dashboard-view').style.display = 'none';
-            document.getElementById('admin-pass-input').value = '';
-            openModal('admin-modal');
-        }
-
-        async function verifyAdminPass() {
-            let val = document.getElementById('admin-pass-input').value;
-            let currentAdminPass = localStorage.getItem('app_admin_pass') || '1234';
-
-            if (val === currentAdminPass) {
-                document.getElementById('admin-login-view').style.display = 'none';
-                document.getElementById('admin-dashboard-view').style.display = 'block';
-                await fetchCloudUsersForAdmin();
-                populateAdminFormFields();
-            } else { alert("❌ ভুল এডমিন পাসওয়ার্ড!"); }
-        }
-
-        async function fetchCloudUsersForAdmin() {
-            let table = document.getElementById('user-list-table');
-            table.innerHTML = '<tr><td colspan="4">ডেটা লোড হচ্ছে...</td></tr>';
-            if (navigator.onLine) {
-                let { data: users } = await _supabase.from('app_users').select('*');
-                if (users && users.length > 0) {
-                    let h = '';
-                    users.forEach(u => {
-                        h += `<tr><td><img src="${u.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${u.name}</td><td>${u.phone}</td><td style="color:#be185d; font-weight:bold;">${u.pass}</td></tr>`;
-                    });
-                    table.innerHTML = h;
-                    return;
-                }
-            }
-            table.innerHTML = '<tr><td colspan="4">অনলাইন ইউজার ডেটা পাওয়া যায়নি</td></tr>';
-        }
-
-        // ==========================================
-        // 🌐 CENTRAL CLOUD CUSTOMIZATION SYSTEM
-        // ==========================================
-        async function loadCentralAppSettings() {
-            try {
-                if (navigator.onLine) {
-                    let { data } = await _supabase.from('app_settings').select('*').eq('id', 'global').single();
-                    if (data) {
-                        applyAppSettingsToUI(data);
-                        localStorage.setItem('cached_app_settings', JSON.stringify(data));
-                        return;
-                    }
-                }
-            } catch(e){}
-
-            let cached = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
-            applyAppSettingsToUI(cached);
-        }
-
-        function subscribeToLiveCentralSettings() {
-            _supabase.channel('public:app_settings')
-            .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'app_settings' }, payload => {
-                if (payload.new) {
-                    applyAppSettingsToUI(payload.new);
-                    localStorage.setItem('cached_app_settings', JSON.stringify(payload.new));
-                }
-            }).subscribe();
-        }
-
-        function applyAppSettingsToUI(s) {
-            if (s.title) {
-                document.getElementById('header-title-text').innerText = s.title;
-                document.getElementById('banner-title').innerText = s.title;
-                document.title = s.title;
-            }
-            if (s.slogan) document.getElementById('banner-slogan').innerText = s.slogan;
-            if (s.icon) {
-                document.getElementById('header-app-logo').src = s.icon;
-                document.getElementById('dynamic-favicon').href = s.icon;
-            }
-            if (s.header_color) {
-                document.getElementById('main-header').style.background = s.header_color;
-            }
-            if (s.banner_img) {
-                document.getElementById('main-banner').style.backgroundImage = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${s.banner_img}')`;
-            }
-            if (s.expense_cats) {
-                localStorage.setItem('app_expense_cats', s.expense_cats);
-                updateExpenseDropdown();
-            }
-        }
-
-        function populateAdminFormFields() {
-            let s = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
-            document.getElementById('admin-custom-title').value = s.title || "🌸 My Business Hisab";
-            document.getElementById('admin-custom-slogan').value = s.slogan || '"সৌন্দর্যের ছোঁয়ায় আপনার ব্যবসার প্রতিটি হিসাব হোক নিখুঁত"';
-            document.getElementById('admin-custom-header-color').value = s.header_color || "#831843";
-            document.getElementById('admin-custom-expenses').value = s.expense_cats || "Facebook Boosting, যাতায়াত, অন্যান্য";
-        }
-
-        function previewAdminAppIcon(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let r = new FileReader();
-                r.onload = (evt) => {
-                    adminAppIconImg = evt.target.result;
-                    document.getElementById('admin-icon-preview-box').innerHTML = `<img src="${adminAppIconImg}">`;
-                };
-                r.readAsDataURL(file);
-            }
-        }
-
-        function previewAdminBanner(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let r = new FileReader();
-                r.onload = (evt) => {
-                    adminBannerImg = evt.target.result;
-                    document.getElementById('admin-banner-preview-box').innerHTML = `<img src="${adminBannerImg}">`;
-                };
-                r.readAsDataURL(file);
-            }
-        }
-
-        async function saveCentralAppCustomization() {
-            if (!navigator.onLine) {
-                alert("⚠️ অল-ডিভাইস আপডেট পাঠাতে ইন্টারনেট কানেকশন প্রয়োজন!");
-                return;
-            }
-
-            let title = document.getElementById('admin-custom-title').value.trim();
-            let slogan = document.getElementById('admin-custom-slogan').value.trim();
-            let header_color = document.getElementById('admin-custom-header-color').value;
-            let expense_cats = document.getElementById('admin-custom-expenses').value.trim();
-
-            let cached = JSON.parse(localStorage.getItem('cached_app_settings') || '{}');
-            let icon = adminAppIconImg || cached.icon || '';
-            let banner_img = adminBannerImg || cached.banner_img || '';
-
-            let updatePayload = { id: 'global', title, slogan, icon, header_color, banner_img, expense_cats };
-
-            try {
-                let { error } = await _supabase.from('app_settings').upsert([updatePayload]);
-                if (error) alert("আপডেট ত্রুটি: " + error.message);
-                else {
-                    alert("🎉 সফল হয়েছে! সকল ইউজারের ডিভাইসে এই আপডেটটি সাথে সাথে চলে গেছে!");
-                    applyAppSettingsToUI(updatePayload);
-                    localStorage.setItem('cached_app_settings', JSON.stringify(updatePayload));
-                    closeModal('admin-modal');
-                }
-            } catch(err) { alert("নেটওয়ার্ক ত্রুটি: " + err.message); }
-        }
-
-        function updateAdminPassword() {
-            let newPass = document.getElementById('new-admin-pass').value.trim();
-            if (newPass) {
-                localStorage.setItem('app_admin_pass', newPass);
-                alert("✅ এডমিন পাসওয়ার্ড আপডেট হয়েছে!");
-                document.getElementById('new-admin-pass').value = '';
-            } else alert("নতুন পাসওয়ার্ড লিখুন!");
-        }
-
-        function changeDeveloperAvatar(e) {
-            let file = e.target.files[0];
-            if (file) {
-                let reader = new FileReader();
-                reader.onload = function(evt) {
-                    let avatar = evt.target.result;
-                    document.getElementById('header-dev-img').src = avatar;
-                    localStorage.setItem('app_dev_avatar', avatar);
-                    alert("ছবি আপডেট হয়েছে!");
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function updateExpenseDropdown() {
-            let rawCats = localStorage.getItem('app_expense_cats') || "Facebook Boosting, যাতায়াত, অন্যান্য";
-            let catsArr = rawCats.split(',').map(c => c.trim()).filter(c => c !== '');
-            let expSelect = document.getElementById('exp-cat');
-            if (expSelect) {
-                expSelect.innerHTML = '';
-                catsArr.forEach(c => expSelect.innerHTML += `<option value="${c}">${c}</option>`);
-            }
-        }
 
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
@@ -719,287 +397,298 @@
                 document.querySelectorAll('.nav-links li').forEach(li => li.classList.remove('active'));
                 el.classList.add('active');
             }
-            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-            let today = new Date().toISOString().split('T')[0];
-            ['raw-date', 'p-date', 'exp-date', 'cash-date'].forEach(f => {
-                if(document.getElementById(f)) document.getElementById(f).value = today;
-            });
-        }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Order Modal Functions (Add & Edit)
-        function openOrderModal(editObj = null) {
-            if (editObj) {
-                document.getElementById('order-modal-title').innerText = "অর্ডার এডিট করুন";
-                document.getElementById('ord-edit-id').value = editObj.id;
-                document.getElementById('ord-id').value = editObj.orderId;
-                document.getElementById('ord-customer').value = editObj.customer;
-                document.getElementById('ord-phone').value = editObj.phone;
-                document.getElementById('ord-address').value = editObj.address;
-                document.getElementById('ord-amount').value = editObj.amount;
-                document.getElementById('ord-status').value = editObj.status;
-            } else {
-                document.getElementById('order-modal-title').innerText = "নতুন অর্ডার যোগ করুন";
-                document.getElementById('ord-edit-id').value = "";
-                document.getElementById('ord-id').value = "";
-                document.getElementById('ord-customer').value = "";
-                document.getElementById('ord-phone').value = "";
-                document.getElementById('ord-address').value = "";
-                document.getElementById('ord-amount').value = "";
-                document.getElementById('ord-status').value = "Pending";
-            }
-            openModal('order-modal');
-        }
-
-        function editOrder(id) {
-            let orders = getLocalData('app_orders');
-            let item = orders.find(o => o.id === id);
-            if (item) openOrderModal(item);
-        }
-
-        function saveOrder(e) {
-            e.preventDefault();
-            let editId = document.getElementById('ord-edit-id').value;
-            let orders = getLocalData('app_orders');
-
-            if (editId) {
-                orders = orders.map(i => {
-                    if (i.id == editId) {
-                        return {
-                            ...i,
-                            orderId: document.getElementById('ord-id').value,
-                            customer: document.getElementById('ord-customer').value,
-                            phone: document.getElementById('ord-phone').value,
-                            address: document.getElementById('ord-address').value,
-                            amount: parseFloat(document.getElementById('ord-amount').value),
-                            status: document.getElementById('ord-status').value
-                        };
-                    }
-                    return i;
-                });
-            } else {
-                let item = {
-                    id: Date.now(),
-                    orderId: document.getElementById('ord-id').value,
-                    customer: document.getElementById('ord-customer').value,
-                    phone: document.getElementById('ord-phone').value,
-                    address: document.getElementById('ord-address').value,
-                    amount: parseFloat(document.getElementById('ord-amount').value),
-                    status: document.getElementById('ord-status').value,
-                    date: new Date().toISOString().split('T')[0]
-                };
-                orders.push(item);
-            }
-
-            setLocalData('app_orders', orders);
-            closeModal('order-modal');
-            renderAllLocalData();
-        }
-
-        function saveRawMaterial(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                img: selectedRawImageData || '',
-                date: document.getElementById('raw-date').value,
-                name: document.getElementById('raw-name').value,
-                qty: document.getElementById('raw-qty').value,
-                cost: parseFloat(document.getElementById('raw-cost').value),
-                supplier: document.getElementById('raw-supplier').value
-            };
-            let data = getLocalData('app_raw_materials'); data.push(item); setLocalData('app_raw_materials', data);
-            closeModal('raw-modal'); renderAllLocalData();
-        }
-
-        function saveProduct(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                img: selectedProductImageData || '',
-                name: document.getElementById('prod-name').value,
-                sku: document.getElementById('prod-sku').value,
-                cost: parseFloat(document.getElementById('prod-cost').value),
-                price: parseFloat(document.getElementById('prod-price').value),
-                stock: parseInt(document.getElementById('prod-stock').value)
-            };
-            let data = getLocalData('app_products'); data.push(item); setLocalData('app_products', data);
-            closeModal('product-modal'); renderAllLocalData();
-        }
-
-        function saveProduction(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                date: document.getElementById('p-date').value,
-                item: document.getElementById('p-item').value,
-                qty: parseInt(document.getElementById('p-qty').value),
-                cost: parseFloat(document.getElementById('p-cost').value)
-            };
-            let data = getLocalData('app_production'); data.push(item); setLocalData('app_production', data);
-            closeModal('prod-modal'); renderAllLocalData();
-        }
-
-        function saveCourier(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                parcelId: document.getElementById('courier-parcel').value,
-                orderNo: document.getElementById('courier-ord').value,
-                cod: parseFloat(document.getElementById('courier-cod').value),
-                charge: parseFloat(document.getElementById('courier-charge').value),
-                status: document.getElementById('courier-status').value
-            };
-            let data = getLocalData('app_courier'); data.push(item); setLocalData('app_courier', data);
-            closeModal('courier-modal'); renderAllLocalData();
-        }
-
-        function saveExpense(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                date: document.getElementById('exp-date').value,
-                category: document.getElementById('exp-cat').value,
-                amount: parseFloat(document.getElementById('exp-amt').value),
-                desc: document.getElementById('exp-desc').value
-            };
-            let data = getLocalData('app_expenses'); data.push(item); setLocalData('app_expenses', data);
-            closeModal('expense-modal'); renderAllLocalData();
-        }
-
-        function saveCash(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                date: document.getElementById('cash-date').value,
-                type: document.getElementById('cash-type').value,
-                amount: parseFloat(document.getElementById('cash-amt').value),
-                desc: document.getElementById('cash-desc').value
-            };
-            let data = getLocalData('app_cash'); data.push(item); setLocalData('app_cash', data);
-            closeModal('cash-modal'); renderAllLocalData();
-        }
-
-        function saveDue(e) {
-            e.preventDefault();
-            let item = {
-                id: Date.now(),
-                name: document.getElementById('due-name').value,
-                type: document.getElementById('due-type').value,
-                amount: parseFloat(document.getElementById('due-amt').value),
-                status: document.getElementById('due-status').value
-            };
-            let data = getLocalData('app_dues'); data.push(item); setLocalData('app_dues', data);
-            closeModal('due-modal'); renderAllLocalData();
-        }
-
+        // Generic Delete Function
         function deleteItem(key, id) {
-            if (confirm("আপনি কি এটি মুছে ফেলতে চান?")) {
+            if (confirm("আপনি কি এটি ডিলিট করতে চান?")) {
                 let data = getLocalData(key).filter(i => i.id !== id);
                 setLocalData(key, data);
                 renderAllLocalData();
             }
         }
 
+        /* ORDER EDIT / SAVE */
+        function openOrderModal(obj = null) {
+            document.getElementById('ord-edit-id').value = obj ? obj.id : '';
+            document.getElementById('ord-id').value = obj ? obj.orderId : '';
+            document.getElementById('ord-customer').value = obj ? obj.customer : '';
+            document.getElementById('ord-phone').value = obj ? obj.phone : '';
+            document.getElementById('ord-address').value = obj ? obj.address : '';
+            document.getElementById('ord-amount').value = obj ? obj.amount : '';
+            document.getElementById('ord-status').value = obj ? obj.status : 'Pending';
+            openModal('order-modal');
+        }
+        function saveOrder(e) {
+            e.preventDefault();
+            let editId = document.getElementById('ord-edit-id').value;
+            let list = getLocalData('app_orders');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                orderId: document.getElementById('ord-id').value,
+                customer: document.getElementById('ord-customer').value,
+                phone: document.getElementById('ord-phone').value,
+                address: document.getElementById('ord-address').value,
+                amount: parseFloat(document.getElementById('ord-amount').value),
+                status: document.getElementById('ord-status').value,
+                date: new Date().toISOString().split('T')[0]
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_orders', list);
+            closeModal('order-modal');
+            renderAllLocalData();
+        }
+
+        /* RAW MATERIALS EDIT / SAVE */
+        function openRawModal(obj = null) {
+            document.getElementById('raw-edit-id').value = obj ? obj.id : '';
+            document.getElementById('raw-date').value = obj ? obj.date : new Date().toISOString().split('T')[0];
+            document.getElementById('raw-name').value = obj ? obj.name : '';
+            document.getElementById('raw-qty').value = obj ? obj.qty : '';
+            document.getElementById('raw-cost').value = obj ? obj.cost : '';
+            document.getElementById('raw-supplier').value = obj ? obj.supplier : '';
+            openModal('raw-modal');
+        }
+        function saveRawMaterial(e) {
+            e.preventDefault();
+            let editId = document.getElementById('raw-edit-id').value;
+            let list = getLocalData('app_raw_materials');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                date: document.getElementById('raw-date').value,
+                name: document.getElementById('raw-name').value,
+                qty: document.getElementById('raw-qty').value,
+                cost: parseFloat(document.getElementById('raw-cost').value),
+                supplier: document.getElementById('raw-supplier').value
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_raw_materials', list);
+            closeModal('raw-modal');
+            renderAllLocalData();
+        }
+
+        /* PRODUCTS EDIT / SAVE */
+        function openProductModal(obj = null) {
+            document.getElementById('prod-edit-id').value = obj ? obj.id : '';
+            document.getElementById('prod-name').value = obj ? obj.name : '';
+            document.getElementById('prod-sku').value = obj ? obj.sku : '';
+            document.getElementById('prod-cost').value = obj ? obj.cost : '';
+            document.getElementById('prod-price').value = obj ? obj.price : '';
+            document.getElementById('prod-stock').value = obj ? obj.stock : '0';
+            openModal('product-modal');
+        }
+        function saveProduct(e) {
+            e.preventDefault();
+            let editId = document.getElementById('prod-edit-id').value;
+            let list = getLocalData('app_products');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                name: document.getElementById('prod-name').value,
+                sku: document.getElementById('prod-sku').value,
+                cost: parseFloat(document.getElementById('prod-cost').value),
+                price: parseFloat(document.getElementById('prod-price').value),
+                stock: parseInt(document.getElementById('prod-stock').value)
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_products', list);
+            closeModal('product-modal');
+            renderAllLocalData();
+        }
+
+        /* PRODUCTION EDIT / SAVE */
+        function openProductionModal(obj = null) {
+            document.getElementById('p-edit-id').value = obj ? obj.id : '';
+            document.getElementById('p-date').value = obj ? obj.date : new Date().toISOString().split('T')[0];
+            document.getElementById('p-item').value = obj ? obj.item : '';
+            document.getElementById('p-qty').value = obj ? obj.qty : '';
+            document.getElementById('p-cost').value = obj ? obj.cost : '';
+            openModal('production-modal');
+        }
+        function saveProduction(e) {
+            e.preventDefault();
+            let editId = document.getElementById('p-edit-id').value;
+            let list = getLocalData('app_production');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                date: document.getElementById('p-date').value,
+                item: document.getElementById('p-item').value,
+                qty: parseInt(document.getElementById('p-qty').value),
+                cost: parseFloat(document.getElementById('p-cost').value)
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_production', list);
+            closeModal('production-modal');
+            renderAllLocalData();
+        }
+
+        /* COURIER EDIT / SAVE */
+        function openCourierModal(obj = null) {
+            document.getElementById('courier-edit-id').value = obj ? obj.id : '';
+            document.getElementById('courier-parcel').value = obj ? obj.parcelId : '';
+            document.getElementById('courier-ord').value = obj ? obj.orderNo : '';
+            document.getElementById('courier-cod').value = obj ? obj.cod : '';
+            document.getElementById('courier-charge').value = obj ? obj.charge : '';
+            document.getElementById('courier-status').value = obj ? obj.status : 'Pending';
+            openModal('courier-modal');
+        }
+        function saveCourier(e) {
+            e.preventDefault();
+            let editId = document.getElementById('courier-edit-id').value;
+            let list = getLocalData('app_courier');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                parcelId: document.getElementById('courier-parcel').value,
+                orderNo: document.getElementById('courier-ord').value,
+                cod: parseFloat(document.getElementById('courier-cod').value),
+                charge: parseFloat(document.getElementById('courier-charge').value),
+                status: document.getElementById('courier-status').value
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_courier', list);
+            closeModal('courier-modal');
+            renderAllLocalData();
+        }
+
+        /* EXPENSE EDIT / SAVE */
+        function openExpenseModal(obj = null) {
+            document.getElementById('exp-edit-id').value = obj ? obj.id : '';
+            document.getElementById('exp-date').value = obj ? obj.date : new Date().toISOString().split('T')[0];
+            document.getElementById('exp-cat').value = obj ? obj.category : '';
+            document.getElementById('exp-amt').value = obj ? obj.amount : '';
+            document.getElementById('exp-desc').value = obj ? obj.desc : '';
+            openModal('expense-modal');
+        }
+        function saveExpense(e) {
+            e.preventDefault();
+            let editId = document.getElementById('exp-edit-id').value;
+            let list = getLocalData('app_expenses');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                date: document.getElementById('exp-date').value,
+                category: document.getElementById('exp-cat').value,
+                amount: parseFloat(document.getElementById('exp-amt').value),
+                desc: document.getElementById('exp-desc').value
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_expenses', list);
+            closeModal('expense-modal');
+            renderAllLocalData();
+        }
+
+        /* CASH EDIT / SAVE */
+        function openCashModal(obj = null) {
+            document.getElementById('cash-edit-id').value = obj ? obj.id : '';
+            document.getElementById('cash-date').value = obj ? obj.date : new Date().toISOString().split('T')[0];
+            document.getElementById('cash-type').value = obj ? obj.type : 'মূলধন যোগ';
+            document.getElementById('cash-amt').value = obj ? obj.amount : '';
+            document.getElementById('cash-desc').value = obj ? obj.desc : '';
+            openModal('cash-modal');
+        }
+        function saveCash(e) {
+            e.preventDefault();
+            let editId = document.getElementById('cash-edit-id').value;
+            let list = getLocalData('app_cash');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                date: document.getElementById('cash-date').value,
+                type: document.getElementById('cash-type').value,
+                amount: parseFloat(document.getElementById('cash-amt').value),
+                desc: document.getElementById('cash-desc').value
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_cash', list);
+            closeModal('cash-modal');
+            renderAllLocalData();
+        }
+
+        /* DUE EDIT / SAVE */
+        function openDueModal(obj = null) {
+            document.getElementById('due-edit-id').value = obj ? obj.id : '';
+            document.getElementById('due-name').value = obj ? obj.name : '';
+            document.getElementById('due-type').value = obj ? obj.type : 'পাবো';
+            document.getElementById('due-amt').value = obj ? obj.amount : '';
+            document.getElementById('due-status').value = obj ? obj.status : 'Unpaid';
+            openModal('due-modal');
+        }
+        function saveDue(e) {
+            e.preventDefault();
+            let editId = document.getElementById('due-edit-id').value;
+            let list = getLocalData('app_dues');
+            let item = {
+                id: editId ? parseFloat(editId) : Date.now(),
+                name: document.getElementById('due-name').value,
+                type: document.getElementById('due-type').value,
+                amount: parseFloat(document.getElementById('due-amt').value),
+                status: document.getElementById('due-status').value
+            };
+            if(editId) list = list.map(i => i.id == editId ? item : i);
+            else list.push(item);
+            setLocalData('app_dues', list);
+            closeModal('due-modal');
+            renderAllLocalData();
+        }
+
+        /* RENDER TABLES WITH EDIT & DELETE BUTTONS */
         function renderAllLocalData() {
-            let rawList = getLocalData('app_raw_materials');
-            let rawH = ''; rawList.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="7">কোনো কাঁচামাল নেই</td></tr>';
+            // Orders
+            let ords = getLocalData('app_orders'), ordH = '';
+            ords.forEach(i => ordH += `<tr><td>${i.date}</td><td>${i.orderId}</td><td>${i.customer}</td><td>${i.phone}</td><td>${i.address}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openOrderModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_orders', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="8">কোনো এন্ট্রি নেই</td></tr>';
 
-            let prodList = getLocalData('app_products');
-            let prodH = ''; prodList.forEach(i => prodH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="7">কোনো পণ্য নেই</td></tr>';
+            // Raw Materials
+            let raws = getLocalData('app_raw_materials'), rawH = '';
+            raws.forEach(i => rawH += `<tr><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openRawModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('raw-materials-table').innerHTML = rawH || '<tr><td colspan="6">কোনো এন্ট্রি নেই</td></tr>';
 
-            let ordList = getLocalData('app_orders');
-            let ordH = '', p = 0, d = 0, r = 0;
-            ordList.forEach(i => {
-                if(i.status === 'Pending') p++; if(i.status === 'Delivered') d++; if(i.status === 'Returned') r++;
-                ordH += `<tr>
-                    <td>${i.date}</td>
-                    <td>${i.orderId}</td>
-                    <td>${i.customer}</td>
-                    <td>${i.phone}</td>
-                    <td>${i.address}</td>
-                    <td>৳ ${i.amount}</td>
-                    <td><b>${i.status}</b></td>
-                    <td>
-                        <div class="tbl-action-group">
-                            <button class="btn-edit-tbl" onclick="editOrder(${i.id})">✏️ এডিট</button>
-                            <button class="btn-delete-tbl" onclick="deleteItem('app_orders', ${i.id})">মুছুন</button>
-                        </div>
-                    </td>
-                </tr>`;
-            });
-            document.getElementById('sum-total').innerText = `${ordList.length} টি`;
-            document.getElementById('sum-pending').innerText = `${p} টি`;
-            document.getElementById('sum-delivered').innerText = `${d} টি`;
-            document.getElementById('sum-returned').innerText = `${r} টি`;
-            document.getElementById('orders-table').innerHTML = ordH || '<tr><td colspan="8">কোনো অর্ডার নেই</td></tr>';
+            // Products
+            let prods = getLocalData('app_products'), prodH = '';
+            prods.forEach(i => prodH += `<tr><td>${i.sku}</td><td>${i.name}</td><td>৳ ${i.cost}</td><td>৳ ${i.price}</td><td>${i.stock} পিস</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openProductModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_products', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('products-table').innerHTML = prodH || '<tr><td colspan="6">কোনো এন্ট্রি নেই</td></tr>';
 
-            let pList = getLocalData('app_production');
-            let prodnTbl = ''; pList.forEach(i => prodnTbl += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_production', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('production-table').innerHTML = prodnTbl || '<tr><td colspan="5">কোনো উৎপাদন নেই</td></tr>';
+            // Production
+            let prodns = getLocalData('app_production'), prodnH = '';
+            prodns.forEach(i => prodnH += `<tr><td>${i.date}</td><td>${i.item}</td><td>${i.qty} পিস</td><td>৳ ${i.cost}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openProductionModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_production', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('production-table').innerHTML = prodnH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            let cList = getLocalData('app_courier');
-            let courTbl = ''; cList.forEach(i => courTbl += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_courier', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('courier-table').innerHTML = courTbl || '<tr><td colspan="7">কোনো কুরিয়ার নেই</td></tr>';
+            // Courier
+            let cour = getLocalData('app_courier'), courH = '';
+            cour.forEach(i => courH += `<tr><td>${i.parcelId}</td><td>${i.orderNo}</td><td>৳ ${i.cod}</td><td>৳ ${i.charge}</td><td>${i.status}</td><td>৳ ${i.cod - i.charge}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openCourierModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_courier', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('courier-table').innerHTML = courH || '<tr><td colspan="7">কোনো এন্ট্রি নেই</td></tr>';
 
-            let expList = getLocalData('app_expenses');
-            let expH = ''; expList.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_expenses', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="5">কোনো খরচ নেই</td></tr>';
+            // Expenses
+            let exps = getLocalData('app_expenses'), expH = '';
+            exps.forEach(i => expH += `<tr><td>${i.date}</td><td>${i.category}</td><td>${i.desc || '-'}</td><td>৳ ${i.amount}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openExpenseModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_expenses', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('expenses-table').innerHTML = expH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            let cashList = getLocalData('app_cash');
-            let cashH = ''; cashList.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_cash', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="5">কোনো লেনদেন নেই</td></tr>';
+            // Cash
+            let cashes = getLocalData('app_cash'), cashH = '';
+            cashes.forEach(i => cashH += `<tr><td>${i.date}</td><td>${i.type}</td><td>${i.desc}</td><td>৳ ${i.amount}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openCashModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_cash', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('cash-table').innerHTML = cashH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
-            let dueList = getLocalData('app_dues');
-            let dueH = ''; dueList.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><button class="btn-delete-tbl" onclick="deleteItem('app_dues', ${i.id})">মুছুন</button></td></tr>`);
-            document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="5">কোনো পাওনা নেই</td></tr>';
+            // Dues
+            let dues = getLocalData('app_dues'), dueH = '';
+            dues.forEach(i => dueH += `<tr><td>${i.name}</td><td>${i.type}</td><td>৳ ${i.amount}</td><td>${i.status}</td><td><div class="tbl-action-group"><button class="btn-edit-tbl" onclick='openDueModal(${JSON.stringify(i)})'>✏️ এডিট</button><button class="btn-delete-tbl" onclick="deleteItem('app_dues', ${i.id})">মুছুন</button></div></td></tr>`);
+            document.getElementById('dues-table').innerHTML = dueH || '<tr><td colspan="5">কোনো এন্ট্রি নেই</td></tr>';
 
             renderDashboard();
         }
 
         function renderDashboard() {
-            let filterType = document.getElementById('time-filter').value;
-            let now = new Date();
-            let startDate = new Date(0), endDate = new Date(2099, 11, 31);
-
-            if(filterType === 'today') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
-            } else if(filterType === 'week') {
-                let firstDay = now.getDate() - now.getDay();
-                startDate = new Date(now.setDate(firstDay)); endDate = new Date();
-            } else if(filterType === 'month') {
-                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-            } else if(filterType === 'year') {
-                startDate = new Date(now.getFullYear(), 0, 1);
-                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
-            }
-
             let sales = 0, exp = 0, cash = 0, courier = 0, stock = 0;
-
-            getLocalData('app_orders').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate && i.status === 'Delivered') sales += i.amount;
-            });
-            getLocalData('app_raw_materials').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) exp += i.cost;
-            });
-            getLocalData('app_expenses').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) exp += i.amount;
-            });
-            getLocalData('app_production').forEach(i => {
-                let d = new Date(i.date);
-                if(d >= startDate && d <= endDate) exp += i.cost;
-            });
-
+            getLocalData('app_orders').forEach(i => { if(i.status === 'Delivered') sales += i.amount; });
+            getLocalData('app_raw_materials').forEach(i => exp += i.cost);
+            getLocalData('app_expenses').forEach(i => exp += i.amount);
+            getLocalData('app_production').forEach(i => exp += i.cost);
             getLocalData('app_cash').forEach(i => { if(i.type === 'মূলধন যোগ') cash += i.amount; else cash -= i.amount; });
             getLocalData('app_courier').forEach(i => { if(i.status !== 'Paid') courier += (i.cod - i.charge); });
             getLocalData('app_products').forEach(i => stock += i.stock);
@@ -1010,61 +699,6 @@
             document.getElementById('dash-cash-in-hand').innerText = `৳ ${cash}`;
             document.getElementById('dash-courier-due').innerText = `৳ ${courier}`;
             document.getElementById('dash-total-stock').innerText = `${stock} পিস`;
-        }
-
-        // Offline PDF Generator
-        function downloadFinancialPDF() {
-            let totalSales = 0, rawCost = 0, prodCost = 0, otherExp = 0;
-            getLocalData('app_orders').forEach(i => { if(i.status === 'Delivered') totalSales += i.amount; });
-            getLocalData('app_raw_materials').forEach(i => rawCost += i.cost);
-            getLocalData('app_production').forEach(i => prodCost += i.cost);
-            getLocalData('app_expenses').forEach(i => otherExp += i.amount);
-
-            let totalExp = rawCost + prodCost + otherExp;
-            let netProfit = totalSales - totalExp;
-            let todayStr = new Date().toLocaleDateString('bn-BD');
-
-            let html = `
-                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
-                    <div style="text-align:center; margin-bottom:20px;">
-                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
-                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">প্রস্তুতের তারিখ: ${todayStr}</p>
-                    </div>
-                    <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
-                        <thead><tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;"><th style="padding:12px; text-align:left;">বিবরণ</th><th style="padding:12px; text-align:right;">টাকা (TK)</th></tr></thead>
-                        <tbody>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">কাঁচামাল কেনা খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${rawCost}</td></tr>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">উৎপাদন খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${prodCost}</td></tr>
-                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">অন্যান্য খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${otherExp}</td></tr>
-                            <tr style="background:#fff5f8; font-weight:bold;"><td style="padding:12px;">সর্বমোট খরচ</td><td style="padding:12px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
-                            <tr style="background:#f0fdf4; font-weight:bold; font-size:15px;"><td style="padding:14px; color:#059669;">নেট লাভ</td><td style="padding:14px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
-                        </tbody>
-                    </table>
-                </div>
-            `;
-            html2pdf().from(html).set({ margin: 10, filename: 'Financial_Summary.pdf' }).save();
-        }
-
-        function downloadInventoryPDF() {
-            let products = getLocalData('app_products');
-            let rawMaterials = getLocalData('app_raw_materials');
-            let todayStr = new Date().toLocaleDateString('bn-BD');
-
-            let prodRows = products.map(p => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${p.sku || '-'}</td><td style="padding:10px;">${p.name}</td><td style="padding:10px;">${p.stock} পিস</td><td style="padding:10px; text-align:right;">৳ ${p.price}</td></tr>`).join('');
-            let rawRows = rawMaterials.map(r => `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${r.date}</td><td style="padding:10px;">${r.name}</td><td style="padding:10px;">${r.qty}</td><td style="padding:10px; text-align:right;">৳ ${r.cost}</td></tr>`).join('');
-
-            let html = `
-                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; max-width:800px; margin:auto;">
-                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — ইনভেন্টরি রিপোর্ট</h2>
-                    <p style="text-align:center; font-size:12px; color:#6b7280;">তারিখ: ${todayStr}</p>
-                    <h3 style="color:#831843; margin-top:15px;">📦 পণ্য স্টক:</h3>
-                    <table style="width:100%; border-collapse:collapse; margin-bottom:15px;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">SKU</th><th style="padding:8px;">নাম</th><th style="padding:8px;">স্টক</th><th style="padding:8px; text-align:right;">মূল্য</th></tr></thead><tbody>${prodRows || '<tr><td colspan="4">স্টক নেই</td></tr>'}</tbody></table>
-                    <h3 style="color:#831843;">🪵 কাঁচামাল:</h3>
-                    <table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#fff1f2;"><th style="padding:8px;">তারিখ</th><th style="padding:8px;">নাম</th><th style="padding:8px;">পরিমাণ</th><th style="padding:8px; text-align:right;">খরচ</th></tr></thead><tbody>${rawRows || '<tr><td colspan="4">কাঁচামাল নেই</td></tr>'}</tbody></table>
-                </div>
-            `;
-            html2pdf().from(html).set({ margin: 10, filename: 'Inventory_Summary.pdf' }).save();
         }
     </script>
 </body>
