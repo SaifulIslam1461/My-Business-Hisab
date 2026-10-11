@@ -50,7 +50,7 @@
         .auth-card .form-group { text-align: left; margin-bottom: 14px; position: relative; }
         .auth-card label { color: #fbcfe8; font-size: 13px; font-weight: 600; margin-bottom: 6px; display: block; }
         
-        .auth-card input[type="text"], .auth-card input[type="password"] {
+        .auth-card input[type="text"], .auth-card input[type="password"], .auth-card input[type="file"] {
             width: 100%; padding: 13px 40px 13px 14px; border-radius: 12px; border: 2px solid #f472b6;
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
@@ -137,7 +137,7 @@
         
         .table-container { background: white; border-radius: var(--radius); box-shadow: var(--shadow); overflow-x: auto; margin-bottom: 20px; border: 1px solid var(--border-color); }
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; }
+        th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; vertical-align: middle; }
         th { background: #fff1f2; color: #831843; font-weight: 600; }
 
         .tbl-action-group { display: flex; gap: 6px; }
@@ -159,6 +159,8 @@
 
         .admin-box-card { background: #fff5f8; border: 1px solid #fbcfe8; border-radius: 14px; padding: 14px; margin-bottom: 14px; }
         .admin-box-card h4 { color: #831843; font-size: 13.5px; margin-bottom: 8px; font-weight: 800; }
+
+        .user-avatar-thumb { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; border: 1.5px solid #ec4899; }
 
         .mobile-bottom-nav { display: none; background: white; border-top: 1px solid var(--border-color); position: fixed; bottom: 0; left: 0; width: 100%; justify-content: space-around; padding: 8px 0; z-index: 100; }
         .mobile-nav-item { text-align: center; font-size: 10px; color: var(--text-muted); cursor: pointer; }
@@ -187,6 +189,11 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
+                <!-- Required Image Input -->
+                <div class="form-group">
+                    <label>আপনার প্রোফাইল ছবি *</label>
+                    <input type="file" id="reg-photo" accept="image/*" required style="padding:8px 12px; font-size:12px;">
+                </div>
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('login')">ইতিমধ্যে একাউন্ট আছে? লগইন করুন</button>
@@ -214,7 +221,8 @@
         <div class="header-profile-group">
             <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন সিকিউরিটি প্যানেল (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
-            <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="User" class="developer-avatar">
+            <!-- Developers Permanent Fixed Avatar -->
+            <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
         </div>
     </header>
 
@@ -377,6 +385,25 @@
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
+    <!-- Banner Settings Modal -->
+    <div id="banner-modal" class="modal">
+        <div class="modal-content">
+            <h3>⚙️ ব্যানার কাস্টমাইজেশন ও ব্যাকগ্রাউন্ড ছবি</h3>
+            <form onsubmit="saveBannerSettings(event)">
+                <div class="form-group"><label>ব্যবসার স্লোগান</label><input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন"></div>
+                <div class="form-group"><label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে লিখুন)</label><input type="text" id="input-expense-cats" placeholder="Facebook Boosting, যাতায়াত"></div>
+                <div class="form-group">
+                    <label>ব্যানারের ব্যাকগ্রাউন্ড ছবি পরিবর্তন করুন</label>
+                    <input type="file" id="input-banner-bg" accept="image/*" style="background:#fff; padding:6px;">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
+                    <button type="submit" class="btn-modal-save">✓ সেভ করুন</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- PDF CUSTOMIZATION SETTINGS MODAL -->
     <div id="pdf-settings-modal" class="modal">
         <div class="modal-content">
@@ -434,9 +461,9 @@
             <div id="admin-dashboard-view" style="display:none;">
                 <div class="admin-box-card">
                     <h4>👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
-                    <div style="max-height:130px; overflow-y:auto; background:#fff; border-radius:10px; padding:6px; border:1px solid #fbcfe8;">
+                    <div style="max-height:160px; overflow-y:auto; background:#fff; border-radius:10px; padding:6px; border:1px solid #fbcfe8;">
                         <table style="width:100%; font-size:12px;">
-                            <thead><tr style="background:#fff1f2;"><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead>
+                            <thead><tr style="background:#fff1f2;"><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead>
                             <tbody id="user-list-table"></tbody>
                         </table>
                     </div>
@@ -476,21 +503,6 @@
         </div>
     </div>
 
-    <!-- Banner Settings Modal -->
-    <div id="banner-modal" class="modal">
-        <div class="modal-content">
-            <h3>⚙️ ব্যানার সেটিংস ও কাস্টমাইজেশন</h3>
-            <form onsubmit="saveBannerSettings(event)">
-                <div class="form-group"><label>ব্যবসার স্লোগান</label><input type="text" id="input-slogan" required placeholder="স্লোগান লিখুন"></div>
-                <div class="form-group"><label>অন্যান্য খরচের খাতসমূহ (কমা দিয়ে লিখুন)</label><input type="text" id="input-expense-cats" placeholder="Facebook Boosting, যাতায়াত"></div>
-                <div class="modal-actions">
-                    <button type="button" class="btn-modal-cancel" onclick="closeModal('banner-modal')">✕ বাতিল</button>
-                    <button type="submit" class="btn-modal-save">✓ সেভ করুন</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <!-- Modals Form Inputs WITH EDIT SUPPORTS -->
     <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     
@@ -509,7 +521,6 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3 id="due-modal-title">পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><input type="hidden" id="due-edit-id"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // অটো-আপডেটসহ সার্ভিস ওয়ার্কার অটো-রিফ্রেশ কোড
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js').then(reg => {
@@ -550,9 +561,12 @@
         }
 
         function checkAuthSession() {
-            let user = localStorage.getItem('current_logged_user');
-            if (user) { document.getElementById('auth-screen').style.display = 'none'; }
-            else { document.getElementById('auth-screen').style.display = 'flex'; }
+            let user = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
+            if (user && user.phone) { 
+                document.getElementById('auth-screen').style.display = 'none'; 
+            } else { 
+                document.getElementById('auth-screen').style.display = 'flex'; 
+            }
         }
 
         function toggleAuthMode(mode) {
@@ -569,9 +583,21 @@
             let name = document.getElementById('reg-name').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-pass').value.trim();
-            localStorage.setItem('current_logged_user', JSON.stringify({ name, phone, pass }));
-            alert("🎉 রেজিস্ট্রেশন সফল হয়েছে!");
-            document.getElementById('auth-screen').style.display = 'none';
+            let photoFile = document.getElementById('reg-photo').files[0];
+
+            if (!photoFile) {
+                alert("⚠️ ছবি আপলোড করা বাধ্যতামূলক!");
+                return;
+            }
+
+            let reader = new FileReader();
+            reader.onload = function(evt) {
+                let userObj = { name, phone, pass, photo: evt.target.result };
+                localStorage.setItem('current_logged_user', JSON.stringify(userObj));
+                alert("🎉 রেজিস্ট্রেশন সফল হয়েছে!");
+                document.getElementById('auth-screen').style.display = 'none';
+            };
+            reader.readAsDataURL(photoFile);
         }
 
         function handleLogin(e) {
@@ -616,9 +642,12 @@
             let user = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
             let tbody = document.getElementById('user-list-table');
             if (user.name) {
-                tbody.innerHTML = `<tr><td>${user.name}</td><td>${user.phone}</td><td>${user.pass}</td></tr>`;
+                let userImgHtml = user.photo 
+                    ? `<img src="${user.photo}" class="user-avatar-thumb" alt="User">` 
+                    : `<div style="width:30px; height:30px; border-radius:50%; background:#fbcfe8; display:flex; align-items:center; justify-content:center; font-size:12px;">👤</div>`;
+                tbody.innerHTML = `<tr><td>${userImgHtml}</td><td>${user.name}</td><td>${user.phone}</td><td>${user.pass}</td></tr>`;
             } else {
-                tbody.innerHTML = `<tr><td colspan="3">কোনো নিবন্ধিত ইউজার নেই</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="4">কোনো নিবন্ধিত ইউজার নেই</td></tr>`;
             }
         }
 
@@ -654,7 +683,7 @@
                     let avatar = evt.target.result;
                     document.getElementById('header-dev-img').src = avatar;
                     localStorage.setItem('app_dev_avatar', avatar);
-                    alert("ছবি আপডেট হয়েছে!");
+                    alert("ডেভেলপারের ছবি সফলভাবে আপডেট হয়েছে!");
                 }
                 reader.readAsDataURL(file);
             }
@@ -670,6 +699,8 @@
             e.preventDefault();
             let slogan = document.getElementById('input-slogan').value.trim();
             let cats = document.getElementById('input-expense-cats').value.trim();
+            let bgFile = document.getElementById('input-banner-bg').files[0];
+
             if(slogan) {
                 localStorage.setItem('app_slogan', slogan);
                 document.getElementById('banner-slogan').innerText = slogan;
@@ -677,11 +708,23 @@
             if(cats) {
                 localStorage.setItem('app_expense_cats', cats);
             }
-            alert("✅ ব্যানার সেটিংস সেভ হয়েছে!");
-            closeModal('banner-modal');
+
+            if(bgFile) {
+                let reader = new FileReader();
+                reader.onload = function(evt) {
+                    let bgUrl = evt.target.result;
+                    localStorage.setItem('app_banner_bg', bgUrl);
+                    document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${bgUrl}') center/cover no-repeat`;
+                    alert("✅ ব্যানার ও স্লোগান সফলভাবে আপডেট হয়েছে!");
+                    closeModal('banner-modal');
+                };
+                reader.readAsDataURL(bgFile);
+            } else {
+                alert("✅ ব্যানার সেটিংস সেভ হয়েছে!");
+                closeModal('banner-modal');
+            }
         }
 
-        // PDF Customization Settings Functions
         function openPdfSettingsModal() {
             document.getElementById('pdf-time-range').value = localStorage.getItem('pdf_time_range') || 'মাস (Monthly)';
             document.getElementById('pdf-report-author').value = localStorage.getItem('pdf_report_author') || '';
@@ -719,13 +762,20 @@
             renderAllLocalData();
             let slogan = localStorage.getItem('app_slogan');
             let title = localStorage.getItem('app_custom_title');
-            let avatar = localStorage.getItem('app_dev_avatar');
+            let devAvatar = localStorage.getItem('app_dev_avatar');
+            let bannerBg = localStorage.getItem('app_banner_bg');
+            
             if(slogan) document.getElementById('banner-slogan').innerText = slogan;
             if(title) {
                 document.getElementById('app-header-title').innerText = title;
                 document.getElementById('banner-title').innerText = title;
             }
-            if(avatar) document.getElementById('header-dev-img').src = avatar;
+            if(devAvatar) {
+                document.getElementById('header-dev-img').src = devAvatar;
+            }
+            if(bannerBg) {
+                document.getElementById('main-banner').style.background = `linear-gradient(rgba(131, 24, 67, 0.65), rgba(131, 24, 67, 0.8)), url('${bannerBg}') center/cover no-repeat`;
+            }
         };
 
         function switchTab(tabId, el) {
