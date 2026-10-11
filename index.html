@@ -55,21 +55,13 @@
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
 
-        /* Hidden Real File Input & Custom Clickable Label Box */
-        .auth-card input[type="file"] {
-            display: none;
+        /* 100% Working Clickable Upload Button Style */
+        .upload-trigger-btn {
+            display: block; width: 100%; padding: 12px; background: linear-gradient(135deg, #ec4899, #be185d);
+            color: white; border: none; border-radius: 12px; font-size: 14px; font-weight: bold; text-align: center; cursor: pointer; box-shadow: 0 4px 10px rgba(236,72,153,0.3);
         }
-        .custom-file-upload-box {
-            display: flex; align-items: center; justify-content: space-between;
-            width: 100%; padding: 10px 14px; border-radius: 12px; border: 2px solid #f472b6;
-            background: #ffffff !important; color: #831843 !important; font-size: 14px; cursor: pointer;
-        }
-        .custom-file-btn {
-            background: linear-gradient(135deg, #ec4899, #be185d);
-            color: white; border: none; padding: 7px 12px; border-radius: 8px; font-weight: bold; font-size: 12px;
-        }
-        .custom-file-text {
-            font-size: 13px; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 190px;
+        .upload-status-text {
+            display: block; margin-top: 6px; font-size: 12px; color: #fbcfe8; text-align: center; font-style: italic;
         }
 
         .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; z-index: 10; }
@@ -207,15 +199,15 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
-                <!-- Foolproof Clickable File Upload Box -->
+                
+                <!-- 100% Reliable Custom Upload Trigger Button & Preview -->
                 <div class="form-group">
                     <label>আপনার প্রোফাইল ছবি *</label>
-                    <label for="reg-photo" class="custom-file-upload-box">
-                        <span class="custom-file-btn">Choose File</span>
-                        <span class="custom-file-text" id="file-chosen-text">No file chosen</span>
-                    </label>
-                    <input type="file" id="reg-photo" accept="image/*" required onchange="updateFileName(this)">
+                    <input type="file" id="reg-photo" accept="image/*" required style="display: none;" onchange="handleImageSelection(this)">
+                    <button type="button" class="upload-trigger-btn" onclick="document.getElementById('reg-photo').click()">📸 ছবি আপলোড করতে এখানে ক্লিক করুন</button>
+                    <span class="upload-status-text" id="file-chosen-text">কোনো ছবি নির্বাচন করা হয়নি</span>
                 </div>
+
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('login')">ইতিমধ্যে একাউন্ট আছে? লগইন করুন</button>
@@ -574,12 +566,14 @@
             }
         }
 
-        function updateFileName(input) {
-            let textSpan = document.getElementById('file-chosen-text');
+        function handleImageSelection(input) {
+            let statusText = document.getElementById('file-chosen-text');
             if (input.files && input.files[0]) {
-                textSpan.innerText = input.files[0].name;
+                statusText.innerText = "✅ ছবি সিলেক্ট হয়েছে: " + input.files[0].name;
+                statusText.style.color = "#34d399";
             } else {
-                textSpan.innerText = 'No file chosen';
+                statusText.innerText = "কোনো ছবি নির্বাচন করা হয়নি";
+                statusText.style.color = "#fbcfe8";
             }
         }
 
