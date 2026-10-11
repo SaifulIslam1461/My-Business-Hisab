@@ -86,10 +86,8 @@
         .admin-lock-btn, .logout-btn {
             background: rgba(255, 255, 255, 0.2); border: 1px solid rgba(255, 255, 255, 0.4); color: #fbcfe8;
             width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 15px;
-            transition: background 0.2s ease;
         }
         .logout-btn { background: rgba(220, 38, 38, 0.6); border-color: #f87171; color: white; }
-
         .developer-avatar { width: 36px; height: 36px; border-radius: 50%; border: 2px solid #f472b6; object-fit: cover; background-color: #fff; }
 
         /* Banner */
@@ -109,11 +107,9 @@
         .nav-links li:hover, .nav-links li.active { background: #fdf2f8; color: var(--primary-rose); font-weight: 700; }
 
         main { flex: 1; padding: 15px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
-        
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
-        /* Dashboard */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
@@ -319,17 +315,20 @@
             <div id="tab-reports" class="tab-content">
                 <div class="section-header">
                     <h2>লাভ-লোকসান ও পিডিএফ রিপোর্ট (অফলাইন)</h2>
+                    <div class="filter-controls" style="display:flex; gap:8px;">
+                        <select id="report-time-filter" class="time-select">
+                            <option value="all">সকল সময়</option>
+                            <option value="today">আজ</option>
+                            <option value="week">এই সপ্তাহ</option>
+                            <option value="month" selected>এই মাস</option>
+                            <option value="year">এই বছর</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 15px;">
                     <button class="btn" style="flex:1; padding: 14px; font-size:14px;" onclick="downloadFinancialPDF()">📥 টাকা-পয়সার হিসাব (PDF)</button>
                     <button class="btn-outline" style="flex:1; padding: 14px; font-size:14px;" onclick="downloadInventoryPDF()">📥 মাল-সামানার হিসাব (PDF)</button>
-                </div>
-
-                <div id="pdf-report-container" style="background: white; padding: 20px; border-radius: var(--radius); border: 1px solid var(--border-color); display:none;">
-                    <h2 style="color: #be185d; text-align: center; margin-bottom: 5px;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
-                    <p id="pdf-report-subtitle" style="text-align: center; color: #6b7280; font-size: 13px; margin-bottom: 20px;"></p>
-                    <div id="pdf-report-content"></div>
                 </div>
             </div>
         </main>
@@ -414,12 +413,10 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3>পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required placeholder="নাম"></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required placeholder="2000"><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
-        // Supabase Setup
         const SUPABASE_URL = 'https://zwpoxufpeluqtdooeekr.supabase.co';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Helper: Toggle Password Visibility
         function togglePasswordVisibility(inputId, iconEl) {
             let input = document.getElementById(inputId);
             if (input) {
@@ -433,7 +430,6 @@
             }
         }
 
-        // Local Storage Collections
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
         function setLocalData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
@@ -476,7 +472,6 @@
             }
         }
 
-        // Registration (Connects to Supabase Cloud)
         async function handleRegister(e) {
             e.preventDefault();
             let name = document.getElementById('reg-name').value.trim();
@@ -490,7 +485,7 @@
             }
 
             try {
-                let { data, error } = await _supabase.from('app_users').insert([{ name, phone, pass, img }]);
+                let { error } = await _supabase.from('app_users').insert([{ name, phone, pass, img }]);
                 if (error) {
                     alert("রেজিস্ট্রেশন ত্রুটি: " + error.message);
                 } else {
@@ -504,7 +499,6 @@
             }
         }
 
-        // Login (Supports Offline / Local Auth & Cloud Verification)
         async function handleLogin(e) {
             e.preventDefault();
             let phone = document.getElementById('login-phone').value.trim();
@@ -512,7 +506,7 @@
 
             if (navigator.onLine) {
                 try {
-                    let { data, error } = await _supabase.from('app_users').select('*').eq('phone', phone).eq('pass', pass).single();
+                    let { data } = await _supabase.from('app_users').select('*').eq('phone', phone).eq('pass', pass).single();
                     if (data) {
                         localStorage.setItem('current_logged_user', JSON.stringify(data));
                         alert("স্বাগতম! সফলভাবে লগইন হয়েছে।");
@@ -522,17 +516,15 @@
                 } catch(e){}
             }
 
-            // Fallback for offline login if previously logged in
             let savedUser = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
             if (savedUser && savedUser.phone === phone && savedUser.pass === pass) {
                 alert("স্বাগতম! অফলাইনে লগইন হয়েছে।");
                 document.getElementById('auth-screen').style.display = 'none';
             } else {
-                alert("❌ ভুল নম্বর বা পাসওয়ার্ড! (অনলাইনে নতুন একাউন্ট খুলে চেক করুন)");
+                alert("❌ ভুল নম্বর বা পাসওয়ার্ড!");
             }
         }
 
-        // Admin Security & Dashboard
         function openAdminModal() {
             document.getElementById('admin-login-view').style.display = 'block';
             document.getElementById('admin-dashboard-view').style.display = 'none';
@@ -557,7 +549,7 @@
             let table = document.getElementById('user-list-table');
             table.innerHTML = '<tr><td colspan="4">ডেটা লোড হচ্ছে...</td></tr>';
             if (navigator.onLine) {
-                let { data: users, error } = await _supabase.from('app_users').select('*');
+                let { data: users } = await _supabase.from('app_users').select('*');
                 if (users && users.length > 0) {
                     let h = '';
                     users.forEach(u => {
@@ -620,7 +612,6 @@
             closeModal('banner-modal');
         }
 
-        // Navigation Tabs
         function switchTab(tabId, el) {
             document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
             document.getElementById('tab-' + tabId).classList.add('active');
@@ -641,7 +632,6 @@
         }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Local Entry Handlers (Offline First)
         function saveRawMaterial(e) {
             e.preventDefault();
             let item = {
@@ -766,7 +756,6 @@
         function previewProductImage(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedProductImageData = evt.target.result; document.getElementById('prod-img-preview').innerHTML = `<img src="${selectedProductImageData}">`; }; r.readAsDataURL(f); } }
         function previewCustomBanner(e) { let f = e.target.files[0]; if(f) { let r = new FileReader(); r.onload = (evt) => { selectedCustomBannerImg = evt.target.result; document.getElementById('banner-preview-box').innerHTML = `<img src="${selectedCustomBannerImg}">`; }; r.readAsDataURL(f); } }
 
-        // Render UI Data from LocalStorage
         function renderAllLocalData() {
             let rawList = getLocalData('app_raw_materials');
             let rawH = ''; rawList.forEach(i => rawH += `<tr><td><img src="${i.img || 'https://via.placeholder.com/40'}" class="tbl-thumb"></td><td>${i.date}</td><td>${i.name}</td><td>${i.qty}</td><td>৳ ${i.cost}</td><td>${i.supplier}</td><td><button class="btn-modal-cancel" style="padding:4px 8px; font-size:11px;" onclick="deleteItem('app_raw_materials', ${i.id})">মুছুন</button></td></tr>`);
@@ -830,51 +819,153 @@
             document.getElementById('dash-total-stock').innerText = `${stock} পিস`;
         }
 
-        // Offline PDF Report Generators
+        // ==========================================
+        // 📥 Exact Original PDF Calculation & Design
+        // ==========================================
+        function getFilteredDataByTime() {
+            let filterType = document.getElementById('report-time-filter').value;
+            let now = new Date();
+            let startDate = new Date(0), endDate = new Date(2099, 11, 31);
+
+            if(filterType === 'today') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            } else if(filterType === 'week') {
+                let firstDay = now.getDate() - now.getDay();
+                startDate = new Date(now.setDate(firstDay)); endDate = new Date();
+            } else if(filterType === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+            } else if(filterType === 'year') {
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+            }
+            return { startDate, endDate, filterType };
+        }
+
         function downloadFinancialPDF() {
-            let sales = document.getElementById('dash-total-sales').innerText;
-            let expense = document.getElementById('dash-total-expense').innerText;
-            let profit = document.getElementById('dash-total-profit').innerText;
-            let cash = document.getElementById('dash-cash-in-hand').innerText;
+            let { startDate, endDate } = getFilteredDataByTime();
+            let totalSales = 0, rawCost = 0, prodCost = 0, otherExp = 0;
+
+            getLocalData('app_orders').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate && i.status === 'Delivered') totalSales += i.amount;
+            });
+            getLocalData('app_raw_materials').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) rawCost += i.cost;
+            });
+            getLocalData('app_production').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) prodCost += i.cost;
+            });
+            getLocalData('app_expenses').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) otherExp += i.amount;
+            });
+
+            let totalExp = rawCost + prodCost + otherExp;
+            let netProfit = totalSales - totalExp;
+            let todayStr = new Date().toLocaleDateString('bn-BD');
 
             let html = `
-                <div style="padding:20px; font-family:sans-serif;">
-                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — টাকা-পয়সার হিসাব</h2>
-                    <hr style="margin:15px 0;">
-                    <p><b>তারিখ:</b> ${new Date().toLocaleDateString('bn-BD')}</p>
-                    <br>
-                    <table border="1" cellpadding="10" cellspacing="0" style="width:100%; border-collapse:collapse;">
-                        <tr style="background:#fce7f3;"><th>খাত</th><th>পরিমাণ</th></tr>
-                        <tr><td>মোট বিক্রি</td><td>${sales}</td></tr>
-                        <tr><td>মোট খরচ</td><td>${expense}</td></tr>
-                        <tr><td>নেট লাভ</td><td><b>${profit}</b></td></tr>
-                        <tr><td>হাতে নগদ</td><td>${cash}</td></tr>
+                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">টাকা-পয়সার হিসাব | প্রস্তুতের তারিখ: ${todayStr}</p>
+                    </div>
+                    
+                    <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
+                        <thead>
+                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
+                                <th style="padding:12px; text-align:left;">বিবরণ</th>
+                                <th style="padding:12px; text-align:right;">টাকা (TK)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি (Delivered Orders)</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">কাঁচামাল কেনা খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${rawCost}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">উৎপাদন খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${prodCost}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">অন্যান্য খরচ (Boosting & Others)</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${otherExp}</td></tr>
+                            <tr style="background:#fff5f8; border-bottom:2px solid #fbcfe8; font-weight:bold;"><td style="padding:12px;">সর্বমোট খরচ</td><td style="padding:12px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
+                            <tr style="background:#f0fdf4; font-weight:bold; font-size:15px;"><td style="padding:14px; color:#059669;">নেট লাভ</td><td style="padding:14px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
+                        </tbody>
                     </table>
                 </div>
             `;
-            let el = document.createElement('div'); el.innerHTML = html;
-            html2pdf().from(el).save('Financial_Report.pdf');
+
+            let opt = {
+                margin: 10,
+                filename: 'Financial_Summary_Report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(html).set(opt).save();
         }
 
         function downloadInventoryPDF() {
             let products = getLocalData('app_products');
-            let rows = '';
+            let rawMaterials = getLocalData('app_raw_materials');
+            let todayStr = new Date().toLocaleDateString('bn-BD');
+
+            let prodRows = '';
             products.forEach(p => {
-                rows += `<tr><td>${p.sku}</td><td>${p.name}</td><td>৳ ${p.price}</td><td>${p.stock} পিস</td></tr>`;
+                prodRows += `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${p.sku || '-'}</td><td style="padding:10px;">${p.name}</td><td style="padding:10px;">${p.stock} পিস</td><td style="padding:10px; text-align:right;">৳ ${p.price}</td></tr>`;
+            });
+
+            let rawRows = '';
+            rawMaterials.forEach(r => {
+                rawRows += `<tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">${r.date}</td><td style="padding:10px;">${r.name}</td><td style="padding:10px;">${r.qty}</td><td style="padding:10px; text-align:right;">৳ ${r.cost}</td></tr>`;
             });
 
             let html = `
-                <div style="padding:20px; font-family:sans-serif;">
-                    <h2 style="color:#be185d; text-align:center;">🌸 My Business Hisab — মাল-সামানার হিসাব</h2>
-                    <hr style="margin:15px 0;">
-                    <table border="1" cellpadding="8" cellspacing="0" style="width:100%; border-collapse:collapse;">
-                        <tr style="background:#fce7f3;"><th>SKU</th><th>পণ্যের নাম</th><th>বিক্রয়মূল্য</th><th>স্টক</th></tr>
-                        ${rows || '<tr><td colspan="4">কোনো তথ্য নেই</td></tr>'}
+                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">ইনভেন্টরি ও মাল-সামানা রিপোর্ট | প্রস্তুতের তারিখ: ${todayStr}</p>
+                    </div>
+
+                    <h3 style="color:#831843; font-size:15px; margin-bottom:8px; border-left:4px solid #ec4899; padding-left:8px;">📦 পণ্য স্টক তালিকা:</h3>
+                    <table style="width:100%; border-collapse:collapse; margin-bottom:20px; font-size:13px;">
+                        <thead>
+                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
+                                <th style="padding:10px; text-align:left;">SKU</th>
+                                <th style="padding:10px; text-align:left;">নাম</th>
+                                <th style="padding:10px; text-align:left;">স্টক</th>
+                                <th style="padding:10px; text-align:right;">মূল্য</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${prodRows || '<tr><td colspan="4" style="padding:10px; text-align:center;">কোনো পণ্য স্টক নেই</td></tr>'}
+                        </tbody>
+                    </table>
+
+                    <h3 style="color:#831843; font-size:15px; margin-bottom:8px; border-left:4px solid #ec4899; padding-left:8px;">🪵 কাঁচামাল তালিকা:</h3>
+                    <table style="width:100%; border-collapse:collapse; font-size:13px;">
+                        <thead>
+                            <tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;">
+                                <th style="padding:10px; text-align:left;">তারিখ</th>
+                                <th style="padding:10px; text-align:left;">নাম</th>
+                                <th style="padding:10px; text-align:left;">পরিমাণ</th>
+                                <th style="padding:10px; text-align:right;">খরচ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rawRows || '<tr><td colspan="4" style="padding:10px; text-align:center;">কোনো কাঁচামাল নেই</td></tr>'}
+                        </tbody>
                     </table>
                 </div>
             `;
-            let el = document.createElement('div'); el.innerHTML = html;
-            html2pdf().from(el).save('Inventory_Report.pdf');
+
+            let opt = {
+                margin: 10,
+                filename: 'Inventory_Summary_Report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            html2pdf().from(html).set(opt).save();
         }
     </script>
 </body>
