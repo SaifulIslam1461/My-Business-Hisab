@@ -55,17 +55,18 @@
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
 
-        /* Fixed File Input Styling for Mobile */
+        /* 100% Clickable File Input Fix */
         .auth-card input[type="file"] {
-            width: 100%; padding: 10px; border-radius: 12px; border: 2px solid #f472b6;
-            background: #ffffff !important; color: #831843 !important; font-size: 14px; outline: none; cursor: pointer;
+            width: 100%; padding: 8px; border-radius: 12px; border: 2px solid #f472b6;
+            background: #ffffff !important; color: #831843 !important; font-size: 13px; outline: none;
+            cursor: pointer; position: relative; z-index: 5; pointer-events: auto;
         }
         .auth-card input[type="file"]::file-selector-button {
             background: linear-gradient(135deg, #ec4899, #be185d);
             color: white; border: none; padding: 8px 14px; border-radius: 8px; font-weight: bold; cursor: pointer; margin-right: 10px;
         }
 
-        .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; }
+        .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; z-index: 10; }
         
         .auth-card button.btn-submit {
             width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #db2777);
@@ -200,7 +201,7 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
-                <!-- Profile Image Input Fixed -->
+                <!-- Profile Image Input Clickable Fixed -->
                 <div class="form-group">
                     <label>আপনার প্রোফাইল ছবি *</label>
                     <input type="file" id="reg-photo" accept="image/*" required>
