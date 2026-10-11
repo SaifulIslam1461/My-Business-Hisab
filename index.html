@@ -55,36 +55,7 @@
             background: #ffffff !important; color: #111827 !important; font-size: 15px; outline: none;
         }
 
-        /* 100% Guaranteed Working File Upload Box */
-        .file-upload-wrapper {
-            position: relative;
-            width: 100%;
-            background: #ffffff;
-            border: 2px solid #f472b6;
-            border-radius: 12px;
-            padding: 10px 14px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: pointer;
-            z-index: 50;
-        }
-        .auth-card input[type="file"] {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 60;
-        }
-        .file-upload-btn-text {
-            background: linear-gradient(135deg, #ec4899, #be185d);
-            color: white; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: bold; pointer-events: none;
-        }
-        .file-name-display {
-            font-size: 13px; color: #4b5563; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; pointer-events: none;
-        }
-
-        .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; z-index: 70; }
+        .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; z-index: 10; }
         
         .auth-card button.btn-submit {
             width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #db2777);
@@ -219,17 +190,6 @@
                     <input type="password" id="reg-pass" required placeholder="••••••••">
                     <span class="password-toggle-icon" onclick="togglePasswordVisibility('reg-pass', this)">👁️</span>
                 </div>
-                
-                <!-- Ultimate Clickable File Upload Box with Preview -->
-                <div class="form-group">
-                    <label>আপনার প্রোফাইল ছবি *</label>
-                    <div class="file-upload-wrapper">
-                        <span class="file-upload-btn-text">Choose File</span>
-                        <span class="file-name-display" id="file-chosen-text">No file chosen</span>
-                        <input type="file" id="reg-photo" accept="image/*" required onchange="handleImageSelection(this)">
-                    </div>
-                </div>
-
                 <button type="submit" class="btn-submit">একাউন্ট তৈরি করুন</button>
             </form>
             <button class="auth-toggle-btn" onclick="toggleAuthMode('login')">ইতিমধ্যে একাউন্ট আছে? লগইন করুন</button>
@@ -476,7 +436,7 @@
                     <h4>👤 নিবন্ধিত অনলাইন ইউজার ও তথ্য:</h4>
                     <div style="max-height:160px; overflow-y:auto; background:#fff; border-radius:10px; padding:6px; border:1px solid #fbcfe8;">
                         <table style="width:100%; font-size:12px;">
-                            <thead><tr style="background:#fff1f2;"><th>ছবি</th><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead>
+                            <thead><tr style="background:#fff1f2;"><th>নাম</th><th>মোবাইল</th><th>পাসওয়ার্ড</th></tr></thead>
                             <tbody id="user-list-table"></tbody>
                         </table>
                     </div>
@@ -547,17 +507,6 @@
             }
         }
 
-        function handleImageSelection(input) {
-            let statusText = document.getElementById('file-chosen-text');
-            if (input.files && input.files[0]) {
-                statusText.innerText = "✅ " + input.files[0].name;
-                statusText.style.color = "#059669";
-            } else {
-                statusText.innerText = "No file chosen";
-                statusText.style.color = "#4b5563";
-            }
-        }
-
         function togglePasswordVisibility(inputId, iconEl) {
             let input = document.getElementById(inputId);
             if (input) {
@@ -589,21 +538,11 @@
             let name = document.getElementById('reg-name').value.trim();
             let phone = document.getElementById('reg-phone').value.trim();
             let pass = document.getElementById('reg-pass').value.trim();
-            let photoFile = document.getElementById('reg-photo').files[0];
 
-            if (!photoFile) {
-                alert("⚠️ ছবি আপলোড করা বাধ্যতামূলক!");
-                return;
-            }
-
-            let reader = new FileReader();
-            reader.onload = function(evt) {
-                let userObj = { name, phone, pass, photo: evt.target.result };
-                localStorage.setItem('current_logged_user', JSON.stringify(userObj));
-                alert("🎉 রেজিস্ট্রেশন সফল হয়েছে!");
-                document.getElementById('auth-screen').style.display = 'none';
-            };
-            reader.readAsDataURL(photoFile);
+            let userObj = { name, phone, pass, photo: '' };
+            localStorage.setItem('current_logged_user', JSON.stringify(userObj));
+            alert("🎉 রেজিস্ট্রেশন সফল হয়েছে!");
+            document.getElementById('auth-screen').style.display = 'none';
         }
 
         function handleLogin(e) {
@@ -648,10 +587,9 @@
             let user = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
             let tbody = document.getElementById('user-list-table');
             if (user.name) {
-                let userImgHtml = user.photo ? `<img src="${user.photo}" class="user-avatar-thumb" alt="User">` : `<div style="width:30px; height:30px; border-radius:50%; background:#fbcfe8; display:flex; align-items:center; justify-content:center; font-size:12px;">👤</div>`;
-                tbody.innerHTML = `<tr><td>${userImgHtml}</td><td>${user.name}</td><td>${user.phone}</td><td>${user.pass}</td></tr>`;
+                tbody.innerHTML = `<tr><td>${user.name}</td><td>${user.phone}</td><td>${user.pass}</td></tr>`;
             } else {
-                tbody.innerHTML = `<tr><td colspan="4">কোনো নিবন্ধিত ইউজার নেই</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="3">কোনো নিবন্ধিত ইউজার নেই</td></tr>`;
             }
         }
 
