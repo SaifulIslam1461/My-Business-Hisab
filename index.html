@@ -110,6 +110,27 @@
         .tab-content { display: none; }
         .tab-content.active { display: block; }
 
+        /* Mobile Quick Features & Install Card */
+        .mobile-quick-features {
+            margin-top: 20px; background: white; padding: 18px 15px; border-radius: var(--radius); border: 1px solid var(--border-color); box-shadow: var(--shadow);
+        }
+        .mobile-quick-features h3 { font-size: 14px; color: #831843; margin-bottom: 12px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .feature-grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .feature-card-btn {
+            background: linear-gradient(135deg, #fff0f5, #fce7f3); border: 1px solid #f472b6; border-radius: 14px; padding: 12px; display: flex; align-items: center; gap: 10px; cursor: pointer;
+        }
+        .feature-card-btn .feat-icon { font-size: 20px; width: 36px; height: 36px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+        .feature-card-btn .feat-title { font-size: 12px; font-weight: 700; color: #831843; }
+
+        .mobile-install-app-card {
+            margin-top: 15px; background: linear-gradient(135deg, #be185d, #ec4899); color: white; padding: 15px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between; cursor: pointer;
+        }
+        .install-card-left { display: flex; align-items: center; gap: 12px; }
+        .install-card-left h4 { font-size: 14px; font-weight: 800; }
+        .install-card-left p { font-size: 10.5px; color: #fbcfe8; }
+        .install-card-btn-badge { background: white; color: #be185d; padding: 8px 14px; border-radius: 20px; font-size: 12px; font-weight: 800; }
+
+        /* Dashboard & UI */
         .dashboard-filter-header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 18px; background: white; padding: 12px 16px; border-radius: var(--radius); border: 1px solid #fbcfe8; }
         .dashboard-filter-header h2 { font-size: 16px; color: #831843; font-weight: 700; }
         .time-select { padding: 8px 12px; border: 1px solid #f472b6; border-radius: 10px; font-size: 12px; font-weight: 600; color: #831843; background: #fff5f8; }
@@ -272,6 +293,44 @@
                     <div class="card orange"><div class="card-header-box"><h3>কুরিয়ারে পাওনা</h3><div class="card-icon">🚚</div></div><div class="value" id="dash-courier-due">৳ 0</div></div>
                     <div class="card"><div class="card-header-box"><h3>মোট পণ্য স্টক</h3><div class="card-icon">📦</div></div><div class="value" id="dash-total-stock">0 পিস</div></div>
                 </div>
+
+                <!-- Mobile Quick Features & Install App Card -->
+                <div class="mobile-quick-features">
+                    <h3>✨ অন্যান্য সকল ব্যবসায়িক হিসাব</h3>
+                    <div class="feature-grid-container">
+                        <div class="feature-card-btn" onclick="switchTab('production')">
+                            <div class="feat-icon">⚙️</div>
+                            <div class="feat-title">উৎপাদন ও স্টক</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('courier')">
+                            <div class="feat-icon">🚚</div>
+                            <div class="feat-title">কুরিয়ার (Steadfast)</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('cash')">
+                            <div class="feat-icon">💰</div>
+                            <div class="feat-title">নগদ ও মূলধন</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('dues')">
+                            <div class="feat-icon">📒</div>
+                            <div class="feat-title">পাওনা ও দেনা</div>
+                        </div>
+                        <div class="feature-card-btn" onclick="switchTab('expenses')" style="grid-column: span 2;">
+                            <div class="feat-icon">💸</div>
+                            <div class="feat-title">অন্যান্য খরচ (Facebook Boost/অন্যান্য)</div>
+                        </div>
+                    </div>
+
+                    <div class="mobile-install-app-card" onclick="executeAppInstall()">
+                        <div class="install-card-left">
+                            <div style="font-size: 26px;">📲</div>
+                            <div>
+                                <h4>অ্যাপ ইনস্টল করুন</h4>
+                                <p>প্লে-স্টোর অ্যাপের মতো ব্যবহার করুন</p>
+                            </div>
+                        </div>
+                        <div class="install-card-btn-badge">ইনস্টল</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Orders Tab -->
@@ -417,6 +476,23 @@
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inp3cG94dWZwZWx1cXRkb29lZWtyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTEyNjgyMzIsImV4cCI6MjEwNjg0NDIzMn0.oEwsRjnoXe5hNI7Iw4-UAOUMyA3mVc_ybZ48rHi4Uks';
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+        // PWA Install Prompt Setup
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        async function executeAppInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                let { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("📲 ব্রাউজারের ওপরের ৩-ডটে (⋮) ট্যাপ করে 'Install App' বা 'Add to Home screen' ক্লিক করুন।");
+            }
+        }
+
         function togglePasswordVisibility(inputId, iconEl) {
             let input = document.getElementById(inputId);
             if (input) {
@@ -480,7 +556,7 @@
             let img = selectedAuthProfileImg || '';
 
             if (!navigator.onLine) {
-                alert("⚠️ রেজিস্ট্রেশন করার জন্য ইন্টারনেট কানেকশন প্রয়োজন!");
+                alert("⚠️ নতুন একাউন্ট রেজিস্ট্রেশন করার জন্য ইন্টারনেট কানেকশন প্রয়োজন!");
                 return;
             }
 
@@ -801,12 +877,43 @@
         }
 
         function renderDashboard() {
+            let filterType = document.getElementById('time-filter').value;
+            let now = new Date();
+            let startDate = new Date(0), endDate = new Date(2099, 11, 31);
+
+            if(filterType === 'today') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+            } else if(filterType === 'week') {
+                let firstDay = now.getDate() - now.getDay();
+                startDate = new Date(now.setDate(firstDay)); endDate = new Date();
+            } else if(filterType === 'month') {
+                startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+            } else if(filterType === 'year') {
+                startDate = new Date(now.getFullYear(), 0, 1);
+                endDate = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+            }
+
             let sales = 0, exp = 0, cash = 0, courier = 0, stock = 0;
 
-            getLocalData('app_orders').forEach(i => { if(i.status === 'Delivered') sales += i.amount; });
-            getLocalData('app_raw_materials').forEach(i => exp += i.cost);
-            getLocalData('app_expenses').forEach(i => exp += i.amount);
-            getLocalData('app_production').forEach(i => exp += i.cost);
+            getLocalData('app_orders').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate && i.status === 'Delivered') sales += i.amount;
+            });
+            getLocalData('app_raw_materials').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) exp += i.cost;
+            });
+            getLocalData('app_expenses').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) exp += i.amount;
+            });
+            getLocalData('app_production').forEach(i => {
+                let d = new Date(i.date);
+                if(d >= startDate && d <= endDate) exp += i.cost;
+            });
+
             getLocalData('app_cash').forEach(i => { if(i.type === 'মূলধন যোগ') cash += i.amount; else cash -= i.amount; });
             getLocalData('app_courier').forEach(i => { if(i.status !== 'Paid') courier += (i.cod - i.charge); });
             getLocalData('app_products').forEach(i => stock += i.stock);
@@ -820,7 +927,7 @@
         }
 
         // ==========================================
-        // 📥 Exact Original PDF Calculation & Design
+        // 📥 Exact Original PDF Calculations & Design
         // ==========================================
         function getFilteredDataByTime() {
             let filterType = document.getElementById('report-time-filter').value;
@@ -844,7 +951,7 @@
         }
 
         function downloadFinancialPDF() {
-            let { startDate, endDate } = getFilteredDataByTime();
+            let { startDate, endDate, filterType } = getFilteredDataByTime();
             let totalSales = 0, rawCost = 0, prodCost = 0, otherExp = 0;
 
             getLocalData('app_orders').forEach(i => {
@@ -872,7 +979,7 @@
                 <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
                     <div style="text-align:center; margin-bottom:20px;">
                         <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
-                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">টাকা-পয়সার হিসাব | প্রস্তুতের তারিখ: ${todayStr}</p>
+                        <p style="color:#6b7280; font-size:12px; margin-top:4px;">প্রতিবেদনের সময়সীমা: ${filterType.toUpperCase()} | প্রস্তুতের তারিখ: ${todayStr}</p>
                     </div>
                     
                     <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
