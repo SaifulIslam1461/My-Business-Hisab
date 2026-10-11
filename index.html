@@ -56,11 +56,6 @@
         }
         .password-toggle-icon { position: absolute; right: 12px; top: 36px; cursor: pointer; font-size: 18px; color: #831843; user-select: none; }
         
-        .auth-img-frame {
-            width: 80px; height: 80px; margin: 10px auto 0; border-radius: 50%;
-            border: 3px solid #ec4899; overflow: hidden; background: #fff; display: flex; align-items: center; justify-content: center;
-        }
-        .auth-img-frame img { width: 100%; height: 100%; object-fit: cover; }
         .auth-card button.btn-submit {
             width: 100%; padding: 14px; margin-top: 15px; background: linear-gradient(135deg, #ec4899, #db2777);
             color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
@@ -118,7 +113,7 @@
         .feature-card-btn .feat-icon { font-size: 20px; width: 36px; height: 36px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
         .feature-card-btn .feat-title { font-size: 12px; font-weight: 700; color: #831843; }
 
-        /* App Install Card */
+        /* Install App Button Box */
         .mobile-install-app-card { background: linear-gradient(135deg, #be185d, #ec4899); color: white; padding: 16px; border-radius: 18px; display: flex; align-items: center; justify-content: space-between; cursor: pointer; box-shadow: 0 6px 15px rgba(190, 24, 93, 0.3); }
         .install-card-left { display: flex; align-items: center; gap: 12px; }
         .install-card-left h4 { font-size: 15px; font-weight: 800; }
@@ -134,7 +129,6 @@
         table { width: 100%; border-collapse: collapse; white-space: nowrap; }
         th, td { padding: 12px 15px; border-bottom: 1px solid #fce7f3; font-size: 13px; text-align: left; }
         th { background: #fff1f2; color: #831843; font-weight: 600; }
-        .tbl-thumb { width: 40px; height: 40px; border-radius: 10px; object-fit: cover; border: 1.5px solid #f472b6; vertical-align: middle; }
 
         .tbl-action-group { display: flex; gap: 6px; }
         .btn-edit-tbl { background: #3b82f6; color: white; border: none; padding: 5px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold; }
@@ -171,15 +165,10 @@
     <div id="auth-screen">
         <div class="auth-card" id="register-card">
             <h2>🌸 রেজিস্ট্রেশন করুন</h2>
-            <p>নতুন একাউন্ট খুলুন (অনলাইন প্রয়োজন)</p>
+            <p>নতুন একাউন্ট খুলুন</p>
             <form onsubmit="handleRegister(event)">
                 <div class="form-group"><label>আপনার নাম *</label><input type="text" id="reg-name" required placeholder="যেমন :- সাইফুল ইসলাম"></div>
                 <div class="form-group"><label>মোবাইল নাম্বার *</label><input type="text" id="reg-phone" required placeholder="যেমন :- 01800000000"></div>
-                <div class="form-group">
-                    <label>আপনার ছবি আপলোড করুন</label>
-                    <input type="file" id="reg-img-file" accept="image/*" onchange="previewAuthProfileImage(event)" style="background:#fff; padding:8px;">
-                    <div class="auth-img-frame" id="reg-img-preview"><span style="font-size:11px; color:#9ca3af;">ছবি দিন</span></div>
-                </div>
                 <div class="form-group">
                     <label>সিক্রেট পাসওয়ার্ড *</label>
                     <input type="password" id="reg-pass" required placeholder="••••••••">
@@ -212,7 +201,7 @@
         <div class="header-profile-group">
             <button class="admin-lock-btn" onclick="openAdminModal()" title="এডমিন প্যানেল সিকিউরিটি (🔒)">🔒</button>
             <button class="logout-btn" onclick="handleLogout()" title="অ্যাপ থেকে বের হন (Logout)">🚪</button>
-            <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="Developer" class="developer-avatar">
+            <img id="header-dev-img" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23ec4899'/><circle cx='50' cy='38' r='20' fill='%23ffffff'/><path d='M20 85 C20 62 80 62 80 85 Z' fill='%23ffffff'/></svg>" alt="User" class="developer-avatar">
         </div>
     </header>
 
@@ -362,6 +351,21 @@
         <div class="mobile-nav-item" onclick="switchTab('reports', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>রিপোর্ট</div>
     </nav>
 
+    <!-- Admin Security Modal -->
+    <div id="admin-modal" class="modal">
+        <div class="modal-content">
+            <h3>🔐 এডমিন প্যানেল</h3>
+            <div class="form-group">
+                <label>পাসওয়ার্ড দিন</label>
+                <input type="password" id="admin-pass-input" placeholder="পাসওয়ার্ড লিখুন">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" onclick="closeModal('admin-modal')">✕ বাতিল</button>
+                <button type="button" class="btn-modal-save" onclick="verifyAdminPass()">আনলক</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modals Form Inputs WITH EDIT SUPPORTS -->
     <div id="order-modal" class="modal"><div class="modal-content"><h3 id="order-modal-title">অর্ডার</h3><form onsubmit="saveOrder(event)"><input type="hidden" id="ord-edit-id"><div class="form-group"><label>অর্ডার নম্বর</label><input type="text" id="ord-id" required></div><div class="form-group"><label>কাস্টমার</label><input type="text" id="ord-customer" required></div><div class="form-group"><label>মোবাইল</label><input type="text" id="ord-phone" required></div><div class="form-group"><label>ঠিকানা</label><input type="text" id="ord-address"></div><div class="form-group"><label>টাকা</label><div class="input-tk-wrapper"><input type="number" id="ord-amount" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="ord-status"><option value="Pending">Pending</option><option value="Confirmed">Confirmed</option><option value="Delivered">Delivered</option><option value="Returned">Returned</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('order-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
     
@@ -380,13 +384,86 @@
     <div id="due-modal" class="modal"><div class="modal-content"><h3 id="due-modal-title">পাওনা/দেনা</h3><form onsubmit="saveDue(event)"><input type="hidden" id="due-edit-id"><div class="form-group"><label>নাম</label><input type="text" id="due-name" required></div><div class="form-group"><label>ধরণ</label><select id="due-type"><option value="পাবো">পাবো</option><option value="দিতে হবে">দিতে হবে</option></select></div><div class="form-group"><label>পরিমাণ</label><div class="input-tk-wrapper"><input type="number" id="due-amt" required><span class="tk-suffix">TK</span></div></div><div class="form-group"><label>স্ট্যাটাস</label><select id="due-status"><option value="Unpaid">Unpaid</option><option value="Paid">Paid</option></select></div><div class="modal-actions"><button type="button" class="btn-modal-cancel" onclick="closeModal('due-modal')">✕ বাতিল</button><button type="submit" class="btn-modal-save">✓ সেভ</button></div></form></div></div>
 
     <script>
+        let deferredPrompt = null;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
+
+        async function executeAppInstall() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                alert("📲 ব্রাউজারের ওপরের ৩-ডটে ট্যাপ করে 'Install App' ক্লিক করুন।");
+            }
+        }
+
+        function togglePasswordVisibility(inputId, iconEl) {
+            let input = document.getElementById(inputId);
+            if (input) {
+                if (input.type === 'password') { input.type = 'text'; iconEl.innerText = '🙈'; }
+                else { input.type = 'password'; iconEl.innerText = '👁️'; }
+            }
+        }
+
+        function checkAuthSession() {
+            let user = localStorage.getItem('current_logged_user');
+            if (user) { document.getElementById('auth-screen').style.display = 'none'; }
+            else { document.getElementById('auth-screen').style.display = 'flex'; }
+        }
+
+        function toggleAuthMode(mode) {
+            if (mode === 'login') { document.getElementById('register-card').style.display = 'none'; document.getElementById('login-card').style.display = 'block'; }
+            else { document.getElementById('register-card').style.display = 'block'; document.getElementById('login-card').style.display = 'none'; }
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            let name = document.getElementById('reg-name').value.trim();
+            let phone = document.getElementById('reg-phone').value.trim();
+            let pass = document.getElementById('reg-pass').value.trim();
+            localStorage.setItem('current_logged_user', JSON.stringify({ name, phone, pass }));
+            alert("🎉 রেজিস্ট্রেশন সফল হয়েছে!");
+            document.getElementById('auth-screen').style.display = 'none';
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            let phone = document.getElementById('login-phone').value.trim();
+            let pass = document.getElementById('login-pass').value.trim();
+            let user = JSON.parse(localStorage.getItem('current_logged_user') || '{}');
+            if (user.phone === phone && user.pass === pass) {
+                alert("স্বাগতম! লগইন সফল হয়েছে।");
+                document.getElementById('auth-screen').style.display = 'none';
+            } else { alert("❌ ভুল নম্বর বা পাসওয়ার্ড!"); }
+        }
+
+        function handleLogout() {
+            if (confirm("আপনি কি লগআউট করতে চান?")) {
+                localStorage.removeItem('current_logged_user');
+                document.getElementById('auth-screen').style.display = 'flex';
+                toggleAuthMode('login');
+            }
+        }
+
+        function openAdminModal() { openModal('admin-modal'); }
+        function verifyAdminPass() {
+            let val = document.getElementById('admin-pass-input').value;
+            let currentAdminPass = localStorage.getItem('app_admin_pass') || '1234';
+            if (val === currentAdminPass) {
+                alert("✅ এডমিন প্যানেল আনলক হয়েছে!");
+                closeModal('admin-modal');
+            } else { alert("❌ ভুল পাসওয়ার্ড!"); }
+        }
+
         function getLocalData(key) { return JSON.parse(localStorage.getItem(key) || '[]'); }
         function setLocalData(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
 
         window.onload = function() {
+            checkAuthSession();
             renderAllLocalData();
-            let avatar = localStorage.getItem('app_dev_avatar');
-            if(avatar) document.getElementById('header-dev-img').src = avatar;
         };
 
         function switchTab(tabId, el) {
@@ -402,7 +479,6 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        // Generic Delete Function
         function deleteItem(key, id) {
             if (confirm("আপনি কি এটি ডিলিট করতে চান?")) {
                 let data = getLocalData(key).filter(i => i.id !== id);
@@ -699,6 +775,34 @@
             document.getElementById('dash-cash-in-hand').innerText = `৳ ${cash}`;
             document.getElementById('dash-courier-due').innerText = `৳ ${courier}`;
             document.getElementById('dash-total-stock').innerText = `${stock} পিস`;
+        }
+
+        function downloadFinancialPDF() {
+            let totalSales = 0, rawCost = 0, prodCost = 0, otherExp = 0;
+            getLocalData('app_orders').forEach(i => { if(i.status === 'Delivered') totalSales += i.amount; });
+            getLocalData('app_raw_materials').forEach(i => rawCost += i.cost);
+            getLocalData('app_production').forEach(i => prodCost += i.cost);
+            getLocalData('app_expenses').forEach(i => otherExp += i.amount);
+
+            let totalExp = rawCost + prodCost + otherExp;
+            let netProfit = totalSales - totalExp;
+
+            let html = `
+                <div style="background:white; padding:25px; font-family:'Segoe UI',sans-serif; color:#1f2937; max-width:800px; margin:auto;">
+                    <div style="text-align:center; margin-bottom:20px;">
+                        <h2 style="color:#be185d; font-size:22px; font-weight:800;">🌸 My Business Hisab — ব্যবসায়িক প্রতিবেদন</h2>
+                    </div>
+                    <table style="width:100%; border-collapse:collapse; margin-top:15px; font-size:13px;">
+                        <thead><tr style="background:#fff1f2; color:#be185d; border-bottom:2px solid #fbcfe8;"><th style="padding:12px; text-align:left;">বিবরণ</th><th style="padding:12px; text-align:right;">টাকা (TK)</th></tr></thead>
+                        <tbody>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">মোট সফল বিক্রি</td><td style="padding:10px; text-align:right; font-weight:bold; color:#059669;">৳ ${totalSales}</td></tr>
+                            <tr style="border-bottom:1px solid #fce7f3;"><td style="padding:10px;">সর্বমোট খরচ</td><td style="padding:10px; text-align:right; color:#dc2626;">৳ ${totalExp}</td></tr>
+                            <tr style="background:#f0fdf4; font-weight:bold; font-size:15px;"><td style="padding:14px; color:#059669;">নেট লাভ</td><td style="padding:14px; text-align:right; color:#059669;">৳ ${netProfit}</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            html2pdf().from(html).set({ margin: 10, filename: 'Financial_Summary.pdf' }).save();
         }
     </script>
 </body>
